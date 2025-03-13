@@ -12,9 +12,86 @@ GifticApp is a monorepo project with multiple packages:
 ## Prerequisites
 
 Before setting up the project, ensure you have the following installed:
-- Node.js (v20 or higher recommended)
-- npm (v7 or higher recommended)
+- Node.js (v22 or higher recommended)
+- npm (v10 or higher recommended)
 - Git
+- MongoDB (v6.0 or higher recommended)
+
+### Installing Node.js and npm using NVM (recommended)
+
+We recommend using Node Version Manager (NVM) to install and manage Node.js versions:
+
+1. Install NVM:
+   - On macOS/Linux:
+   ```bash
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+   ```
+   - On Windows, use [nvm-windows](https://github.com/coreybutler/nvm-windows)
+
+2. Install Node.js v22:
+   ```bash
+   nvm install 22
+   nvm use 22
+   ```
+
+3. Verify installation:
+   ```bash
+   node --version  # Should show v22.x.x
+   npm --version   # Should show v10.x.x
+   ```
+
+### Installing MongoDB
+
+#### On macOS:
+
+1. Using Homebrew (recommended):
+   ```bash
+   # Install Homebrew if you don't have it
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   
+   # Install MongoDB
+   brew tap mongodb/brew
+   brew install mongodb-community
+   
+   # Start MongoDB service
+   brew services start mongodb-community
+   ```
+
+2. Verify installation:
+   ```bash
+   mongosh --version
+   ```
+
+3. MongoDB will be available at `mongodb://localhost:27017`
+
+#### On Windows:
+
+1. Download the MongoDB Community Server installer from the [official MongoDB website](https://www.mongodb.com/try/download/community)
+
+2. Run the installer and follow the installation wizard:
+   - Choose "Complete" installation
+   - Install MongoDB as a service (recommended)
+   - Install MongoDB Compass (optional but useful GUI)
+
+3. Verify installation:
+   - Open Command Prompt and run:
+   ```bash
+   mongosh --version
+   ```
+
+4. MongoDB will be available at `mongodb://localhost:27017`
+
+#### Using Docker (Alternative for any platform):
+
+If you prefer using Docker:
+
+```bash
+# Pull the MongoDB image
+docker pull mongo:latest
+
+# Run MongoDB container
+docker run -d -p 27017:27017 --name mongodb mongo:latest
+```
 
 ## Installation Steps
 
@@ -59,6 +136,14 @@ API_URL=http://localhost:3000
 #### Blockchain Environment
 
 You may need to set up environment variables for blockchain interactions. Create a `.env` file in `packages/blockchain/` if needed.
+
+```
+# Add or update this in your packages/backend/.env file
+
+# Database connection
+MONGODB_URI=mongodb://localhost:27017/gifticapp
+ETHEREUM_RPC_URL=http://localhost:8545  # Default Hardhat node URL
+```
 
 ### 4. Running the Application
 

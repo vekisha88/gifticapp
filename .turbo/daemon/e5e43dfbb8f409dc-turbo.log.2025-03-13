@@ -1,0 +1,268 @@
+2025-03-13T16:52:05.050346Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo/cookies/.turbo-cookie"), AnchoredSystemPathBuf(".turbo/cookies/1.cookie")}
+2025-03-13T16:52:05.050354Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-03-13T16:52:06.551084Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/logs/error.log"), AnchoredSystemPathBuf("packages/backend/logs/combined.log")}
+2025-03-13T16:52:06.551094Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2025-03-13T16:52:06.850626Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.gitignore"), AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T16:52:06.850637Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T16:52:07.852466Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T16:52:07.852478Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T16:52:07.872174Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T16:52:08.752363Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/shared/dist/types.d.ts"), AnchoredSystemPathBuf("packages/shared/dist/types.js"), AnchoredSystemPathBuf("packages/shared/dist"), AnchoredSystemPathBuf("packages/shared/dist/index.js"), AnchoredSystemPathBuf("packages/shared/dist/index.d.ts")}
+2025-03-13T16:52:08.752381Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/shared"), path: AnchoredSystemPathBuf("packages/shared") }}))
+2025-03-13T16:52:26.658234Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/logs/error.log"), AnchoredSystemPathBuf("packages/backend/logs/combined.log")}
+2025-03-13T16:52:26.658246Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2025-03-13T16:53:46.061514Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("README.md")}
+2025-03-13T16:53:46.061529Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-03-13T16:54:01.360497Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("README.md")}
+2025-03-13T16:54:01.360510Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-03-13T16:54:29.361317Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("README.md")}
+2025-03-13T16:54:29.361328Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-03-13T16:56:00.162049Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("README.md")}
+2025-03-13T16:56:00.162138Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-03-13T16:56:02.262091Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("README.md")}
+2025-03-13T16:56:02.262145Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-03-13T16:56:05.862928Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("README.md")}
+2025-03-13T16:56:05.862953Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-03-13T16:56:54.862779Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/.env")}
+2025-03-13T16:56:54.862791Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2025-03-13T16:57:02.462920Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo/cookies/2.cookie")}
+2025-03-13T16:57:02.462928Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-03-13T16:57:03.463158Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T16:57:03.463168Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T16:57:03.470280Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T16:57:04.562708Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T16:57:04.562719Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T16:57:04.562739Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T16:57:05.663723Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/shared/dist/types.js"), AnchoredSystemPathBuf("packages/shared/dist/index.d.ts"), AnchoredSystemPathBuf("packages/shared/dist/types.d.ts"), AnchoredSystemPathBuf("packages/shared/dist/index.js")}
+2025-03-13T16:57:05.663749Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/shared"), path: AnchoredSystemPathBuf("packages/shared") }}))
+2025-03-13T16:57:05.685969Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T16:57:33.062989Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/logs/combined.log"), AnchoredSystemPathBuf("packages/backend/logs/error.log")}
+2025-03-13T16:57:33.062998Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2025-03-13T16:58:36.263942Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo/cookies/3.cookie")}
+2025-03-13T16:58:36.263951Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-03-13T16:58:37.463319Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T16:58:37.463330Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T16:58:37.487457Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T16:58:38.463490Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T16:58:38.463501Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T16:58:38.487515Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T16:58:39.563240Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/shared/dist/index.d.ts"), AnchoredSystemPathBuf("packages/shared/dist/index.js"), AnchoredSystemPathBuf("packages/shared/dist/types.d.ts"), AnchoredSystemPathBuf("packages/shared/dist/types.js")}
+2025-03-13T16:58:39.563250Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/shared"), path: AnchoredSystemPathBuf("packages/shared") }}))
+2025-03-13T16:58:39.563261Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T17:00:28.464113Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.env")}
+2025-03-13T17:00:28.464141Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T17:00:29.664064Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.env")}
+2025-03-13T17:00:29.664071Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T17:00:29.664088Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T17:00:33.463250Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.env")}
+2025-03-13T17:00:33.463275Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T17:00:33.518742Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T17:00:37.063603Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/logs/combined.log"), AnchoredSystemPathBuf("packages/backend/logs/error.log")}
+2025-03-13T17:00:37.063614Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2025-03-13T17:00:40.763527Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo/cookies/4.cookie")}
+2025-03-13T17:00:40.763548Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-03-13T17:00:41.764880Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T17:00:41.764889Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T17:00:41.764907Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T17:00:42.764461Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T17:00:42.764472Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T17:00:42.770719Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T17:00:43.963800Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/shared/dist/index.d.ts"), AnchoredSystemPathBuf("packages/shared/dist/index.js"), AnchoredSystemPathBuf("packages/shared/dist/types.d.ts"), AnchoredSystemPathBuf("packages/shared/dist/types.js")}
+2025-03-13T17:00:43.963810Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/shared"), path: AnchoredSystemPathBuf("packages/shared") }}))
+2025-03-13T17:00:43.967082Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T17:02:06.364087Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/logs/combined.log"), AnchoredSystemPathBuf("packages/backend/logs/error.log")}
+2025-03-13T17:02:06.364111Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2025-03-13T17:05:30.566477Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T17:05:30.566486Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T17:05:30.574568Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T17:05:31.566143Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T17:05:31.566156Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T17:05:31.600431Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:12:36.407472Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T18:12:36.407490Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:12:36.428817Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:12:37.407874Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T18:12:37.407883Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:12:37.407901Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:14:42.708587Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/logs/error.log"), AnchoredSystemPathBuf("packages/backend/logs/combined.log")}
+2025-03-13T18:14:42.708595Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2025-03-13T18:20:33.810671Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T18:20:33.810680Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:20:33.823670Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:20:34.811428Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T18:20:34.811439Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:20:34.811468Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:21:07.511200Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/logs/combined.log")}
+2025-03-13T18:21:07.511209Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2025-03-13T18:49:07.688786Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T18:49:07.688795Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:49:07.688818Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:49:08.587694Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T18:49:08.587720Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:49:08.638569Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:51:24.183039Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/logs/combined.log")}
+2025-03-13T18:51:24.183049Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2025-03-13T18:51:37.082836Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T18:51:37.082848Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:51:37.142715Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:51:37.182837Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T18:51:37.182847Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:51:37.182875Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:51:38.083368Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T18:51:38.083386Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:51:38.123250Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:55:25.982834Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.env")}
+2025-03-13T18:55:25.982842Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:55:47.982841Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T18:55:47.982854Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:55:48.006480Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:55:48.983033Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T18:55:48.983045Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:55:48.989397Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:56:21.182771Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.env")}
+2025-03-13T18:56:21.182782Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:56:22.282861Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.env")}
+2025-03-13T18:56:22.282872Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:56:22.282913Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:56:27.782682Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.env")}
+2025-03-13T18:56:27.782704Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:56:27.824664Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:56:33.881996Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T18:56:33.882005Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:56:33.882026Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:56:34.882721Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T18:56:34.882731Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:56:34.882756Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:58:07.581945Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/app/index.tsx")}
+2025-03-13T18:58:07.581955Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:58:08.482102Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/app/index.tsx")}
+2025-03-13T18:58:08.482120Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:58:08.482160Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:58:09.482765Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T18:58:09.482785Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:58:09.511327Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:59:52.282728Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/app/index.tsx")}
+2025-03-13T18:59:52.282739Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:59:53.380986Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T18:59:53.380997Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:59:53.396698Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T18:59:55.082727Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/app/index.tsx")}
+2025-03-13T18:59:55.082738Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:59:56.081304Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T18:59:56.081360Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T18:59:56.156602Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:00:24.982566Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.env")}
+2025-03-13T19:00:24.982591Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:00:25.022315Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:03:39.081840Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("package.json")}
+2025-03-13T19:03:39.081849Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All)
+2025-03-13T19:03:39.481788Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("package-lock.json")}
+2025-03-13T19:03:39.481797Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-03-13T19:03:50.682068Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:03:50.682083Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:03:54.380565Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:03:54.380588Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:03:54.421162Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:03:55.981541Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:03:55.981554Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:03:56.021369Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:04:07.881959Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T19:04:07.881969Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:04:07.899071Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:04:08.881768Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T19:04:08.881785Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:04:08.881809Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:05:21.981174Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:05:21.981191Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:05:22.881583Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:05:22.881595Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:05:22.909184Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:05:24.081393Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:05:24.081404Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:05:24.081423Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:05:26.881555Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:05:26.881568Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:05:32.281590Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T19:05:32.281600Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:05:32.289271Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:05:33.281371Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T19:05:33.281387Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:05:33.281416Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:06:31.681462Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:06:31.681471Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:06:31.709958Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:07:57.581542Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:07:57.581551Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:08:37.781047Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:08:37.781057Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:08:37.819961Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:08:37.981043Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:08:37.981054Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:08:38.014907Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:09:00.881644Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:09:00.881663Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:09:24.981444Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:09:24.981466Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:09:26.481964Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:09:26.481986Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:09:26.539060Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:09:28.081259Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/config/env.ts")}
+2025-03-13T19:09:28.081285Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:09:28.128618Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:09:33.881176Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/expo-env.d.ts")}
+2025-03-13T19:09:33.881187Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:09:33.912990Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:09:34.881954Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/frontend/.expo/types/router.d.ts")}
+2025-03-13T19:09:34.881965Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/frontend"), path: AnchoredSystemPathBuf("packages/frontend") }}))
+2025-03-13T19:09:34.896066Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:17:56.781437Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/simulate-Payment.js")}
+2025-03-13T19:17:56.781453Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:18:34.180575Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("package.json")}
+2025-03-13T19:18:34.180585Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All)
+2025-03-13T19:21:36.496117Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/simulate-Payment.js")}
+2025-03-13T19:21:36.496126Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:21:47.196203Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/simulate-Payment.js")}
+2025-03-13T19:21:47.196220Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:21:47.234311Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:22:55.395511Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/simulate-Payment.js")}
+2025-03-13T19:22:55.395522Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:22:57.495045Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/simulate-Payment.js")}
+2025-03-13T19:22:57.495055Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:22:57.495069Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:25:52.492021Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/simulate-Payment.js")}
+2025-03-13T19:25:52.492031Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:25:58.892047Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/simulate-Payment.js")}
+2025-03-13T19:25:58.892059Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:25:58.903889Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:29:51.788442Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/routes/gift.js"), AnchoredSystemPathBuf("packages/backend/logs/combined.log")}
+2025-03-13T19:29:51.788451Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2025-03-13T19:30:22.887975Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/simulate-Payment.js")}
+2025-03-13T19:30:22.887986Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:30:31.587491Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("package.json")}
+2025-03-13T19:30:31.587502Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All)
+2025-03-13T19:30:31.986992Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("package-lock.json")}
+2025-03-13T19:30:31.987001Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-03-13T19:31:20.187736Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/simulate-Payment.js")}
+2025-03-13T19:31:20.187746Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:31:31.087343Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/routes/gift.js"), AnchoredSystemPathBuf("packages/backend/logs/combined.log")}
+2025-03-13T19:31:31.087353Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2025-03-13T19:31:39.286810Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/update-payment-status.js")}
+2025-03-13T19:31:39.286820Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:31:41.287396Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/update-payment-status.js")}
+2025-03-13T19:31:41.287405Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:31:46.686503Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/simulate-Payment.js"), AnchoredSystemPathBuf("packages/backend/routes/gift.js"), AnchoredSystemPathBuf("packages/blockchain/scripts/update-payment-status.js")}
+2025-03-13T19:31:46.686517Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/backend"), path: AnchoredSystemPathBuf("packages/backend") }, WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:31:46.787220Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/backend/logs/combined.log")}
+2025-03-13T19:31:46.787230Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/backend"), path: AnchoredSystemPathBuf("packages/backend") }}))
+2025-03-13T19:31:46.787248Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:33:06.985440Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/simulate-Payment.js")}
+2025-03-13T19:33:06.985462Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:34:07.683831Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/simulate-Payment.js")}
+2025-03-13T19:34:07.683840Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:34:26.576760Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/simulate-Payment.js")}
+2025-03-13T19:34:26.576771Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
+2025-03-13T19:34:26.580639Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2025-03-13T19:35:15.667485Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".gitignore")}
+2025-03-13T19:35:15.667499Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-03-13T19:35:36.666993Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".gitignore")}
+2025-03-13T19:35:36.667005Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))

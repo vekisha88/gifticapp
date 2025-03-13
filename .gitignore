@@ -37,3 +37,12 @@ frontend/.env*.local
 frontend/*.tsbuildinfo
 
 frontend/app-example
+
+**/logs/*
+**/dist/*
+**/build/*
+**/coverage/*
+**/node_modules/*
+**/artifacts/*
+**/cache/*
+**/temp/*

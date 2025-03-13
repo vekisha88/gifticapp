@@ -4,7 +4,7 @@ const { ethers } = require("hardhat");
 const CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // From your Hardhat deployment
 const GIFT_CONTRACT_ABI = require("../artifacts/contracts/GiftContract.sol/GiftContract.json").abi;
 
-async function simulatePayment(giftCode, targetWallet, totalAmount, unlockDate) {
+async function simulatePayment(targetWallet, totalAmount, unlockDate) {
   try {
     // Get the first Hardhat signer (default account with 10000 ETH locally)
     const [signer] = await ethers.getSigners();
@@ -13,10 +13,6 @@ async function simulatePayment(giftCode, targetWallet, totalAmount, unlockDate) 
     // Connect to Hardhat's local node
     const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
     const contract = new ethers.Contract(CONTRACT_ADDRESS, GIFT_CONTRACT_ABI, signer.connect(provider));
-
-    // Encode giftCode as bytes32
-    const giftCodeBytes32 = ethers.encodeBytes32String(giftCode);
-    console.log("Simulating payment for giftCode:", giftCode);
 
     // Use the provided targetWallet (paymentAddress from backend)
     console.log("Target wallet (paymentAddress):", targetWallet);
@@ -38,7 +34,7 @@ async function simulatePayment(giftCode, targetWallet, totalAmount, unlockDate) 
 
     // Execute the lockMatic transaction
     console.log("Sending transaction to lock MATIC for gift...");
-    const tx = await contract.lockMatic(giftCodeBytes32, targetWallet, unlockTimestamp, {
+    const tx = await contract.lockMatic(targetWallet, unlockTimestamp, {
       value: amountInWei,
       gasLimit: 200000, // Adjustable for local testing
     });
@@ -54,12 +50,11 @@ async function simulatePayment(giftCode, targetWallet, totalAmount, unlockDate) 
 }
 
 // Example usage (replace with actual values from your backend response)
-const giftCode = "GIFT-CA0630B1"; // From /api/gift/create response
 const targetWallet = "0xbf70FC8Bc1aB4cB26668B48b1c71e078dd9d347A"; // From paymentAddress
-const totalAmount = "1.05"; // From totalAmount in response
-const unlockDate = "2025-02-26T18:00:00Z"; // From unlockDate in response
+const totalAmount = "10."; // From totalAmount in response
+const unlockDate = "20025-02-26T18:00:00Z"; // From unlockDate in response
 
-simulatePayment(giftCode, targetWallet, totalAmount, unlockDate)
+simulatePayment(targetWallet, totalAmount, unlockDate)
   .then(() => {
     console.log("✅ Simulation complete.");
     process.exit(0);

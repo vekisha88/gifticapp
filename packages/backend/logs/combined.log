@@ -15677,3 +15677,669 @@
 2025-02-26T16:57:16.424Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":2363,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-4078,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.7.1)
 2025-02-26T16:57:16.925Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":2366,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-4078,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.7.1)
 2025-02-26T16:57:17.437Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":2369,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-4078,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.7.1)
+2025-03-13T16:52:06.464Z [INFO]: Event listener subscribing to FundsLocked
+2025-03-13T16:52:06.490Z [ERROR]: Provider connection failed: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:06.491Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:06.581Z [INFO]: ✅ Wallet saved: 0xbf70FC8Bc1aB4cB26668B48b1c71e078dd9d347A (Index: 0)
+2025-03-13T16:52:06.581Z [INFO]: ✅ Wallet Generated: 0xbf70FC8Bc1aB4cB26668B48b1c71e078dd9d347A (Index: 0)
+2025-03-13T16:52:06.592Z [INFO]: ✅ Wallet saved: 0x25eD4fB99D44237B023004DCfE99d93949A4bdFC (Index: 1)
+2025-03-13T16:52:06.592Z [INFO]: ✅ Wallet Generated: 0x25eD4fB99D44237B023004DCfE99d93949A4bdFC (Index: 1)
+2025-03-13T16:52:06.649Z [INFO]: ✅ Wallet saved: 0x00dB5c99f1a6fA22Fd785337306DB892Fb2d6515 (Index: 2)
+2025-03-13T16:52:06.649Z [INFO]: ✅ Wallet Generated: 0x00dB5c99f1a6fA22Fd785337306DB892Fb2d6515 (Index: 2)
+2025-03-13T16:52:06.689Z [INFO]: ✅ Wallet saved: 0x2b1710134461AB265dc6d08E6673A79B45fdF8c7 (Index: 3)
+2025-03-13T16:52:06.689Z [INFO]: ✅ Wallet Generated: 0x2b1710134461AB265dc6d08E6673A79B45fdF8c7 (Index: 3)
+2025-03-13T16:52:06.695Z [INFO]: ✅ Wallet saved: 0xEC899790E3278A9f503832cDa6775fed23bBb60A (Index: 4)
+2025-03-13T16:52:06.695Z [INFO]: ✅ Wallet Generated: 0xEC899790E3278A9f503832cDa6775fed23bBb60A (Index: 4)
+2025-03-13T16:52:06.701Z [INFO]: ✅ Wallet saved: 0xc17614B68b24eE7fB51351aFDa9648A2fF3ADa51 (Index: 5)
+2025-03-13T16:52:06.701Z [INFO]: ✅ Wallet Generated: 0xc17614B68b24eE7fB51351aFDa9648A2fF3ADa51 (Index: 5)
+2025-03-13T16:52:06.706Z [INFO]: ✅ Wallet saved: 0x4c954A122858c0A26583bc66d5b47E7844B06200 (Index: 6)
+2025-03-13T16:52:06.706Z [INFO]: ✅ Wallet Generated: 0x4c954A122858c0A26583bc66d5b47E7844B06200 (Index: 6)
+2025-03-13T16:52:06.729Z [INFO]: ✅ Wallet saved: 0x43667f92a6B534ea704b188Bc896aBa9bd0C248a (Index: 7)
+2025-03-13T16:52:06.729Z [INFO]: ✅ Wallet Generated: 0x43667f92a6B534ea704b188Bc896aBa9bd0C248a (Index: 7)
+2025-03-13T16:52:06.736Z [INFO]: ✅ Wallet saved: 0x2E61C4c82c2E2EE6f62304F270c2b906b7A700b9 (Index: 8)
+2025-03-13T16:52:06.736Z [INFO]: ✅ Wallet Generated: 0x2E61C4c82c2E2EE6f62304F270c2b906b7A700b9 (Index: 8)
+2025-03-13T16:52:06.740Z [INFO]: ✅ Wallet saved: 0x4030fb600de07B7972A26a504A9F87877D0130eB (Index: 9)
+2025-03-13T16:52:06.740Z [INFO]: ✅ Wallet Generated: 0x4030fb600de07B7972A26a504A9F87877D0130eB (Index: 9)
+2025-03-13T16:52:06.741Z [INFO]: ✅ Pre-generated wallet: 0xbf70FC8Bc1aB4cB26668B48b1c71e078dd9d347A (Index: 0)
+2025-03-13T16:52:06.741Z [INFO]: ✅ Pre-generated wallet: 0x25eD4fB99D44237B023004DCfE99d93949A4bdFC (Index: 1)
+2025-03-13T16:52:06.741Z [INFO]: ✅ Pre-generated wallet: 0x00dB5c99f1a6fA22Fd785337306DB892Fb2d6515 (Index: 2)
+2025-03-13T16:52:06.741Z [INFO]: ✅ Pre-generated wallet: 0x2b1710134461AB265dc6d08E6673A79B45fdF8c7 (Index: 3)
+2025-03-13T16:52:06.741Z [INFO]: ✅ Pre-generated wallet: 0xEC899790E3278A9f503832cDa6775fed23bBb60A (Index: 4)
+2025-03-13T16:52:06.741Z [INFO]: ✅ Pre-generated wallet: 0xc17614B68b24eE7fB51351aFDa9648A2fF3ADa51 (Index: 5)
+2025-03-13T16:52:06.741Z [INFO]: ✅ Pre-generated wallet: 0x4c954A122858c0A26583bc66d5b47E7844B06200 (Index: 6)
+2025-03-13T16:52:06.741Z [INFO]: ✅ Pre-generated wallet: 0x43667f92a6B534ea704b188Bc896aBa9bd0C248a (Index: 7)
+2025-03-13T16:52:06.741Z [INFO]: ✅ Pre-generated wallet: 0x2E61C4c82c2E2EE6f62304F270c2b906b7A700b9 (Index: 8)
+2025-03-13T16:52:06.741Z [INFO]: ✅ Pre-generated wallet: 0x4030fb600de07B7972A26a504A9F87877D0130eB (Index: 9)
+2025-03-13T16:52:06.741Z [INFO]: ✅ Pre-generated 10 wallets
+2025-03-13T16:52:06.973Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:07.475Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:07.976Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:08.475Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:08.976Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:09.477Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:09.977Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:10.478Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:10.979Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:11.480Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:11.981Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:12.484Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:12.985Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:13.485Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:13.985Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:14.488Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:14.988Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:15.490Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:15.989Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:52:16.489Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:03.120Z [INFO]: Event listener subscribing to FundsLocked
+2025-03-13T16:57:03.182Z [INFO]: ✅ Wallet saved: 0xE787DF66480aEC452D7A7Dabf40Ca4d0A2274e44 (Index: 10)
+2025-03-13T16:57:03.182Z [INFO]: ✅ Wallet Generated: 0xE787DF66480aEC452D7A7Dabf40Ca4d0A2274e44 (Index: 10)
+2025-03-13T16:57:03.191Z [ERROR]: Provider connection failed: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:03.192Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:03.192Z [INFO]: ✅ Wallet saved: 0x5426EacE1Da82e581793BF725E6d7Dd1746c3Aa1 (Index: 11)
+2025-03-13T16:57:03.192Z [INFO]: ✅ Wallet Generated: 0x5426EacE1Da82e581793BF725E6d7Dd1746c3Aa1 (Index: 11)
+2025-03-13T16:57:03.204Z [INFO]: ✅ Wallet saved: 0x624bb7A45d325Cc38928a161F1D6D56695c7CDBB (Index: 12)
+2025-03-13T16:57:03.204Z [INFO]: ✅ Wallet Generated: 0x624bb7A45d325Cc38928a161F1D6D56695c7CDBB (Index: 12)
+2025-03-13T16:57:03.211Z [INFO]: ✅ Wallet saved: 0xA287f36bDF69Fa3F23f39C949775Dd138F949DcA (Index: 13)
+2025-03-13T16:57:03.211Z [INFO]: ✅ Wallet Generated: 0xA287f36bDF69Fa3F23f39C949775Dd138F949DcA (Index: 13)
+2025-03-13T16:57:03.220Z [INFO]: ✅ Wallet saved: 0x5fE0A39B656419F7fee878Ff4A9fE2e85c9c3A16 (Index: 14)
+2025-03-13T16:57:03.220Z [INFO]: ✅ Wallet Generated: 0x5fE0A39B656419F7fee878Ff4A9fE2e85c9c3A16 (Index: 14)
+2025-03-13T16:57:03.226Z [INFO]: ✅ Wallet saved: 0x986570cA60B9EAaE3DeCA5E62b0968BA6e945035 (Index: 15)
+2025-03-13T16:57:03.226Z [INFO]: ✅ Wallet Generated: 0x986570cA60B9EAaE3DeCA5E62b0968BA6e945035 (Index: 15)
+2025-03-13T16:57:03.232Z [INFO]: ✅ Wallet saved: 0x41c95a8082EBE6227c1Cf817d0049f3B9fd9Fb88 (Index: 16)
+2025-03-13T16:57:03.232Z [INFO]: ✅ Wallet Generated: 0x41c95a8082EBE6227c1Cf817d0049f3B9fd9Fb88 (Index: 16)
+2025-03-13T16:57:03.237Z [INFO]: ✅ Wallet saved: 0xA52C60473653c0452e2B6dA0f97dCE0A3ACc7Ad9 (Index: 17)
+2025-03-13T16:57:03.237Z [INFO]: ✅ Wallet Generated: 0xA52C60473653c0452e2B6dA0f97dCE0A3ACc7Ad9 (Index: 17)
+2025-03-13T16:57:03.244Z [INFO]: ✅ Wallet saved: 0x9A61707b6736761CAB1B8b23c305F88bf700f2E1 (Index: 18)
+2025-03-13T16:57:03.244Z [INFO]: ✅ Wallet Generated: 0x9A61707b6736761CAB1B8b23c305F88bf700f2E1 (Index: 18)
+2025-03-13T16:57:03.249Z [INFO]: ✅ Wallet saved: 0x4438D6f011fa3d740C4a9af525fe98bb287F6b74 (Index: 19)
+2025-03-13T16:57:03.249Z [INFO]: ✅ Wallet Generated: 0x4438D6f011fa3d740C4a9af525fe98bb287F6b74 (Index: 19)
+2025-03-13T16:57:03.250Z [INFO]: ✅ Pre-generated wallet: 0xE787DF66480aEC452D7A7Dabf40Ca4d0A2274e44 (Index: 10)
+2025-03-13T16:57:03.250Z [INFO]: ✅ Pre-generated wallet: 0x5426EacE1Da82e581793BF725E6d7Dd1746c3Aa1 (Index: 11)
+2025-03-13T16:57:03.250Z [INFO]: ✅ Pre-generated wallet: 0x624bb7A45d325Cc38928a161F1D6D56695c7CDBB (Index: 12)
+2025-03-13T16:57:03.250Z [INFO]: ✅ Pre-generated wallet: 0xA287f36bDF69Fa3F23f39C949775Dd138F949DcA (Index: 13)
+2025-03-13T16:57:03.250Z [INFO]: ✅ Pre-generated wallet: 0x5fE0A39B656419F7fee878Ff4A9fE2e85c9c3A16 (Index: 14)
+2025-03-13T16:57:03.250Z [INFO]: ✅ Pre-generated wallet: 0x986570cA60B9EAaE3DeCA5E62b0968BA6e945035 (Index: 15)
+2025-03-13T16:57:03.250Z [INFO]: ✅ Pre-generated wallet: 0x41c95a8082EBE6227c1Cf817d0049f3B9fd9Fb88 (Index: 16)
+2025-03-13T16:57:03.250Z [INFO]: ✅ Pre-generated wallet: 0xA52C60473653c0452e2B6dA0f97dCE0A3ACc7Ad9 (Index: 17)
+2025-03-13T16:57:03.250Z [INFO]: ✅ Pre-generated wallet: 0x9A61707b6736761CAB1B8b23c305F88bf700f2E1 (Index: 18)
+2025-03-13T16:57:03.250Z [INFO]: ✅ Pre-generated wallet: 0x4438D6f011fa3d740C4a9af525fe98bb287F6b74 (Index: 19)
+2025-03-13T16:57:03.250Z [INFO]: ✅ Pre-generated 10 wallets
+2025-03-13T16:57:03.627Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:04.128Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:04.629Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:05.128Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:05.629Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:06.135Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:06.636Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:07.132Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:07.635Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:08.136Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:08.635Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:09.139Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:09.638Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:10.138Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:10.636Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:11.141Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:11.641Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:12.139Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:12.641Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:57:13.140Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:37.070Z [INFO]: Event listener subscribing to FundsLocked
+2025-03-13T16:58:37.121Z [INFO]: ✅ Wallet saved: 0x573C9Fa45A4Fc556CF831aF79375e1b6ed5A8993 (Index: 20)
+2025-03-13T16:58:37.121Z [INFO]: ✅ Wallet Generated: 0x573C9Fa45A4Fc556CF831aF79375e1b6ed5A8993 (Index: 20)
+2025-03-13T16:58:37.136Z [ERROR]: Provider connection failed: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:37.137Z [INFO]: ✅ Wallet saved: 0x213e08FED1f544B6F9EdA1a48b5B0EEf07390009 (Index: 21)
+2025-03-13T16:58:37.137Z [INFO]: ✅ Wallet Generated: 0x213e08FED1f544B6F9EdA1a48b5B0EEf07390009 (Index: 21)
+2025-03-13T16:58:37.143Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:37.143Z [INFO]: ✅ Wallet saved: 0x0DFf4fd5f35fE64e0BDB4542ae30aaB018750349 (Index: 22)
+2025-03-13T16:58:37.143Z [INFO]: ✅ Wallet Generated: 0x0DFf4fd5f35fE64e0BDB4542ae30aaB018750349 (Index: 22)
+2025-03-13T16:58:37.149Z [INFO]: ✅ Wallet saved: 0x6410DF247d0E97E30168C6A77d1a7E39e615Ca62 (Index: 23)
+2025-03-13T16:58:37.149Z [INFO]: ✅ Wallet Generated: 0x6410DF247d0E97E30168C6A77d1a7E39e615Ca62 (Index: 23)
+2025-03-13T16:58:37.153Z [INFO]: ✅ Wallet saved: 0x8EB5758127A18c3f43De4F2F8BD73755acFeCBB4 (Index: 24)
+2025-03-13T16:58:37.153Z [INFO]: ✅ Wallet Generated: 0x8EB5758127A18c3f43De4F2F8BD73755acFeCBB4 (Index: 24)
+2025-03-13T16:58:37.158Z [INFO]: ✅ Wallet saved: 0x2F222c559fA409f815d35Da1563dCc74Ab9dda8B (Index: 25)
+2025-03-13T16:58:37.158Z [INFO]: ✅ Wallet Generated: 0x2F222c559fA409f815d35Da1563dCc74Ab9dda8B (Index: 25)
+2025-03-13T16:58:37.163Z [INFO]: ✅ Wallet saved: 0xFC2FEa7d485FFfA327431a4199a97dB702acf10f (Index: 26)
+2025-03-13T16:58:37.163Z [INFO]: ✅ Wallet Generated: 0xFC2FEa7d485FFfA327431a4199a97dB702acf10f (Index: 26)
+2025-03-13T16:58:37.167Z [INFO]: ✅ Wallet saved: 0xf3AA07361BFeEF5aaB2863F3F982B2E15cADDe58 (Index: 27)
+2025-03-13T16:58:37.167Z [INFO]: ✅ Wallet Generated: 0xf3AA07361BFeEF5aaB2863F3F982B2E15cADDe58 (Index: 27)
+2025-03-13T16:58:37.173Z [INFO]: ✅ Wallet saved: 0x4e637bB626063329075533c81f6026b10B804f32 (Index: 28)
+2025-03-13T16:58:37.173Z [INFO]: ✅ Wallet Generated: 0x4e637bB626063329075533c81f6026b10B804f32 (Index: 28)
+2025-03-13T16:58:37.177Z [INFO]: ✅ Wallet saved: 0x6D11b088F5A8FCb44b4c460B621f1525564f20e5 (Index: 29)
+2025-03-13T16:58:37.178Z [INFO]: ✅ Wallet Generated: 0x6D11b088F5A8FCb44b4c460B621f1525564f20e5 (Index: 29)
+2025-03-13T16:58:37.178Z [INFO]: ✅ Pre-generated wallet: 0x573C9Fa45A4Fc556CF831aF79375e1b6ed5A8993 (Index: 20)
+2025-03-13T16:58:37.178Z [INFO]: ✅ Pre-generated wallet: 0x213e08FED1f544B6F9EdA1a48b5B0EEf07390009 (Index: 21)
+2025-03-13T16:58:37.178Z [INFO]: ✅ Pre-generated wallet: 0x0DFf4fd5f35fE64e0BDB4542ae30aaB018750349 (Index: 22)
+2025-03-13T16:58:37.178Z [INFO]: ✅ Pre-generated wallet: 0x6410DF247d0E97E30168C6A77d1a7E39e615Ca62 (Index: 23)
+2025-03-13T16:58:37.178Z [INFO]: ✅ Pre-generated wallet: 0x8EB5758127A18c3f43De4F2F8BD73755acFeCBB4 (Index: 24)
+2025-03-13T16:58:37.178Z [INFO]: ✅ Pre-generated wallet: 0x2F222c559fA409f815d35Da1563dCc74Ab9dda8B (Index: 25)
+2025-03-13T16:58:37.178Z [INFO]: ✅ Pre-generated wallet: 0xFC2FEa7d485FFfA327431a4199a97dB702acf10f (Index: 26)
+2025-03-13T16:58:37.178Z [INFO]: ✅ Pre-generated wallet: 0xf3AA07361BFeEF5aaB2863F3F982B2E15cADDe58 (Index: 27)
+2025-03-13T16:58:37.178Z [INFO]: ✅ Pre-generated wallet: 0x4e637bB626063329075533c81f6026b10B804f32 (Index: 28)
+2025-03-13T16:58:37.178Z [INFO]: ✅ Pre-generated wallet: 0x6D11b088F5A8FCb44b4c460B621f1525564f20e5 (Index: 29)
+2025-03-13T16:58:37.178Z [INFO]: ✅ Pre-generated 10 wallets
+2025-03-13T16:58:37.576Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:38.077Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:38.579Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:39.079Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:39.579Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:40.083Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:40.583Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:41.080Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:41.581Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:42.080Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:42.582Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:43.081Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:43.582Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:44.083Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:44.584Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:45.085Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:45.584Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:46.086Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:46.586Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:58:47.086Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T16:59:00.112Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:00:00.185Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:00:41.409Z [INFO]: Event listener subscribing to FundsLocked
+2025-03-13T17:00:41.462Z [INFO]: ✅ Wallet saved: 0xd2DD5e8693bB6d32Ce3D72Da682Ce55c56f1CFe6 (Index: 30)
+2025-03-13T17:00:41.462Z [INFO]: ✅ Wallet Generated: 0xd2DD5e8693bB6d32Ce3D72Da682Ce55c56f1CFe6 (Index: 30)
+2025-03-13T17:00:41.477Z [ERROR]: Provider connection failed: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:41.478Z [INFO]: ✅ Wallet saved: 0x1321Ef2E1867cAF5b980ab786709751721c10B2a (Index: 31)
+2025-03-13T17:00:41.478Z [INFO]: ✅ Wallet Generated: 0x1321Ef2E1867cAF5b980ab786709751721c10B2a (Index: 31)
+2025-03-13T17:00:41.484Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:41.484Z [INFO]: ✅ Wallet saved: 0x2532939bFac65cBA7f6009eFEF2076deC0822986 (Index: 32)
+2025-03-13T17:00:41.484Z [INFO]: ✅ Wallet Generated: 0x2532939bFac65cBA7f6009eFEF2076deC0822986 (Index: 32)
+2025-03-13T17:00:41.489Z [INFO]: ✅ Wallet saved: 0xA2563E46457541F7dDb2DBC1826a6896A90d3996 (Index: 33)
+2025-03-13T17:00:41.489Z [INFO]: ✅ Wallet Generated: 0xA2563E46457541F7dDb2DBC1826a6896A90d3996 (Index: 33)
+2025-03-13T17:00:41.495Z [INFO]: ✅ Wallet saved: 0x9f1904bA1D63eA1CfD60eC70a4bc4738B58cb0D0 (Index: 34)
+2025-03-13T17:00:41.495Z [INFO]: ✅ Wallet Generated: 0x9f1904bA1D63eA1CfD60eC70a4bc4738B58cb0D0 (Index: 34)
+2025-03-13T17:00:41.500Z [INFO]: ✅ Wallet saved: 0x5a69EDE6e010240FD7807936199D68EAbFeB40Db (Index: 35)
+2025-03-13T17:00:41.500Z [INFO]: ✅ Wallet Generated: 0x5a69EDE6e010240FD7807936199D68EAbFeB40Db (Index: 35)
+2025-03-13T17:00:41.504Z [INFO]: ✅ Wallet saved: 0x9D4a8bC8DbF1F55584DfD1Cb215e7CD01c7Bad00 (Index: 36)
+2025-03-13T17:00:41.505Z [INFO]: ✅ Wallet Generated: 0x9D4a8bC8DbF1F55584DfD1Cb215e7CD01c7Bad00 (Index: 36)
+2025-03-13T17:00:41.509Z [INFO]: ✅ Wallet saved: 0x7AF57514779865E2ce159156C6b2D43Fe1dfAE4b (Index: 37)
+2025-03-13T17:00:41.510Z [INFO]: ✅ Wallet Generated: 0x7AF57514779865E2ce159156C6b2D43Fe1dfAE4b (Index: 37)
+2025-03-13T17:00:41.515Z [INFO]: ✅ Wallet saved: 0x42FBc0393a5D1e0d6d087d7bEFd4575d8587BF92 (Index: 38)
+2025-03-13T17:00:41.515Z [INFO]: ✅ Wallet Generated: 0x42FBc0393a5D1e0d6d087d7bEFd4575d8587BF92 (Index: 38)
+2025-03-13T17:00:41.521Z [INFO]: ✅ Wallet saved: 0xf02287aA02dB3c7771729D1532fA6e5266281258 (Index: 39)
+2025-03-13T17:00:41.521Z [INFO]: ✅ Wallet Generated: 0xf02287aA02dB3c7771729D1532fA6e5266281258 (Index: 39)
+2025-03-13T17:00:41.521Z [INFO]: ✅ Pre-generated wallet: 0xd2DD5e8693bB6d32Ce3D72Da682Ce55c56f1CFe6 (Index: 30)
+2025-03-13T17:00:41.521Z [INFO]: ✅ Pre-generated wallet: 0x1321Ef2E1867cAF5b980ab786709751721c10B2a (Index: 31)
+2025-03-13T17:00:41.521Z [INFO]: ✅ Pre-generated wallet: 0x2532939bFac65cBA7f6009eFEF2076deC0822986 (Index: 32)
+2025-03-13T17:00:41.521Z [INFO]: ✅ Pre-generated wallet: 0xA2563E46457541F7dDb2DBC1826a6896A90d3996 (Index: 33)
+2025-03-13T17:00:41.521Z [INFO]: ✅ Pre-generated wallet: 0x9f1904bA1D63eA1CfD60eC70a4bc4738B58cb0D0 (Index: 34)
+2025-03-13T17:00:41.521Z [INFO]: ✅ Pre-generated wallet: 0x5a69EDE6e010240FD7807936199D68EAbFeB40Db (Index: 35)
+2025-03-13T17:00:41.521Z [INFO]: ✅ Pre-generated wallet: 0x9D4a8bC8DbF1F55584DfD1Cb215e7CD01c7Bad00 (Index: 36)
+2025-03-13T17:00:41.521Z [INFO]: ✅ Pre-generated wallet: 0x7AF57514779865E2ce159156C6b2D43Fe1dfAE4b (Index: 37)
+2025-03-13T17:00:41.521Z [INFO]: ✅ Pre-generated wallet: 0x42FBc0393a5D1e0d6d087d7bEFd4575d8587BF92 (Index: 38)
+2025-03-13T17:00:41.521Z [INFO]: ✅ Pre-generated wallet: 0xf02287aA02dB3c7771729D1532fA6e5266281258 (Index: 39)
+2025-03-13T17:00:41.521Z [INFO]: ✅ Pre-generated 10 wallets
+2025-03-13T17:00:41.915Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:42.417Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:42.917Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:43.417Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:43.918Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:44.425Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:44.921Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:45.421Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:45.923Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:46.423Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:46.926Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:47.427Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:47.925Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:48.430Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:48.928Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:49.428Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:49.930Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:50.429Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:50.929Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:00:51.427Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:01:00.456Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:02:00.532Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:04:21.373Z [INFO]: Event listener subscribing to FundsLocked
+2025-03-13T17:04:21.418Z [INFO]: ✅ Wallet saved: 0x524C28bCb0A0c718d4C84992Ce4030a77c41dE4f (Index: 40)
+2025-03-13T17:04:21.418Z [INFO]: ✅ Wallet Generated: 0x524C28bCb0A0c718d4C84992Ce4030a77c41dE4f (Index: 40)
+2025-03-13T17:04:21.432Z [ERROR]: Provider connection failed: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:21.432Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:21.433Z [INFO]: ✅ Wallet saved: 0x76699e111e2F10dA9D498f20416DBdB6eC203f6b (Index: 41)
+2025-03-13T17:04:21.433Z [INFO]: ✅ Wallet Generated: 0x76699e111e2F10dA9D498f20416DBdB6eC203f6b (Index: 41)
+2025-03-13T17:04:21.439Z [INFO]: ✅ Wallet saved: 0x7014ddC054C62f7e2D4BF1DE1e36Dd41fC0Db577 (Index: 42)
+2025-03-13T17:04:21.439Z [INFO]: ✅ Wallet Generated: 0x7014ddC054C62f7e2D4BF1DE1e36Dd41fC0Db577 (Index: 42)
+2025-03-13T17:04:21.444Z [INFO]: ✅ Wallet saved: 0xE192914D4f396aD75F9cdB08F23DAE32724Bb53c (Index: 43)
+2025-03-13T17:04:21.444Z [INFO]: ✅ Wallet Generated: 0xE192914D4f396aD75F9cdB08F23DAE32724Bb53c (Index: 43)
+2025-03-13T17:04:21.449Z [INFO]: ✅ Wallet saved: 0xfE4Bab9646e4a5871248BF3Cb04B46230CEBF378 (Index: 44)
+2025-03-13T17:04:21.449Z [INFO]: ✅ Wallet Generated: 0xfE4Bab9646e4a5871248BF3Cb04B46230CEBF378 (Index: 44)
+2025-03-13T17:04:21.453Z [INFO]: ✅ Wallet saved: 0xa685647e5d1Ee937f47150Ef41631f8b0bAeC146 (Index: 45)
+2025-03-13T17:04:21.453Z [INFO]: ✅ Wallet Generated: 0xa685647e5d1Ee937f47150Ef41631f8b0bAeC146 (Index: 45)
+2025-03-13T17:04:21.458Z [INFO]: ✅ Wallet saved: 0x853aED09674d853ec6000ACEb66152284Ae83e80 (Index: 46)
+2025-03-13T17:04:21.458Z [INFO]: ✅ Wallet Generated: 0x853aED09674d853ec6000ACEb66152284Ae83e80 (Index: 46)
+2025-03-13T17:04:21.462Z [INFO]: ✅ Wallet saved: 0xC022D55407e0b2A61e1Cf39796F59a4e0105654D (Index: 47)
+2025-03-13T17:04:21.462Z [INFO]: ✅ Wallet Generated: 0xC022D55407e0b2A61e1Cf39796F59a4e0105654D (Index: 47)
+2025-03-13T17:04:21.467Z [INFO]: ✅ Wallet saved: 0xe5d2dA6216065aA573232Fc426aE325A22b457A8 (Index: 48)
+2025-03-13T17:04:21.467Z [INFO]: ✅ Wallet Generated: 0xe5d2dA6216065aA573232Fc426aE325A22b457A8 (Index: 48)
+2025-03-13T17:04:21.472Z [INFO]: ✅ Wallet saved: 0xF9D349056A6aD5C490E090d39B6c54E7Bb93b660 (Index: 49)
+2025-03-13T17:04:21.472Z [INFO]: ✅ Wallet Generated: 0xF9D349056A6aD5C490E090d39B6c54E7Bb93b660 (Index: 49)
+2025-03-13T17:04:21.472Z [INFO]: ✅ Pre-generated wallet: 0x524C28bCb0A0c718d4C84992Ce4030a77c41dE4f (Index: 40)
+2025-03-13T17:04:21.472Z [INFO]: ✅ Pre-generated wallet: 0x76699e111e2F10dA9D498f20416DBdB6eC203f6b (Index: 41)
+2025-03-13T17:04:21.472Z [INFO]: ✅ Pre-generated wallet: 0x7014ddC054C62f7e2D4BF1DE1e36Dd41fC0Db577 (Index: 42)
+2025-03-13T17:04:21.472Z [INFO]: ✅ Pre-generated wallet: 0xE192914D4f396aD75F9cdB08F23DAE32724Bb53c (Index: 43)
+2025-03-13T17:04:21.472Z [INFO]: ✅ Pre-generated wallet: 0xfE4Bab9646e4a5871248BF3Cb04B46230CEBF378 (Index: 44)
+2025-03-13T17:04:21.472Z [INFO]: ✅ Pre-generated wallet: 0xa685647e5d1Ee937f47150Ef41631f8b0bAeC146 (Index: 45)
+2025-03-13T17:04:21.472Z [INFO]: ✅ Pre-generated wallet: 0x853aED09674d853ec6000ACEb66152284Ae83e80 (Index: 46)
+2025-03-13T17:04:21.472Z [INFO]: ✅ Pre-generated wallet: 0xC022D55407e0b2A61e1Cf39796F59a4e0105654D (Index: 47)
+2025-03-13T17:04:21.472Z [INFO]: ✅ Pre-generated wallet: 0xe5d2dA6216065aA573232Fc426aE325A22b457A8 (Index: 48)
+2025-03-13T17:04:21.472Z [INFO]: ✅ Pre-generated wallet: 0xF9D349056A6aD5C490E090d39B6c54E7Bb93b660 (Index: 49)
+2025-03-13T17:04:21.472Z [INFO]: ✅ Pre-generated 10 wallets
+2025-03-13T17:04:21.886Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:22.386Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:22.891Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:23.385Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:23.888Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:24.393Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:24.890Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:25.392Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:25.894Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:26.392Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:26.893Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:27.393Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:27.898Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:28.400Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:28.896Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:29.397Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:29.899Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:30.401Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:30.902Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:31.408Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:31.902Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:32.404Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:32.904Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:33.407Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:33.906Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:34.408Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:34.909Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:35.411Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:35.912Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:36.415Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:36.916Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:37.418Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:37.920Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:38.423Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:38.921Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:39.419Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:39.920Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:40.423Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:40.926Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:41.428Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:41.925Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:42.427Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:42.930Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:43.431Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:43.932Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:44.431Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:44.934Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:45.433Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:45.935Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:46.434Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:46.939Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:47.439Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:47.934Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:48.439Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:48.939Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:49.438Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:49.943Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:50.444Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:50.942Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:51.447Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:51.947Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:52.449Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:52.950Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:53.453Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:53.951Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:54.450Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:54.953Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:55.457Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:55.958Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:56.459Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:56.958Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:57.461Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:57.962Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:58.464Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:04:58.960Z [ERROR]: JsonRpcProvider error: could not detect network (event="noNetwork", code=NETWORK_ERROR, version=providers/5.8.0)
+2025-03-13T17:05:00.444Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:06:00.540Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:07:00.624Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:08:00.714Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:09:00.794Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:10:00.878Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:11:00.948Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:12:00.029Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:13:00.113Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:14:00.188Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:15:00.257Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:16:00.337Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:17:00.444Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:18:00.554Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:19:00.684Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:20:00.798Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:21:00.913Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:28:23.185Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":4257,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-54,"code":"ECONNRESET","syscall":"read"}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T17:29:00.267Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T17:47:00.059Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:00:07.055Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":4957,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-54,"code":"ECONNRESET","syscall":"read"}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:01:00.142Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:02:00.206Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:03:00.275Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:04:00.347Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:05:00.425Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:06:00.498Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:07:00.588Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:08:00.677Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:09:00.762Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:10:00.840Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:11:00.930Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:13:00.074Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:14:00.141Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:14:34.199Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8419,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:34.700Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8422,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:35.204Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8425,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:35.703Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8428,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:36.201Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8431,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:36.702Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8434,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:37.205Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8437,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:37.709Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8440,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:38.204Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8443,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:38.707Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8446,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:39.211Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8449,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:39.710Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8452,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:40.209Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8455,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:40.712Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8458,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:41.213Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8461,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:41.715Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8464,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:14:42.214Z [ERROR]: JsonRpcProvider error: missing response (requestBody="{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":8467,\"jsonrpc\":\"2.0\"}", requestMethod="POST", serverError={"errno":-61,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":8545}, url="http://127.0.0.1:8545", code=SERVER_ERROR, version=web/5.8.0)
+2025-03-13T18:20:24.430Z [INFO]: Event listener subscribing to FundsLocked
+2025-03-13T18:20:24.484Z [INFO]: ✅ Wallet saved: 0xeDfcf23D68e30D6aBa4Db6064dc66f97A1C96942 (Index: 50)
+2025-03-13T18:20:24.484Z [INFO]: ✅ Wallet Generated: 0xeDfcf23D68e30D6aBa4Db6064dc66f97A1C96942 (Index: 50)
+2025-03-13T18:20:24.499Z [INFO]: ✅ Wallet saved: 0xe90f9b9345AA14895b3A4917bB59148812A4D94A (Index: 51)
+2025-03-13T18:20:24.499Z [INFO]: ✅ Wallet Generated: 0xe90f9b9345AA14895b3A4917bB59148812A4D94A (Index: 51)
+2025-03-13T18:20:24.506Z [INFO]: ✅ Wallet saved: 0xb2BE2BC7a401b596E2A4b4D74868fF4C8b292a0d (Index: 52)
+2025-03-13T18:20:24.506Z [INFO]: ✅ Wallet Generated: 0xb2BE2BC7a401b596E2A4b4D74868fF4C8b292a0d (Index: 52)
+2025-03-13T18:20:24.513Z [INFO]: ✅ Wallet saved: 0xd74bEE86245Be690D66B549949187F4c1c5A294e (Index: 53)
+2025-03-13T18:20:24.513Z [INFO]: ✅ Wallet Generated: 0xd74bEE86245Be690D66B549949187F4c1c5A294e (Index: 53)
+2025-03-13T18:20:24.519Z [INFO]: Provider connected at block: 0
+2025-03-13T18:20:24.519Z [INFO]: ✅ Wallet saved: 0x05e33F1aC56f546BF23B3C66f679C5D661A52b9B (Index: 54)
+2025-03-13T18:20:24.519Z [INFO]: ✅ Wallet Generated: 0x05e33F1aC56f546BF23B3C66f679C5D661A52b9B (Index: 54)
+2025-03-13T18:20:24.525Z [INFO]: ✅ Wallet saved: 0x051018cDc96617250299b89b83B41281f010c4FB (Index: 55)
+2025-03-13T18:20:24.525Z [INFO]: ✅ Wallet Generated: 0x051018cDc96617250299b89b83B41281f010c4FB (Index: 55)
+2025-03-13T18:20:24.531Z [INFO]: ✅ Wallet saved: 0x9fED1fc36D6FC27cE7F36F32bCCFF4589eca9564 (Index: 56)
+2025-03-13T18:20:24.531Z [INFO]: ✅ Wallet Generated: 0x9fED1fc36D6FC27cE7F36F32bCCFF4589eca9564 (Index: 56)
+2025-03-13T18:20:24.537Z [INFO]: ✅ Wallet saved: 0x2e2BcE04f022D79436D6bAAb1DeB5c3f0247F1Ef (Index: 57)
+2025-03-13T18:20:24.537Z [INFO]: ✅ Wallet Generated: 0x2e2BcE04f022D79436D6bAAb1DeB5c3f0247F1Ef (Index: 57)
+2025-03-13T18:20:24.543Z [INFO]: ✅ Wallet saved: 0x6362e824b7df59DE8C86f9D636C01F3c9f543b7c (Index: 58)
+2025-03-13T18:20:24.543Z [INFO]: ✅ Wallet Generated: 0x6362e824b7df59DE8C86f9D636C01F3c9f543b7c (Index: 58)
+2025-03-13T18:20:24.549Z [INFO]: ✅ Wallet saved: 0x5ebf3d005cF4e156Ce06dF7ab0ACFb0c3fB19f78 (Index: 59)
+2025-03-13T18:20:24.549Z [INFO]: ✅ Wallet Generated: 0x5ebf3d005cF4e156Ce06dF7ab0ACFb0c3fB19f78 (Index: 59)
+2025-03-13T18:20:24.549Z [INFO]: ✅ Pre-generated wallet: 0xeDfcf23D68e30D6aBa4Db6064dc66f97A1C96942 (Index: 50)
+2025-03-13T18:20:24.549Z [INFO]: ✅ Pre-generated wallet: 0xe90f9b9345AA14895b3A4917bB59148812A4D94A (Index: 51)
+2025-03-13T18:20:24.549Z [INFO]: ✅ Pre-generated wallet: 0xb2BE2BC7a401b596E2A4b4D74868fF4C8b292a0d (Index: 52)
+2025-03-13T18:20:24.550Z [INFO]: ✅ Pre-generated wallet: 0xd74bEE86245Be690D66B549949187F4c1c5A294e (Index: 53)
+2025-03-13T18:20:24.550Z [INFO]: ✅ Pre-generated wallet: 0x05e33F1aC56f546BF23B3C66f679C5D661A52b9B (Index: 54)
+2025-03-13T18:20:24.550Z [INFO]: ✅ Pre-generated wallet: 0x051018cDc96617250299b89b83B41281f010c4FB (Index: 55)
+2025-03-13T18:20:24.550Z [INFO]: ✅ Pre-generated wallet: 0x9fED1fc36D6FC27cE7F36F32bCCFF4589eca9564 (Index: 56)
+2025-03-13T18:20:24.550Z [INFO]: ✅ Pre-generated wallet: 0x2e2BcE04f022D79436D6bAAb1DeB5c3f0247F1Ef (Index: 57)
+2025-03-13T18:20:24.550Z [INFO]: ✅ Pre-generated wallet: 0x6362e824b7df59DE8C86f9D636C01F3c9f543b7c (Index: 58)
+2025-03-13T18:20:24.550Z [INFO]: ✅ Pre-generated wallet: 0x5ebf3d005cF4e156Ce06dF7ab0ACFb0c3fB19f78 (Index: 59)
+2025-03-13T18:20:24.550Z [INFO]: ✅ Pre-generated 10 wallets
+2025-03-13T18:21:00.523Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:21:13.240Z [INFO]: Event listener subscribing to FundsLocked
+2025-03-13T18:21:13.292Z [INFO]: Provider connected at block: 0
+2025-03-13T18:21:13.294Z [INFO]: ✅ Wallet saved: 0xbf70FC8Bc1aB4cB26668B48b1c71e078dd9d347A (Index: 0)
+2025-03-13T18:21:13.294Z [INFO]: ✅ Wallet Generated: 0xbf70FC8Bc1aB4cB26668B48b1c71e078dd9d347A (Index: 0)
+2025-03-13T18:21:13.310Z [INFO]: ✅ Wallet saved: 0x25eD4fB99D44237B023004DCfE99d93949A4bdFC (Index: 1)
+2025-03-13T18:21:13.310Z [INFO]: ✅ Wallet Generated: 0x25eD4fB99D44237B023004DCfE99d93949A4bdFC (Index: 1)
+2025-03-13T18:21:13.318Z [INFO]: ✅ Wallet saved: 0x00dB5c99f1a6fA22Fd785337306DB892Fb2d6515 (Index: 2)
+2025-03-13T18:21:13.318Z [INFO]: ✅ Wallet Generated: 0x00dB5c99f1a6fA22Fd785337306DB892Fb2d6515 (Index: 2)
+2025-03-13T18:21:13.324Z [INFO]: ✅ Wallet saved: 0x2b1710134461AB265dc6d08E6673A79B45fdF8c7 (Index: 3)
+2025-03-13T18:21:13.324Z [INFO]: ✅ Wallet Generated: 0x2b1710134461AB265dc6d08E6673A79B45fdF8c7 (Index: 3)
+2025-03-13T18:21:13.330Z [INFO]: ✅ Wallet saved: 0xEC899790E3278A9f503832cDa6775fed23bBb60A (Index: 4)
+2025-03-13T18:21:13.330Z [INFO]: ✅ Wallet Generated: 0xEC899790E3278A9f503832cDa6775fed23bBb60A (Index: 4)
+2025-03-13T18:21:13.336Z [INFO]: ✅ Wallet saved: 0xc17614B68b24eE7fB51351aFDa9648A2fF3ADa51 (Index: 5)
+2025-03-13T18:21:13.336Z [INFO]: ✅ Wallet Generated: 0xc17614B68b24eE7fB51351aFDa9648A2fF3ADa51 (Index: 5)
+2025-03-13T18:21:13.342Z [INFO]: ✅ Wallet saved: 0x4c954A122858c0A26583bc66d5b47E7844B06200 (Index: 6)
+2025-03-13T18:21:13.342Z [INFO]: ✅ Wallet Generated: 0x4c954A122858c0A26583bc66d5b47E7844B06200 (Index: 6)
+2025-03-13T18:21:13.348Z [INFO]: ✅ Wallet saved: 0x43667f92a6B534ea704b188Bc896aBa9bd0C248a (Index: 7)
+2025-03-13T18:21:13.348Z [INFO]: ✅ Wallet Generated: 0x43667f92a6B534ea704b188Bc896aBa9bd0C248a (Index: 7)
+2025-03-13T18:21:13.354Z [INFO]: ✅ Wallet saved: 0x2E61C4c82c2E2EE6f62304F270c2b906b7A700b9 (Index: 8)
+2025-03-13T18:21:13.354Z [INFO]: ✅ Wallet Generated: 0x2E61C4c82c2E2EE6f62304F270c2b906b7A700b9 (Index: 8)
+2025-03-13T18:21:13.360Z [INFO]: ✅ Wallet saved: 0x4030fb600de07B7972A26a504A9F87877D0130eB (Index: 9)
+2025-03-13T18:21:13.360Z [INFO]: ✅ Wallet Generated: 0x4030fb600de07B7972A26a504A9F87877D0130eB (Index: 9)
+2025-03-13T18:21:13.360Z [INFO]: ✅ Pre-generated wallet: 0xbf70FC8Bc1aB4cB26668B48b1c71e078dd9d347A (Index: 0)
+2025-03-13T18:21:13.360Z [INFO]: ✅ Pre-generated wallet: 0x25eD4fB99D44237B023004DCfE99d93949A4bdFC (Index: 1)
+2025-03-13T18:21:13.360Z [INFO]: ✅ Pre-generated wallet: 0x00dB5c99f1a6fA22Fd785337306DB892Fb2d6515 (Index: 2)
+2025-03-13T18:21:13.360Z [INFO]: ✅ Pre-generated wallet: 0x2b1710134461AB265dc6d08E6673A79B45fdF8c7 (Index: 3)
+2025-03-13T18:21:13.360Z [INFO]: ✅ Pre-generated wallet: 0xEC899790E3278A9f503832cDa6775fed23bBb60A (Index: 4)
+2025-03-13T18:21:13.360Z [INFO]: ✅ Pre-generated wallet: 0xc17614B68b24eE7fB51351aFDa9648A2fF3ADa51 (Index: 5)
+2025-03-13T18:21:13.360Z [INFO]: ✅ Pre-generated wallet: 0x4c954A122858c0A26583bc66d5b47E7844B06200 (Index: 6)
+2025-03-13T18:21:13.360Z [INFO]: ✅ Pre-generated wallet: 0x43667f92a6B534ea704b188Bc896aBa9bd0C248a (Index: 7)
+2025-03-13T18:21:13.360Z [INFO]: ✅ Pre-generated wallet: 0x2E61C4c82c2E2EE6f62304F270c2b906b7A700b9 (Index: 8)
+2025-03-13T18:21:13.360Z [INFO]: ✅ Pre-generated wallet: 0x4030fb600de07B7972A26a504A9F87877D0130eB (Index: 9)
+2025-03-13T18:21:13.360Z [INFO]: ✅ Pre-generated 10 wallets
+2025-03-13T18:22:00.329Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:23:00.428Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:24:00.516Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:25:00.627Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:26:00.717Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:27:00.824Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:28:00.949Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:29:00.083Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:30:00.213Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:31:00.326Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:32:00.450Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:33:00.569Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:34:00.697Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:35:00.806Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:36:00.936Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:37:00.050Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:38:00.134Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:39:00.202Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:40:00.283Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:41:00.382Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:42:00.462Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:43:00.555Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:44:00.638Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:45:00.722Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:46:00.807Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:47:00.893Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:48:00.986Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:49:00.038Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:50:00.103Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:51:00.179Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:51:30.420Z [INFO]: Event listener subscribing to FundsLocked
+2025-03-13T18:51:30.479Z [INFO]: ✅ Wallet saved: 0xE787DF66480aEC452D7A7Dabf40Ca4d0A2274e44 (Index: 10)
+2025-03-13T18:51:30.479Z [INFO]: ✅ Wallet Generated: 0xE787DF66480aEC452D7A7Dabf40Ca4d0A2274e44 (Index: 10)
+2025-03-13T18:51:30.495Z [INFO]: Provider connected at block: 0
+2025-03-13T18:51:30.496Z [INFO]: ✅ Wallet saved: 0x5426EacE1Da82e581793BF725E6d7Dd1746c3Aa1 (Index: 11)
+2025-03-13T18:51:30.496Z [INFO]: ✅ Wallet Generated: 0x5426EacE1Da82e581793BF725E6d7Dd1746c3Aa1 (Index: 11)
+2025-03-13T18:51:30.503Z [INFO]: ✅ Wallet saved: 0x624bb7A45d325Cc38928a161F1D6D56695c7CDBB (Index: 12)
+2025-03-13T18:51:30.503Z [INFO]: ✅ Wallet Generated: 0x624bb7A45d325Cc38928a161F1D6D56695c7CDBB (Index: 12)
+2025-03-13T18:51:30.509Z [INFO]: ✅ Wallet saved: 0xA287f36bDF69Fa3F23f39C949775Dd138F949DcA (Index: 13)
+2025-03-13T18:51:30.510Z [INFO]: ✅ Wallet Generated: 0xA287f36bDF69Fa3F23f39C949775Dd138F949DcA (Index: 13)
+2025-03-13T18:51:30.516Z [INFO]: ✅ Wallet saved: 0x5fE0A39B656419F7fee878Ff4A9fE2e85c9c3A16 (Index: 14)
+2025-03-13T18:51:30.516Z [INFO]: ✅ Wallet Generated: 0x5fE0A39B656419F7fee878Ff4A9fE2e85c9c3A16 (Index: 14)
+2025-03-13T18:51:30.522Z [INFO]: ✅ Wallet saved: 0x986570cA60B9EAaE3DeCA5E62b0968BA6e945035 (Index: 15)
+2025-03-13T18:51:30.522Z [INFO]: ✅ Wallet Generated: 0x986570cA60B9EAaE3DeCA5E62b0968BA6e945035 (Index: 15)
+2025-03-13T18:51:30.527Z [INFO]: ✅ Wallet saved: 0x41c95a8082EBE6227c1Cf817d0049f3B9fd9Fb88 (Index: 16)
+2025-03-13T18:51:30.527Z [INFO]: ✅ Wallet Generated: 0x41c95a8082EBE6227c1Cf817d0049f3B9fd9Fb88 (Index: 16)
+2025-03-13T18:51:30.532Z [INFO]: ✅ Wallet saved: 0xA52C60473653c0452e2B6dA0f97dCE0A3ACc7Ad9 (Index: 17)
+2025-03-13T18:51:30.532Z [INFO]: ✅ Wallet Generated: 0xA52C60473653c0452e2B6dA0f97dCE0A3ACc7Ad9 (Index: 17)
+2025-03-13T18:51:30.538Z [INFO]: ✅ Wallet saved: 0x9A61707b6736761CAB1B8b23c305F88bf700f2E1 (Index: 18)
+2025-03-13T18:51:30.538Z [INFO]: ✅ Wallet Generated: 0x9A61707b6736761CAB1B8b23c305F88bf700f2E1 (Index: 18)
+2025-03-13T18:51:30.544Z [INFO]: ✅ Wallet saved: 0x4438D6f011fa3d740C4a9af525fe98bb287F6b74 (Index: 19)
+2025-03-13T18:51:30.544Z [INFO]: ✅ Wallet Generated: 0x4438D6f011fa3d740C4a9af525fe98bb287F6b74 (Index: 19)
+2025-03-13T18:51:30.544Z [INFO]: ✅ Pre-generated wallet: 0xE787DF66480aEC452D7A7Dabf40Ca4d0A2274e44 (Index: 10)
+2025-03-13T18:51:30.544Z [INFO]: ✅ Pre-generated wallet: 0x5426EacE1Da82e581793BF725E6d7Dd1746c3Aa1 (Index: 11)
+2025-03-13T18:51:30.544Z [INFO]: ✅ Pre-generated wallet: 0x624bb7A45d325Cc38928a161F1D6D56695c7CDBB (Index: 12)
+2025-03-13T18:51:30.544Z [INFO]: ✅ Pre-generated wallet: 0xA287f36bDF69Fa3F23f39C949775Dd138F949DcA (Index: 13)
+2025-03-13T18:51:30.544Z [INFO]: ✅ Pre-generated wallet: 0x5fE0A39B656419F7fee878Ff4A9fE2e85c9c3A16 (Index: 14)
+2025-03-13T18:51:30.544Z [INFO]: ✅ Pre-generated wallet: 0x986570cA60B9EAaE3DeCA5E62b0968BA6e945035 (Index: 15)
+2025-03-13T18:51:30.544Z [INFO]: ✅ Pre-generated wallet: 0x41c95a8082EBE6227c1Cf817d0049f3B9fd9Fb88 (Index: 16)
+2025-03-13T18:51:30.544Z [INFO]: ✅ Pre-generated wallet: 0xA52C60473653c0452e2B6dA0f97dCE0A3ACc7Ad9 (Index: 17)
+2025-03-13T18:51:30.544Z [INFO]: ✅ Pre-generated wallet: 0x9A61707b6736761CAB1B8b23c305F88bf700f2E1 (Index: 18)
+2025-03-13T18:51:30.544Z [INFO]: ✅ Pre-generated wallet: 0x4438D6f011fa3d740C4a9af525fe98bb287F6b74 (Index: 19)
+2025-03-13T18:51:30.544Z [INFO]: ✅ Pre-generated 10 wallets
+2025-03-13T18:52:00.484Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:53:00.571Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:54:00.657Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:55:00.740Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:56:00.831Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:57:00.906Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:58:00.995Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T18:59:00.080Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:00:00.155Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:01:00.239Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:02:00.314Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:03:00.394Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:04:00.462Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:05:00.535Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:06:00.604Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:07:00.677Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:08:00.746Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:09:00.824Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:09:55.440Z [INFO]: ✅ Wallet reserved: 0xbf70FC8Bc1aB4cB26668B48b1c71e078dd9d347A (Index: 0)
+2025-03-13T19:09:58.780Z [INFO]: Gift creation request body: {"buyerEmail":"vksha88+buyer@gmail.com","recipientFirstName":"V","recipientLastName":"F","amount":10,"currency":"MATIC","unlockDate":"2025-03-14T21:09:00.000Z","walletAddress":"0xbf70FC8Bc1aB4cB26668B48b1c71e078dd9d347A"}
+2025-03-13T19:09:58.781Z [INFO]: Assigning wallet to gift with details: {"recipientFirstName":"V","recipientLastName":"F","amount":10,"currency":"MATIC","unlockDate":"2025-03-14T21:09:00.000Z","buyerEmail":"vksha88+buyer@gmail.com","walletAddress":"0xbf70FC8Bc1aB4cB26668B48b1c71e078dd9d347A","expiryDate":"2025-03-13T20:09:58.781Z"}
+2025-03-13T19:09:58.785Z [INFO]: ✅ Generated gift code: GIFT-94BE13B0
+2025-03-13T19:09:58.790Z [INFO]: ✅ Gift saved to database: GIFT-94BE13B0
+2025-03-13T19:09:58.793Z [INFO]: ✅ Wallet index 0 marked as used. Reserved status unchanged.
+2025-03-13T19:09:58.793Z [INFO]: ✅ Wallet 0xbf70FC8Bc1aB4cB26668B48b1c71e078dd9d347A assigned to gift GIFT-94BE13B0 with unlock date/time: 2025-03-14T21:09:00.000Z
+2025-03-13T19:09:58.793Z [INFO]: ✅ Gift created: GIFT-94BE13B0 for V F using wallet 0xbf70FC8Bc1aB4cB26668B48b1c71e078dd9d347A
+2025-03-13T19:10:00.904Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:10:03.484Z [INFO]: ✅ Claimed gifts retrieved for user: vksha88@gmail.com
+2025-03-13T19:10:05.728Z [INFO]: ✅ Gift verified: GIFT-94BE13B0
+2025-03-13T19:11:00.982Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:12:00.066Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:13:00.134Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:14:00.219Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:15:00.287Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:16:00.364Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:17:00.428Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:18:00.488Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:19:00.487Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:20:00.553Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:21:00.633Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:22:00.713Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:23:00.783Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:24:00.866Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:25:00.946Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:26:00.019Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:27:00.098Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:28:00.168Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:29:00.252Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:29:52.259Z [INFO]: Event listener subscribing to FundsLocked
+2025-03-13T19:29:52.293Z [INFO]: Provider connected at block: 2
+2025-03-13T19:29:52.322Z [INFO]: ✅ Wallet saved: 0x573C9Fa45A4Fc556CF831aF79375e1b6ed5A8993 (Index: 20)
+2025-03-13T19:29:52.322Z [INFO]: ✅ Wallet Generated: 0x573C9Fa45A4Fc556CF831aF79375e1b6ed5A8993 (Index: 20)
+2025-03-13T19:29:52.341Z [INFO]: ✅ Wallet saved: 0x213e08FED1f544B6F9EdA1a48b5B0EEf07390009 (Index: 21)
+2025-03-13T19:29:52.341Z [INFO]: ✅ Wallet Generated: 0x213e08FED1f544B6F9EdA1a48b5B0EEf07390009 (Index: 21)
+2025-03-13T19:29:52.349Z [INFO]: ✅ Wallet saved: 0x0DFf4fd5f35fE64e0BDB4542ae30aaB018750349 (Index: 22)
+2025-03-13T19:29:52.350Z [INFO]: ✅ Wallet Generated: 0x0DFf4fd5f35fE64e0BDB4542ae30aaB018750349 (Index: 22)
+2025-03-13T19:29:52.356Z [INFO]: ✅ Wallet saved: 0x6410DF247d0E97E30168C6A77d1a7E39e615Ca62 (Index: 23)
+2025-03-13T19:29:52.356Z [INFO]: ✅ Wallet Generated: 0x6410DF247d0E97E30168C6A77d1a7E39e615Ca62 (Index: 23)
+2025-03-13T19:29:52.362Z [INFO]: ✅ Wallet saved: 0x8EB5758127A18c3f43De4F2F8BD73755acFeCBB4 (Index: 24)
+2025-03-13T19:29:52.362Z [INFO]: ✅ Wallet Generated: 0x8EB5758127A18c3f43De4F2F8BD73755acFeCBB4 (Index: 24)
+2025-03-13T19:29:52.368Z [INFO]: ✅ Wallet saved: 0x2F222c559fA409f815d35Da1563dCc74Ab9dda8B (Index: 25)
+2025-03-13T19:29:52.368Z [INFO]: ✅ Wallet Generated: 0x2F222c559fA409f815d35Da1563dCc74Ab9dda8B (Index: 25)
+2025-03-13T19:29:52.373Z [INFO]: ✅ Wallet saved: 0xFC2FEa7d485FFfA327431a4199a97dB702acf10f (Index: 26)
+2025-03-13T19:29:52.374Z [INFO]: ✅ Wallet Generated: 0xFC2FEa7d485FFfA327431a4199a97dB702acf10f (Index: 26)
+2025-03-13T19:29:52.379Z [INFO]: ✅ Wallet saved: 0xf3AA07361BFeEF5aaB2863F3F982B2E15cADDe58 (Index: 27)
+2025-03-13T19:29:52.379Z [INFO]: ✅ Wallet Generated: 0xf3AA07361BFeEF5aaB2863F3F982B2E15cADDe58 (Index: 27)
+2025-03-13T19:29:52.385Z [INFO]: ✅ Wallet saved: 0x4e637bB626063329075533c81f6026b10B804f32 (Index: 28)
+2025-03-13T19:29:52.386Z [INFO]: ✅ Wallet Generated: 0x4e637bB626063329075533c81f6026b10B804f32 (Index: 28)
+2025-03-13T19:29:52.393Z [INFO]: ✅ Wallet saved: 0x6D11b088F5A8FCb44b4c460B621f1525564f20e5 (Index: 29)
+2025-03-13T19:29:52.393Z [INFO]: ✅ Wallet Generated: 0x6D11b088F5A8FCb44b4c460B621f1525564f20e5 (Index: 29)
+2025-03-13T19:29:52.393Z [INFO]: ✅ Pre-generated wallet: 0x573C9Fa45A4Fc556CF831aF79375e1b6ed5A8993 (Index: 20)
+2025-03-13T19:29:52.393Z [INFO]: ✅ Pre-generated wallet: 0x213e08FED1f544B6F9EdA1a48b5B0EEf07390009 (Index: 21)
+2025-03-13T19:29:52.393Z [INFO]: ✅ Pre-generated wallet: 0x0DFf4fd5f35fE64e0BDB4542ae30aaB018750349 (Index: 22)
+2025-03-13T19:29:52.393Z [INFO]: ✅ Pre-generated wallet: 0x6410DF247d0E97E30168C6A77d1a7E39e615Ca62 (Index: 23)
+2025-03-13T19:29:52.393Z [INFO]: ✅ Pre-generated wallet: 0x8EB5758127A18c3f43De4F2F8BD73755acFeCBB4 (Index: 24)
+2025-03-13T19:29:52.393Z [INFO]: ✅ Pre-generated wallet: 0x2F222c559fA409f815d35Da1563dCc74Ab9dda8B (Index: 25)
+2025-03-13T19:29:52.393Z [INFO]: ✅ Pre-generated wallet: 0xFC2FEa7d485FFfA327431a4199a97dB702acf10f (Index: 26)
+2025-03-13T19:29:52.393Z [INFO]: ✅ Pre-generated wallet: 0xf3AA07361BFeEF5aaB2863F3F982B2E15cADDe58 (Index: 27)
+2025-03-13T19:29:52.393Z [INFO]: ✅ Pre-generated wallet: 0x4e637bB626063329075533c81f6026b10B804f32 (Index: 28)
+2025-03-13T19:29:52.393Z [INFO]: ✅ Pre-generated wallet: 0x6D11b088F5A8FCb44b4c460B621f1525564f20e5 (Index: 29)
+2025-03-13T19:29:52.393Z [INFO]: ✅ Pre-generated 10 wallets
+2025-03-13T19:30:00.300Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:30:45.935Z [INFO]: Payment confirmation received: {"paymentId":"GIFT-CA0630B1","transactionHash":"0xa15c4813df667ad2aeb4392292fb458e5d17cbb4f4dca1a2e5b1b3eb82271265","blockNumber":3,"status":"paid"}
+2025-03-13T19:30:45.937Z [WARN]: ❌ Gift not found: GIFT-CA0630B1
+2025-03-13T19:30:45.937Z [WARN]: ❌ Payment confirmation failed: Gift not found
+2025-03-13T19:31:00.373Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:31:31.485Z [INFO]: Event listener subscribing to FundsLocked
+2025-03-13T19:31:31.541Z [INFO]: ✅ Wallet saved: 0xd2DD5e8693bB6d32Ce3D72Da682Ce55c56f1CFe6 (Index: 30)
+2025-03-13T19:31:31.541Z [INFO]: ✅ Wallet Generated: 0xd2DD5e8693bB6d32Ce3D72Da682Ce55c56f1CFe6 (Index: 30)
+2025-03-13T19:31:31.560Z [INFO]: ✅ Wallet saved: 0x1321Ef2E1867cAF5b980ab786709751721c10B2a (Index: 31)
+2025-03-13T19:31:31.560Z [INFO]: ✅ Wallet Generated: 0x1321Ef2E1867cAF5b980ab786709751721c10B2a (Index: 31)
+2025-03-13T19:31:31.568Z [INFO]: Provider connected at block: 3
+2025-03-13T19:31:31.569Z [INFO]: ✅ Wallet saved: 0x2532939bFac65cBA7f6009eFEF2076deC0822986 (Index: 32)
+2025-03-13T19:31:31.569Z [INFO]: ✅ Wallet Generated: 0x2532939bFac65cBA7f6009eFEF2076deC0822986 (Index: 32)
+2025-03-13T19:31:31.575Z [INFO]: ✅ Wallet saved: 0xA2563E46457541F7dDb2DBC1826a6896A90d3996 (Index: 33)
+2025-03-13T19:31:31.575Z [INFO]: ✅ Wallet Generated: 0xA2563E46457541F7dDb2DBC1826a6896A90d3996 (Index: 33)
+2025-03-13T19:31:31.583Z [INFO]: ✅ Wallet saved: 0x9f1904bA1D63eA1CfD60eC70a4bc4738B58cb0D0 (Index: 34)
+2025-03-13T19:31:31.583Z [INFO]: ✅ Wallet Generated: 0x9f1904bA1D63eA1CfD60eC70a4bc4738B58cb0D0 (Index: 34)
+2025-03-13T19:31:31.590Z [INFO]: ✅ Wallet saved: 0x5a69EDE6e010240FD7807936199D68EAbFeB40Db (Index: 35)
+2025-03-13T19:31:31.590Z [INFO]: ✅ Wallet Generated: 0x5a69EDE6e010240FD7807936199D68EAbFeB40Db (Index: 35)
+2025-03-13T19:31:31.595Z [INFO]: ✅ Wallet saved: 0x9D4a8bC8DbF1F55584DfD1Cb215e7CD01c7Bad00 (Index: 36)
+2025-03-13T19:31:31.595Z [INFO]: ✅ Wallet Generated: 0x9D4a8bC8DbF1F55584DfD1Cb215e7CD01c7Bad00 (Index: 36)
+2025-03-13T19:31:31.601Z [INFO]: ✅ Wallet saved: 0x7AF57514779865E2ce159156C6b2D43Fe1dfAE4b (Index: 37)
+2025-03-13T19:31:31.601Z [INFO]: ✅ Wallet Generated: 0x7AF57514779865E2ce159156C6b2D43Fe1dfAE4b (Index: 37)
+2025-03-13T19:31:31.607Z [INFO]: ✅ Wallet saved: 0x42FBc0393a5D1e0d6d087d7bEFd4575d8587BF92 (Index: 38)
+2025-03-13T19:31:31.607Z [INFO]: ✅ Wallet Generated: 0x42FBc0393a5D1e0d6d087d7bEFd4575d8587BF92 (Index: 38)
+2025-03-13T19:31:31.613Z [INFO]: ✅ Wallet saved: 0xf02287aA02dB3c7771729D1532fA6e5266281258 (Index: 39)
+2025-03-13T19:31:31.613Z [INFO]: ✅ Wallet Generated: 0xf02287aA02dB3c7771729D1532fA6e5266281258 (Index: 39)
+2025-03-13T19:31:31.613Z [INFO]: ✅ Pre-generated wallet: 0xd2DD5e8693bB6d32Ce3D72Da682Ce55c56f1CFe6 (Index: 30)
+2025-03-13T19:31:31.613Z [INFO]: ✅ Pre-generated wallet: 0x1321Ef2E1867cAF5b980ab786709751721c10B2a (Index: 31)
+2025-03-13T19:31:31.613Z [INFO]: ✅ Pre-generated wallet: 0x2532939bFac65cBA7f6009eFEF2076deC0822986 (Index: 32)
+2025-03-13T19:31:31.613Z [INFO]: ✅ Pre-generated wallet: 0xA2563E46457541F7dDb2DBC1826a6896A90d3996 (Index: 33)
+2025-03-13T19:31:31.613Z [INFO]: ✅ Pre-generated wallet: 0x9f1904bA1D63eA1CfD60eC70a4bc4738B58cb0D0 (Index: 34)
+2025-03-13T19:31:31.613Z [INFO]: ✅ Pre-generated wallet: 0x5a69EDE6e010240FD7807936199D68EAbFeB40Db (Index: 35)
+2025-03-13T19:31:31.613Z [INFO]: ✅ Pre-generated wallet: 0x9D4a8bC8DbF1F55584DfD1Cb215e7CD01c7Bad00 (Index: 36)
+2025-03-13T19:31:31.614Z [INFO]: ✅ Pre-generated wallet: 0x7AF57514779865E2ce159156C6b2D43Fe1dfAE4b (Index: 37)
+2025-03-13T19:31:31.614Z [INFO]: ✅ Pre-generated wallet: 0x42FBc0393a5D1e0d6d087d7bEFd4575d8587BF92 (Index: 38)
+2025-03-13T19:31:31.614Z [INFO]: ✅ Pre-generated wallet: 0xf02287aA02dB3c7771729D1532fA6e5266281258 (Index: 39)
+2025-03-13T19:31:31.614Z [INFO]: ✅ Pre-generated 10 wallets
+2025-03-13T19:31:47.048Z [INFO]: Event listener subscribing to FundsLocked
+2025-03-13T19:31:47.107Z [INFO]: Provider connected at block: 3
+2025-03-13T19:31:47.108Z [INFO]: ✅ Wallet saved: 0x524C28bCb0A0c718d4C84992Ce4030a77c41dE4f (Index: 40)
+2025-03-13T19:31:47.108Z [INFO]: ✅ Wallet Generated: 0x524C28bCb0A0c718d4C84992Ce4030a77c41dE4f (Index: 40)
+2025-03-13T19:31:47.125Z [INFO]: ✅ Wallet saved: 0x76699e111e2F10dA9D498f20416DBdB6eC203f6b (Index: 41)
+2025-03-13T19:31:47.125Z [INFO]: ✅ Wallet Generated: 0x76699e111e2F10dA9D498f20416DBdB6eC203f6b (Index: 41)
+2025-03-13T19:31:47.131Z [INFO]: ✅ Wallet saved: 0x7014ddC054C62f7e2D4BF1DE1e36Dd41fC0Db577 (Index: 42)
+2025-03-13T19:31:47.131Z [INFO]: ✅ Wallet Generated: 0x7014ddC054C62f7e2D4BF1DE1e36Dd41fC0Db577 (Index: 42)
+2025-03-13T19:31:47.138Z [INFO]: ✅ Wallet saved: 0xE192914D4f396aD75F9cdB08F23DAE32724Bb53c (Index: 43)
+2025-03-13T19:31:47.139Z [INFO]: ✅ Wallet Generated: 0xE192914D4f396aD75F9cdB08F23DAE32724Bb53c (Index: 43)
+2025-03-13T19:31:47.145Z [INFO]: ✅ Wallet saved: 0xfE4Bab9646e4a5871248BF3Cb04B46230CEBF378 (Index: 44)
+2025-03-13T19:31:47.145Z [INFO]: ✅ Wallet Generated: 0xfE4Bab9646e4a5871248BF3Cb04B46230CEBF378 (Index: 44)
+2025-03-13T19:31:47.151Z [INFO]: ✅ Wallet saved: 0xa685647e5d1Ee937f47150Ef41631f8b0bAeC146 (Index: 45)
+2025-03-13T19:31:47.151Z [INFO]: ✅ Wallet Generated: 0xa685647e5d1Ee937f47150Ef41631f8b0bAeC146 (Index: 45)
+2025-03-13T19:31:47.156Z [INFO]: ✅ Wallet saved: 0x853aED09674d853ec6000ACEb66152284Ae83e80 (Index: 46)
+2025-03-13T19:31:47.156Z [INFO]: ✅ Wallet Generated: 0x853aED09674d853ec6000ACEb66152284Ae83e80 (Index: 46)
+2025-03-13T19:31:47.161Z [INFO]: ✅ Wallet saved: 0xC022D55407e0b2A61e1Cf39796F59a4e0105654D (Index: 47)
+2025-03-13T19:31:47.161Z [INFO]: ✅ Wallet Generated: 0xC022D55407e0b2A61e1Cf39796F59a4e0105654D (Index: 47)
+2025-03-13T19:31:47.167Z [INFO]: ✅ Wallet saved: 0xe5d2dA6216065aA573232Fc426aE325A22b457A8 (Index: 48)
+2025-03-13T19:31:47.168Z [INFO]: ✅ Wallet Generated: 0xe5d2dA6216065aA573232Fc426aE325A22b457A8 (Index: 48)
+2025-03-13T19:31:47.173Z [INFO]: ✅ Wallet saved: 0xF9D349056A6aD5C490E090d39B6c54E7Bb93b660 (Index: 49)
+2025-03-13T19:31:47.173Z [INFO]: ✅ Wallet Generated: 0xF9D349056A6aD5C490E090d39B6c54E7Bb93b660 (Index: 49)
+2025-03-13T19:31:47.173Z [INFO]: ✅ Pre-generated wallet: 0x524C28bCb0A0c718d4C84992Ce4030a77c41dE4f (Index: 40)
+2025-03-13T19:31:47.173Z [INFO]: ✅ Pre-generated wallet: 0x76699e111e2F10dA9D498f20416DBdB6eC203f6b (Index: 41)
+2025-03-13T19:31:47.173Z [INFO]: ✅ Pre-generated wallet: 0x7014ddC054C62f7e2D4BF1DE1e36Dd41fC0Db577 (Index: 42)
+2025-03-13T19:31:47.173Z [INFO]: ✅ Pre-generated wallet: 0xE192914D4f396aD75F9cdB08F23DAE32724Bb53c (Index: 43)
+2025-03-13T19:31:47.173Z [INFO]: ✅ Pre-generated wallet: 0xfE4Bab9646e4a5871248BF3Cb04B46230CEBF378 (Index: 44)
+2025-03-13T19:31:47.173Z [INFO]: ✅ Pre-generated wallet: 0xa685647e5d1Ee937f47150Ef41631f8b0bAeC146 (Index: 45)
+2025-03-13T19:31:47.173Z [INFO]: ✅ Pre-generated wallet: 0x853aED09674d853ec6000ACEb66152284Ae83e80 (Index: 46)
+2025-03-13T19:31:47.173Z [INFO]: ✅ Pre-generated wallet: 0xC022D55407e0b2A61e1Cf39796F59a4e0105654D (Index: 47)
+2025-03-13T19:31:47.173Z [INFO]: ✅ Pre-generated wallet: 0xe5d2dA6216065aA573232Fc426aE325A22b457A8 (Index: 48)
+2025-03-13T19:31:47.173Z [INFO]: ✅ Pre-generated wallet: 0xF9D349056A6aD5C490E090d39B6c54E7Bb93b660 (Index: 49)
+2025-03-13T19:31:47.173Z [INFO]: ✅ Pre-generated 10 wallets
+2025-03-13T19:32:00.081Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:33:00.160Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:34:00.245Z [INFO]: Expired gifts cleanup job executed
+2025-03-13T19:35:00.315Z [INFO]: Expired gifts cleanup job executed
