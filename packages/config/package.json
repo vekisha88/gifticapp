@@ -1,0 +1,14 @@
+{
+  "name": "@gifticapp/config",
+  "version": "0.1.0",
+  "main": "index.js",
+  "files": [
+    "eslint-preset.js",
+    "typescript/base.json"
+  ],
+  "dependencies": {
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-config-turbo": "^1.10.0"
+  }
+} 
