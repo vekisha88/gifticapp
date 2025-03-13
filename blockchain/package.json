@@ -1,0 +1,23 @@
+{
+  "name": "hardhat-project",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.19"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.13.5"
+  },
+  "resolutions": {
+    "ethers": "6.13.5",
+    "@ethersproject/signing-key": "6.13.5",
+    "@ethersproject/transactions": "6.13.5",
+    "@ethersproject/providers": "6.13.5",
+    "@ethersproject/abi": "6.13.5",
+    "@ethersproject/hdnode": "6.13.5",
+    "@ethersproject/json-wallets": "6.13.5",
+    "ws": "8.18.1",
+    "cookie": "0.7.0"
+  }
+}
