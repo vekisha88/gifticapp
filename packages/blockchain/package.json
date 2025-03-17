@@ -5,22 +5,23 @@
     "dev": "hardhat node",
     "build": "hardhat compile",
     "test": "hardhat test",
-    "deploy": "hardhat run scripts/deploy.js",
+    "deploy": "hardhat run scripts/deploy.js --network localhost",
     "lint": "eslint .",
     "clean": "rimraf artifacts cache node_modules"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "hardhat": "^2.22.19",
     "@gifticapp/config": "*",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "eslint": "^8.40.0",
+    "hardhat": "^2.22.19",
     "rimraf": "^5.0.0"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.0.2",
+    "@gifticapp/shared": "*",
+    "@openzeppelin/contracts": "^5.2.0",
+    "@openzeppelin/hardhat-upgrades": "^3.9.0",
     "dotenv": "^16.4.7",
-    "ethers": "^6.13.5",
-    "@gifticapp/shared": "*"
+    "ethers": "^6.13.5"
   },
   "resolutions": {
     "ethers": "6.13.5",

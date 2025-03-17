@@ -32,4 +32,35 @@ async function confirmPayment(giftCode) {
     }
 }
 
-module.exports = { confirmPayment };
+/**
+ * ✅ Confirms payment for a gift using the wallet address instead of gift code.
+ * This function is used when the gift code is not available but the target wallet is known.
+ * @param {string} walletAddress - The wallet address associated with the gift.
+ */
+async function confirmPaymentByWallet(walletAddress) {
+    try {
+        const gift = await Gift.findOne({ paymentAddress: walletAddress });
+
+        if (!gift) {
+            logger.warn(`❌ Gift not found for wallet: ${walletAddress}`);
+            return { success: false, error: "Gift not found for this wallet address" };
+        }
+
+        if (gift.paymentStatus === "received") {
+            logger.info(`✅ Payment already confirmed for wallet: ${walletAddress}`);
+            return { success: true, message: "Payment was already confirmed" };
+        }
+
+        // ✅ Update the payment status in the database
+        gift.paymentStatus = "received";
+        await gift.save();
+
+        logger.info(`✅ Payment confirmed for wallet: ${walletAddress}, gift code: ${gift.giftCode}`);
+        return { success: true, message: "Payment successfully confirmed", giftCode: gift.giftCode };
+    } catch (error) {
+        logger.error(`❌ Error confirming payment by wallet: ${error.message}`);
+        return { success: false, error: "Failed to confirm payment" };
+    }
+}
+
+module.exports = { confirmPayment, confirmPaymentByWallet };
