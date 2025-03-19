@@ -1,0 +1,7 @@
+
+> @gifticapp/blockchain@1.0.0 build
+> hardhat compile
+
+Generating typings for: 3 artifacts in dir: typechain-types for target: ethers-v6
+Successfully generated 22 typings!
+Compiled 3 Solidity files successfully (evm target: paris).

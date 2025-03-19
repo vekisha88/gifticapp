@@ -1,41 +1,86 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+import { logger } from "../logger.js";
 
-// Define the Gift schema
+// Helper function to generate a code in format ABCD-1234-EFGH-5678
+function generateGiftCode() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let code = '';
+  
+  // Generate 4 blocks of 4 characters
+  for (let block = 0; block < 4; block++) {
+    if (block > 0) code += '-';
+    for (let i = 0; i < 4; i++) {
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      code += chars[randomIndex];
+    }
+  }
+  
+  return code;
+}
+
+// Define the Gift schema - aligned with smart contract
 const giftSchema = new mongoose.Schema(
   {
     recipientFirstName: { type: String, required: true, trim: true },
     recipientLastName: { type: String, required: true, trim: true },
-    amount: { 
+    recipientWallet: { 
+      type: String, 
+      required: true, 
+      trim: true,
+      match: [/^0x[a-fA-F0-9]{40}$/, "Please provide a valid Ethereum address"]
+    },
+    giftAmount: { 
       type: Number, 
       required: true, 
       validate: { validator: (value) => value > 0, message: "Amount must be greater than zero." },
     },
-    currency: { type: String, required: true, trim: true },
-    unlockDate: { 
+    feeAmount: { type: Number, required: true },
+    totalRequired: { type: Number, required: true }, // giftAmount + feeAmount
+    unlockTimestamp: { 
       type: Date, 
-      required: true, 
-      // Clarify that unlockDate should include both date and time (ISO 8601 format, e.g., "2025-02-26T14:30:00Z")
+      required: true,
       validate: {
         validator: function(v) {
           return v instanceof Date && !isNaN(v); // Ensure it's a valid Date
         },
-        message: "Invalid date and time format for unlockDate"
+        message: "Invalid date and time format for unlockTimestamp"
       }
     },
-    walletAddress: { type: String, required: true, trim: true },
-    walletIndex: { type: Number, required: true, ref: "Wallet" },
-    giftCode: { type: String, required: true, trim: true, unique: true },
+    isClaimed: { type: Boolean, default: false },
+    tokenAddress: { 
+      type: String, 
+      default: "0x0000000000000000000000000000000000000000", 
+      trim: true,
+      match: [/^0x[a-fA-F0-9]{40}$/, "Please provide a valid token address"]
+    },
+    // Additional fields for tracking
     buyerEmail: { type: String, required: true, trim: true },
-    claimed: { type: Boolean, default: false },
     claimedBy: { type: String, default: null },
-    paymentStatus: { type: String, enum: ["pending", "received"], default: "pending" },
-    expiryDate: { type: Date, required: true },
-    fee: { type: Number, required: true }, // Fee after gas deduction
-    totalAmount: { type: Number, required: true }, // Payment amount (Gift Amount + initial 5% Fee)
-    gasFee: { type: Number, required: true, default: 0 } // Gas fee deducted from the fee
+    paymentStatus: { type: String, enum: ["pending", "received", "completed", "failed"], default: "pending" },
+    currency: { type: String, required: true, trim: true },
+    // Legacy field for backward compatibility
+    giftCode: {
+      type: String,
+      required: true,
+      unique: true,
+      default: generateGiftCode
+    },
+    message: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );
+
+// Pre-save hook to generate a gift code if not provided
+giftSchema.pre("save", function (next) {
+  if (this.isNew && !this.giftCode) {
+    this.giftCode = generateGiftCode();
+    logger.info(`Generated new gift code: ${this.giftCode}`);
+  }
+  next();
+});
 
 // Virtual property to check if gift is ready to be claimed
 giftSchema.virtual("giftReady").get(function () {
@@ -43,6 +88,4 @@ giftSchema.virtual("giftReady").get(function () {
 });
 
 // Create the Gift model
-const Gift = mongoose.model("Gift", giftSchema);
-
-module.exports = Gift;
+export const Gift = mongoose.model("Gift", giftSchema);

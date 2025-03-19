@@ -1,27 +1,24 @@
 const { ethers } = require("hardhat");
 
-// Hardcoded for local testing; update for testnet later if needed
-const CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // From your Hardhat deployment
-const GIFT_CONTRACT_ABI = require("../artifacts/contracts/GiftContract.sol/GiftContract.json").abi;
-
 /**
- * Simulates a payment to the gift contract
+ * Simulates a direct payment to a wallet address
  * @param {Object} options - Payment options
  * @param {string} options.walletAddress - Target wallet address to receive the payment
  * @param {string|number} options.amount - Amount to send
  * @param {string} options.currency - Currency type (e.g., 'ETH', 'MATIC')
+ * @param {string} options.network - Network to use (e.g., 'localhost', 'polygon')
  */
-async function simulatePayment({ walletAddress, amount, currency }) {
+async function simulatePayment({ walletAddress, amount, currency, network }) {
   try {
-    // Get the first Hardhat signer (default account with 10000 ETH locally)
+    // Get the first Hardhat signer (default account with ETH locally)
     const [signer] = await ethers.getSigners();
     console.log("Using signer address:", signer.address);
 
-    // Connect to Hardhat's local node
+    // Connect to the specified network (default to Hardhat's local node)
     const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
-    const contract = new ethers.Contract(CONTRACT_ADDRESS, GIFT_CONTRACT_ABI, signer.connect(provider));
+    console.log(`Connected to network: ${network || "localhost"}`);
 
-    // Use the provided walletAddress (paymentAddress from backend)
+    // Use the provided walletAddress
     console.log("Target wallet:", walletAddress);
 
     // Convert amount to wei
@@ -35,35 +32,27 @@ async function simulatePayment({ walletAddress, amount, currency }) {
       throw new Error("Insufficient funds in signer account for the transaction.");
     }
 
-    // Generate a random gift code
-    const randomBytes = ethers.randomBytes(8);
-    const giftCode = Buffer.from(randomBytes).toString('hex').toUpperCase();
-    const giftCodeBytes32 = ethers.encodeBytes32String(giftCode);
-    console.log("Generated gift code:", giftCode);
-
-    // Set unlock date to 1 hour from now
-    const unlockDate = Math.floor(Date.now() / 1000) + 3600;
-    console.log("Unlock date:", new Date(unlockDate * 1000).toISOString());
-
-    // Execute the transaction
-    console.log("Sending transaction...");
-    const tx = await contract.lockMatic(giftCodeBytes32, walletAddress, unlockDate, {
+    // Execute the direct transfer transaction
+    console.log(`Sending ${amount} ${currency} to ${walletAddress}...`);
+    const tx = await signer.sendTransaction({
+      to: walletAddress,
       value: amountInWei,
-      gasLimit: 200000,
+      gasLimit: 30000, // Simple transfer needs much less gas
     });
     console.log("Transaction sent. Hash:", tx.hash);
 
     const receipt = await tx.wait();
-    console.log("Payment simulation completed. Transaction confirmed.");
+    console.log("Payment simulation completed. Transaction confirmed in block:", receipt.blockNumber);
     
     return {
       success: true,
       transactionHash: tx.hash,
-      walletAddress,
+      from: signer.address,
+      to: walletAddress,
       amount,
       currency,
-      giftCode,
-      unlockDate: new Date(unlockDate * 1000).toISOString()
+      network: network || "localhost",
+      blockNumber: receipt.blockNumber
     };
   } catch (error) {
     console.error("❌ Payment simulation failed:", error.message);
@@ -71,16 +60,49 @@ async function simulatePayment({ walletAddress, amount, currency }) {
   }
 }
 
-// Example usage
-const walletAddress = "0xbf70FC8Bc1aB4cB26668B48b1c71e078dd9d347A";
-const amount = "0.1";
-const currency = "ETH";
+// Example usage with command line arguments
+const args = process.argv.slice(2);
+let options = {
+  walletAddress: "0x009997e88445e1926d9002b80367dab5e8af23c6",  // Ensure this matches exactly the format in MongoDB
+  amount: "1050",
+  currency: "MATIC",
+  network: "polygon"
+};
 
-simulatePayment({
-  walletAddress,
-  amount,
-  currency
-})
+// Parse command line arguments
+for (let i = 0; i < args.length; i++) {
+  const arg = args[i];
+  
+  // Handle both formats: --wallet value and --wallet=value
+  if (arg.startsWith('--wallet=') || arg.startsWith('-w=')) {
+    options.walletAddress = arg.split('=')[1].replace(/"/g, '');
+  } 
+  else if (arg === '--wallet' || arg === '-w') {
+    options.walletAddress = args[++i].replace(/"/g, '');
+  }
+  else if (arg.startsWith('--amount=') || arg.startsWith('-a=')) {
+    options.amount = arg.split('=')[1].replace(/"/g, '');
+  }
+  else if (arg === '--amount' || arg === '-a') {
+    options.amount = args[++i].replace(/"/g, '');
+  }
+  else if (arg.startsWith('--currency=') || arg.startsWith('-c=')) {
+    options.currency = arg.split('=')[1].replace(/"/g, '');
+  }
+  else if (arg === '--currency' || arg === '-c') {
+    options.currency = args[++i].replace(/"/g, '');
+  }
+  else if (arg.startsWith('--network=') || arg.startsWith('-n=')) {
+    options.network = arg.split('=')[1].replace(/"/g, '');
+  }
+  else if (arg === '--network' || arg === '-n') {
+    options.network = args[++i].replace(/"/g, '');
+  }
+}
+
+console.log("Simulation options:", options);
+
+simulatePayment(options)
   .then((result) => {
     console.log("✅ Simulation complete:", result);
     process.exit(0);

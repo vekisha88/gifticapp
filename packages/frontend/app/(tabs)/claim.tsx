@@ -61,7 +61,7 @@ const ClaimGiftScreen: React.FC = () => {
   const fetchClaimedGifts = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/api/gift/claimed?userEmail=${userEmail}`
+        `${API_BASE_URL}/api/gift/claimed?userEmail=${encodeURIComponent(userEmail)}`
       );
       if (response.data.success) {
         setClaimedGifts(response.data.gifts || []);
@@ -76,7 +76,7 @@ const ClaimGiftScreen: React.FC = () => {
       }
       Alert.alert("Error", errorMessage);
     }
-  }, [userEmail]); // Depends on userEmail, as it’s part of the API call
+  }, [userEmail]); // Depends on userEmail, as it's part of the API call
 
   // Memoized claimed gifts list
   const memoizedClaimedGifts = useMemo(() => claimedGifts, [claimedGifts]);
@@ -122,7 +122,7 @@ const ClaimGiftScreen: React.FC = () => {
         // Fetch the mnemonic without claiming (new /preclaim endpoint)
         const preclaimResponse = await axios.post(`${API_BASE_URL}/api/gift/preclaim`, {
           giftCode: giftDetails.giftCode,
-          userEmail,
+          userEmail: userEmail,
         });
         console.log("Preclaim response for gift:", JSON.stringify(preclaimResponse.data, null, 2)); // Detailed debug log
         if (preclaimResponse.data.success) {
@@ -133,7 +133,7 @@ const ClaimGiftScreen: React.FC = () => {
           // Show confirmation before displaying recovery phrases
           Alert.alert(
             "Preview Recovery Phrases?",
-            "You’re about to view sensitive recovery phrases for this gift. Write them down securely, as they can’t be retrieved later. Do you want to continue?",
+            "You're about to view sensitive recovery phrases for this gift. Write them down securely, as they can't be retrieved later. Do you want to continue?",
             [
               {
                 text: "Cancel",
@@ -150,8 +150,8 @@ const ClaimGiftScreen: React.FC = () => {
                   const updatedGiftDetails: ClaimedGiftType = {
                     ...giftDetails,
                     mnemonic, // Store the actual mnemonic
-                    claimed: false, // Don’t mark as claimed yet
-                    amount: giftAmount, // Receiver’s exact amount
+                    claimed: false, // Don't mark as claimed yet
+                    amount: giftAmount, // Receiver's exact amount
                     fee, // Fee after gas deduction (optional, not shown to user)
                     totalAmount, // Payment amount (optional, not shown to user)
                     gasFee, // Gas fee deducted from fee (optional, not shown to user)
@@ -202,7 +202,7 @@ const ClaimGiftScreen: React.FC = () => {
       console.log("Confirming claim for gift with code:", currentGiftDetails!.giftCode); // Use non-null assertion
       const response = await axios.post(`${API_BASE_URL}/api/gift/claim`, {
         giftCode: currentGiftDetails!.giftCode,
-        userEmail,
+        userEmail: userEmail,
       });
       console.log("Claim response for gift:", JSON.stringify(response.data, null, 2)); // Detailed debug log
       if (response.data.success) {
@@ -214,14 +214,14 @@ const ClaimGiftScreen: React.FC = () => {
         const updatedGiftDetails: ClaimedGiftType = {
           ...currentGiftDetails!,
           claimed: true, // Mark as claimed only after confirmation
-          amount: giftAmount, // Receiver’s exact amount
+          amount: giftAmount, // Receiver's exact amount
         };
         setCurrentGiftDetails(updatedGiftDetails); // Update state
         setRecoveryModalVisible(false);
         await fetchClaimedGifts(); // Refresh the claimed gifts list
         Alert.alert(
           "Success",
-          `Gift claimed! You’ll receive ${giftAmount} ${currentGiftDetails!.currency} on ${new Date(currentGiftDetails!.unlockDate).toLocaleDateString()}.`
+          `Gift claimed! You'll receive ${giftAmount} ${currentGiftDetails!.currency} on ${new Date(currentGiftDetails!.unlockDate).toLocaleDateString()}.`
         );
       } else {
         let errorMessage = response.data.error || "Gift claim failed.";

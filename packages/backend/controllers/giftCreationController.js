@@ -1,56 +1,168 @@
-const Gift = require("../models/gift");
-const logger = require("../logger");
-const { assignWalletToGift } = require("../services/giftService");
+import { Gift } from "../models/gift.js";
+import { logger } from "../logger.js";
+import { ethers } from "ethers";
+import contractAddressJson from "../../blockchain/contractAddress.json" with { type: "json" };
+import { getUnusedWallet } from "../services/walletService.js";
 
-const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Still included for reference
+// Import contract data
+const CONTRACT_ADDRESS = contractAddressJson.contractAddress;
 
-exports.createGift = async (req, res) => {
+// Create a new gift
+export const createGift = async (req, res) => {
   try {
-    const { recipientFirstName, recipientLastName, amount, currency, unlockDate, buyerEmail, walletAddress } = req.body;
-
-    // Validate unlockDate as a full datetime
-    if (!unlockDate || typeof unlockDate !== "string") {
-      return res.status(400).json({ success: false, error: "Invalid or missing unlock date and time." });
-    }
-    const unlockDateTime = new Date(unlockDate);
-    if (isNaN(unlockDateTime.getTime())) {
-      return res.status(400).json({ success: false, error: "Invalid date and time format for unlockDate" });
-    }
-    const now = new Date();
-    const twoHoursFromNow = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-    if (unlockDateTime < twoHoursFromNow) {
-      return res.status(400).json({ success: false, error: "Unlock date and time must be at least 2 hours from now." });
-    }
-
-    // Assign wallet and prepare gift data
-    const giftData = await assignWalletToGift({
+    const {
+      buyerEmail,
       recipientFirstName,
       recipientLastName,
-      amount: Number(amount),
+      amount,
       currency,
-      unlockDate: unlockDateTime.toISOString(),
-      buyerEmail,
+      unlockDate,
       walletAddress,
-      expiryDate: new Date(Date.now() + 60 * 60 * 1000),
+      message
+    } = req.body;
+
+    // Validate required fields
+    if (!buyerEmail || !recipientFirstName || !amount || !currency || !unlockDate || !walletAddress) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing required fields"
+      });
+    }
+
+    // Calculate fee (5% of amount)
+    const feeAmount = amount * 0.05;
+    const totalAmount = amount + feeAmount;
+
+    logger.info(`Gift creation request body: ${JSON.stringify(req.body)}`);
+
+    // Create the gift in database
+    const gift = new Gift({
+      buyerEmail,
+      recipientFirstName,
+      recipientLastName,
+      giftAmount: amount,
+      feeAmount: feeAmount,
+      totalRequired: totalAmount,
+      currency,
+      recipientWallet: walletAddress.toLowerCase(),
+      unlockTimestamp: new Date(unlockDate),
+      message: message || ""
     });
 
-    const { giftCode, walletAddress: assignedWalletAddress, totalAmount, fee, gasFee } = giftData;
+    await gift.save();
 
-    // Log and respond without locking funds
-    logger.info(`✅ Gift created: ${giftCode} for ${recipientFirstName} ${recipientLastName} using wallet ${assignedWalletAddress}`);
+    logger.info(`✅ Gift created: Code=${gift.giftCode} for ${recipientFirstName} ${recipientLastName} using wallet ${walletAddress}`);
+
     res.status(201).json({
       success: true,
-      giftCode,
-      paymentAddress: assignedWalletAddress, // User sends funds here manually
-      contractAddress, // For reference
-      giftAmount: giftData.amount,
-      totalAmount,
-      fee,
-      gasFee,
-      message: `Gift created successfully for ${recipientFirstName} ${recipientLastName}. Please send ${totalAmount} MATIC to ${assignedWalletAddress} to lock the funds.`,
+      giftCode: gift.giftCode,
+      paymentAddress: walletAddress,
+      contractAddress: CONTRACT_ADDRESS,
+      giftAmount: amount,
+      totalAmount: totalAmount,
+      fee: feeAmount,
+      message: `Gift created successfully for ${recipientFirstName} ${recipientLastName}. Please send ${totalAmount} ${currency} to ${walletAddress} to lock the funds.`
     });
   } catch (error) {
     logger.error(`❌ Error creating gift: ${error.message}`);
-    res.status(500).json({ success: false, error: "Failed to create gift", details: error.message });
+    res.status(500).json({
+      success: false,
+      error: "Failed to create gift"
+    });
+  }
+};
+
+// Reserve a wallet for a new gift
+export const getAvailableWallet = async (req, res) => {
+  try {
+    const wallet = await getUnusedWallet();
+    
+    if (!wallet) {
+      return res.status(503).json({ 
+        success: false, 
+        error: "No wallets available at the moment"
+      });
+    }
+    
+    res.status(200).json({ 
+      success: true, 
+      walletAddress: wallet.address
+    });
+  } catch (error) {
+    logger.error(`❌ Error getting available wallet: ${error.message}`);
+    res.status(500).json({ 
+      success: false, 
+      error: "Failed to get wallet"
+    });
+  }
+};
+
+// Get gift by code
+export const getGiftByCode = async (req, res) => {
+  try {
+    const { giftCode } = req.params;
+    
+    const gift = await Gift.findOne({ giftCode });
+    
+    if (!gift) {
+      return res.status(404).json({ 
+        success: false, 
+        error: "Gift not found" 
+      });
+    }
+    
+    res.status(200).json({
+      success: true,
+      gift: {
+        giftCode: gift.giftCode,
+        recipientName: `${gift.recipientFirstName} ${gift.recipientLastName}`,
+        amount: gift.giftAmount,
+        feeAmount: gift.feeAmount,
+        currency: gift.currency,
+        unlockDate: gift.unlockTimestamp,
+        paymentStatus: gift.paymentStatus,
+        isClaimed: gift.isClaimed
+      }
+    });
+  } catch (error) {
+    logger.error(`❌ Error getting gift: ${error.message}`);
+    res.status(500).json({ 
+      success: false, 
+      error: "Failed to retrieve gift information"
+    });
+  }
+};
+
+// Get gifts created by buyer email
+export const getGiftsByBuyer = async (req, res) => {
+  try {
+    const { buyerEmail, page = 1, limit = 10 } = req.query;
+    
+    const gifts = await Gift.find({ buyerEmail })
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
+    
+    const formattedGifts = gifts.map(gift => ({
+      giftCode: gift.giftCode,
+      recipientName: `${gift.recipientFirstName} ${gift.recipientLastName}`,
+      amount: gift.giftAmount,
+      currency: gift.currency,
+      unlockDate: gift.unlockTimestamp,
+      paymentStatus: gift.paymentStatus,
+      isClaimed: gift.isClaimed,
+      createdAt: gift.createdAt
+    }));
+    
+    res.status(200).json({
+      success: true,
+      gifts: formattedGifts
+    });
+  } catch (error) {
+    logger.error(`❌ Error getting gifts by buyer: ${error.message}`);
+    res.status(500).json({ 
+      success: false, 
+      error: "Failed to retrieve gifts"
+    });
   }
 };

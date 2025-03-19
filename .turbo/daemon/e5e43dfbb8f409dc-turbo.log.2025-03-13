@@ -389,7 +389,7 @@
 2025-03-13T20:49:38.996953Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/hardhat.config.js")}
 2025-03-13T20:49:38.996976Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
 2025-03-13T20:49:39.006158Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
-2025-03-13T20:53:45.526284Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/deploy.js")}
+2025-03-13T20:53:45.526284Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/deploy.ts")}
 2025-03-13T20:53:45.526336Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@gifticapp/blockchain"), path: AnchoredSystemPathBuf("packages/blockchain") }}))
 2025-03-13T20:53:45.584167Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
 2025-03-13T20:55:14.024928Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/blockchain/scripts/deploy.sh")}

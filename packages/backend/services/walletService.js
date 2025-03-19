@@ -1,8 +1,8 @@
-const Wallet = require("../models/wallet"); // ✅ Import Wallet Model
-const logger = require("../logger");
+import { Wallet } from "../models/wallet.js"; // ✅ Import Wallet Model
+import { logger } from "../logger.js";
 
 // ✅ Get an unused wallet from the database and mark it as reserved
-async function getUnusedWallet() {
+export async function getUnusedWallet() {
     try {
         // Find and update a wallet where both used and reserved are false, atomically setting reserved to true
         const wallet = await Wallet.findOneAndUpdate(
@@ -25,7 +25,7 @@ async function getUnusedWallet() {
 }
 
 // ✅ Mark a wallet as used (and leave reserved unchanged, as per request)
-async function markWalletAsUsed(walletIndex) {
+export async function markWalletAsUsed(walletIndex) {
     try {
         const wallet = await Wallet.findOneAndUpdate(
             { index: walletIndex, used: false }, // Ensure wallet exists, is unused, and can be any reserved state
@@ -44,7 +44,7 @@ async function markWalletAsUsed(walletIndex) {
 }
 
 // ✅ Get the last used wallet index from the database
-async function getLastWalletIndex() {
+export async function getLastWalletIndex() {
     try {
         const lastWallet = await Wallet.findOne().sort({ index: -1 });
         return lastWallet ? lastWallet.index + 1 : 0; // Start from 0 if no wallets exist
@@ -55,21 +55,22 @@ async function getLastWalletIndex() {
 }
 
 // ✅ Save a newly generated wallet to the database
-async function saveWalletToDatabase(walletData) {
+export async function saveWalletToDatabase(walletData) {
     try {
         const newWallet = new Wallet({
             index: walletData.index,
             address: walletData.address,
+            privateKey: walletData.privateKey,
             used: false, // Newly generated wallets are unused by default
-            reserved: false // Newly generated wallets are not reserved by default
+            reserved: false, // Newly generated wallets are not reserved by default
+            network: walletData.network || 'polygon'
         });
 
         await newWallet.save();
         logger.info(`✅ Wallet saved: ${walletData.address} (Index: ${walletData.index})`);
+        return newWallet;
     } catch (error) {
         logger.error(`❌ Error saving wallet to database: ${error.message}`);
         throw error;
     }
 }
-
-module.exports = { getUnusedWallet, markWalletAsUsed, getLastWalletIndex, saveWalletToDatabase };

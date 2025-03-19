@@ -9,7 +9,7 @@ fi
 
 # Run the deployment script
 echo "🚀 Deploying GiftContract..."
-npx hardhat run scripts/deploy.js --network localhost
+npx hardhat run scripts/deploy.ts --network localhost
 
 # Check if deployment was successful
 if [ $? -eq 0 ]; then

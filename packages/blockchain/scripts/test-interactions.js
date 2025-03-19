@@ -25,9 +25,15 @@ async function main() {
 
     // **MATIC Deposit Test**
     console.log("💰 Locking 1 MATIC...");
-    const txMatic = await giftContract.lockMatic(giftCode, recipient.address, unlockDate, {
-        value: ethers.parseEther("1.0"),
-    });
+    const txMatic = await giftContract.lockFunds(
+        ethers.ZeroAddress, // Zero address for native MATIC
+        ethers.parseEther("1.0"), // Gift amount
+        recipient.address,
+        unlockDate,
+        {
+            value: ethers.parseEther("1.0"),
+        }
+    );
     await txMatic.wait();
     console.log("✅ MATIC funds locked successfully!");
 
@@ -50,7 +56,7 @@ async function main() {
     // Switch to recipient account & claim
     console.log("🎁 Claiming funds...");
     const recipientGiftContract = giftContract.connect(recipient);
-    const claimTx = await recipientGiftContract.claimGift(giftCode);
+    const claimTx = await recipientGiftContract.claimGift(ethers.ZeroAddress);
     await claimTx.wait();
     console.log("✅ Funds claimed successfully!");
 }

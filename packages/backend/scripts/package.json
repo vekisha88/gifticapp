@@ -1,0 +1,16 @@
+{
+  "name": "fee-monitor",
+  "version": "1.0.0",
+  "description": "Monitor contract fees and trigger withdrawals when threshold reached",
+  "type": "module",
+  "main": "monitorFees.js",
+  "scripts": {
+    "start": "node monitorFees.js",
+    "monitor": "node monitorFees.js"
+  },
+  "dependencies": {
+    "ethers": "^6.9.0",
+    "node-fetch": "^3.3.2",
+    "dotenv": "^16.3.1"
+  }
+} 

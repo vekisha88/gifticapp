@@ -1,10 +1,20 @@
-const express = require("express");
+import express from "express";
+import { check, validationResult } from "express-validator";
+import { logger } from "../logger.js";
+import { createGift } from "../controllers/giftCreationController.js";
+import { 
+  verifyGiftCode,
+  preclaimGift,
+  claimGiftByCode,
+  getClaimedGifts,
+  checkGiftTransferable,
+  transferGiftFunds
+} from "../controllers/giftClaimController.js";
+import { getUnusedWallet } from "../services/walletService.js";
+import { batchProcessGifts } from "../services/giftService.js";
+import { automateGiftReleases } from "../services/blockchainService.js";
+
 const router = express.Router();
-const { check, validationResult } = require("express-validator");
-const logger = require("../logger");
-const { createGift } = require("../controllers/giftCreationController");
-const { verifyGiftCode, preclaimGift, claimGift, getClaimedGifts } = require("../controllers/giftClaimController");
-const { getUnusedWallet } = require("../services/walletService");
 
 // Validation Helper (unchanged)
 const validate = (validations) => async (req, res, next) => {
@@ -28,7 +38,7 @@ const isValidFutureDateTime = (value) => {
   return true;
 };
 
-// Routes
+// Legacy route - will be deprecated in future
 router.get("/get-wallet", async (req, res) => {
   try {
     const wallet = await getUnusedWallet();
@@ -40,6 +50,7 @@ router.get("/get-wallet", async (req, res) => {
   }
 });
 
+// Create gift route
 router.post(
   "/create",
   validate([
@@ -57,8 +68,16 @@ router.post(
   }
 );
 
-router.post("/verify-code", validate([check("giftCode").notEmpty().withMessage("Gift code is required")]), verifyGiftCode);
+// Verify gift by code
+router.post(
+  "/verify-code", 
+  validate([
+    check("giftCode").notEmpty().withMessage("Gift code is required")
+  ]), 
+  verifyGiftCode
+);
 
+// Preclaim gift (show mnemonic without claiming)
 router.post(
   "/preclaim",
   validate([
@@ -68,15 +87,17 @@ router.post(
   preclaimGift
 );
 
+// Claim gift by code
 router.post(
   "/claim",
   validate([
     check("giftCode").notEmpty().withMessage("Gift code is required"),
     check("userEmail").isEmail().withMessage("Valid user email is required"),
   ]),
-  claimGift
+  claimGiftByCode
 );
 
+// Get claimed gifts
 router.get(
   "/claimed",
   validate([
@@ -87,4 +108,82 @@ router.get(
   getClaimedGifts
 );
 
-module.exports = router;
+// Check if gift is ready for transfer (internal use)
+router.post(
+  "/check-transferable",
+  validate([
+    check("giftCode").notEmpty().withMessage("Gift code is required"),
+  ]),
+  checkGiftTransferable
+);
+
+// Transfer funds for a claimed gift (internal use for automated transfers)
+router.post(
+  "/transfer",
+  validate([
+    check("giftCode").notEmpty().withMessage("Gift code is required"),
+  ]),
+  transferGiftFunds
+);
+
+// Route to batch process multiple gifts in a single transaction to optimize gas costs
+router.post("/batch-process", async (req, res) => {
+  try {
+    const { giftIds } = req.body;
+    
+    if (!giftIds || !Array.isArray(giftIds) || giftIds.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: "No gift IDs provided for batch processing"
+      });
+    }
+    
+    logger.info(`Received request to batch process ${giftIds.length} gifts`);
+    
+    const result = await batchProcessGifts(giftIds);
+    
+    return res.json({
+      success: true,
+      message: `Successfully processed ${result.processedGifts.length} gifts in batch`,
+      transactionHash: result.transactionHash,
+      processedGifts: result.processedGifts
+    });
+  } catch (error) {
+    logger.error(`Batch processing API error: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      error: error.message || "Internal server error"
+    });
+  }
+});
+
+// Endpoint to manually trigger fund releases for gifts that are ready
+router.post("/release-funds", async (req, res) => {
+  try {
+    logger.info("Manual fund release requested");
+    
+    const result = await automateGiftReleases();
+    
+    if (result.success) {
+      return res.json({
+        success: true,
+        message: result.message,
+        releasedCount: result.releasedCount,
+        transactionHash: result.transactionHash
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        error: result.error
+      });
+    }
+  } catch (error) {
+    logger.error(`Manual fund release error: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+export default router;

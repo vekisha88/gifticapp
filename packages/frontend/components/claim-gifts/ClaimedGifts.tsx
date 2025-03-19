@@ -142,7 +142,9 @@ const ClaimedGift = ({ details, onShowWallet }: ClaimedGiftProps) => {
         <View style={styles.detailItem}>
           <Text style={styles.label}>Owner</Text>
           <Text style={styles.detailText}>
-            {details.recipientFirstName} {details.recipientLastName}
+            {details.recipientFirstName && details.recipientLastName 
+              ? `${details.recipientFirstName} ${details.recipientLastName}`
+              : "Gift Owner"}
           </Text>
         </View>
         <View style={styles.detailItem}>
