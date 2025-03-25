@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,37 +7,48 @@ import {
   TouchableOpacity,
   Switch,
   Alert,
+  FlatList,
+  Platform,
 } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import commonStyles, { colors } from "../../styles/commonStyles";
+import Checkbox from "../ui/Checkbox";
+
+// Extended colors with additional UI elements
+const extendedColors = {
+  ...colors,
+  textSecondary: colors.secondary, // Use secondary color for textSecondary
+  cardBackground: "#2A3435", // Dark card background
+  disabled: "#4A4A4A", // Disabled button color
+  textDisabled: "#888888", // Disabled text color
+};
 
 interface RecoveryPhraseModalProps {
   visible: boolean;
-  mnemonic?: string; // Optional, but prioritized
-  onClose: (mnemonicConfirmed: boolean) => void; // Updated to return confirmation status
+  mnemonic: string;
+  unlockMessage?: string; // Add unlock message prop
+  onClose: (mnemonicConfirmed: boolean) => void;
 }
 
-const RecoveryPhraseModal = ({
+const RecoveryPhraseModal: React.FC<RecoveryPhraseModalProps> = ({
   visible,
-  mnemonic = "", // Default to empty string if undefined
+  mnemonic,
+  unlockMessage,
   onClose,
-}: RecoveryPhraseModalProps) => {
-  const [confirmed, setConfirmed] = useState(false); // Switch defaults to off
+}) => {
+  const [confirmed, setConfirmed] = useState(false);
+  const [mnemonicArray, setMnemonicArray] = useState<string[]>([]);
 
-  // Use mnemonic if provided
-  const recoveryPhrases = mnemonic ? mnemonic.split(" ") : [];
-
-  // Ensure we have phrases to display
-  if (visible && recoveryPhrases.length === 0) {
-    console.error("No recovery phrases or mnemonic provided.");
-    Alert.alert("Error", "No recovery phrases available. Please contact support.");
-    onClose(false); // Close modal if no mnemonic, no claim
-    return null;
-  }
+  useEffect(() => {
+    if (mnemonic && visible) {
+      // Ensure mnemonic is split into an array of words
+      setMnemonicArray(mnemonic.trim().split(/\s+/).filter(Boolean));
+    }
+  }, [mnemonic, visible]);
 
   const handleCopyToClipboard = async () => {
     try {
-      await Clipboard.setStringAsync(recoveryPhrases.join(" "));
+      await Clipboard.setStringAsync(mnemonicArray.join(" "));
       Alert.alert("Copied!", "Recovery phrases copied to clipboard.");
     } catch (error) {
       console.error("⚠️ Error copying phrases:", error);
@@ -45,70 +56,72 @@ const RecoveryPhraseModal = ({
     }
   };
 
-  const handleConfirmAndClose = () => {
-    onClose(confirmed); // Pass confirmation status back to parent
-  };
-
   return (
     <Modal
-      visible={visible}
       animationType="slide"
-      transparent
-      onRequestClose={() => onClose(false)} // Close without claiming if user cancels (back button/swipe)
+      transparent={true}
+      visible={visible}
+      onRequestClose={() => onClose(false)}
     >
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
-          <Text style={commonStyles.sectionTitle}>Recovery Phrases</Text>
-          <Text style={styles.description}>
-            Write down these recovery phrases in the exact order. You’ll need them to access your wallet.
-            Once this modal is closed, the phrases cannot be retrieved.
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Text style={styles.titleText}>Secret Recovery Phrase</Text>
+          <Text style={styles.subtitleText}>
+            Write these words down in order and store them securely. They are the only
+            way to recover this wallet.
           </Text>
-
-          {/* Phrases Grid */}
-          {recoveryPhrases.length > 0 ? (
-            <View style={styles.gridContainer}>
-              {recoveryPhrases.map((phrase, index) => (
-                <View key={`${phrase}-${index}`} style={styles.gridItem}>
-                  <Text style={styles.phraseIndex}>{index + 1}.</Text>
-                  <Text style={styles.phraseText}>{phrase}</Text>
-                </View>
-              ))}
-            </View>
-          ) : (
-            <Text style={styles.errorText}>No recovery phrases available.</Text>
+          
+          {/* Display unlock message if available */}
+          {unlockMessage && (
+            <Text style={styles.unlockMessage}>
+              {unlockMessage}
+            </Text>
           )}
 
-          {/* Copy Button with Confirmation */}
-          <TouchableOpacity
-            style={[
-              styles.copyButton,
-              recoveryPhrases.length === 0 && styles.disabledCopyButton,
-            ]}
-            onPress={handleCopyToClipboard}
-            disabled={recoveryPhrases.length === 0}
-          >
-            <Text style={styles.copyButtonText}>Copy Phrases</Text>
-          </TouchableOpacity>
-
-          {/* Secure Confirmation Switch */}
-          <View style={styles.switchContainer}>
-            <Text style={styles.switchText}>I have securely stored the phrases.</Text>
-            <Switch
-              value={confirmed}
-              onValueChange={setConfirmed}
-              trackColor={{ false: colors.secondary, true: colors.primary }} // Use valid colors
-              thumbColor={confirmed ? colors.background : colors.text}
+          <View style={styles.mnemonicContainer}>
+            <FlatList
+              data={mnemonicArray}
+              numColumns={2}
+              renderItem={({ item, index }) => (
+                <View style={styles.wordContainer}>
+                  <Text style={styles.wordNumber}>{index + 1}.</Text>
+                  <Text style={styles.wordText}>{item}</Text>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+              contentContainerStyle={styles.mnemonicList}
             />
           </View>
 
-          {/* Secure Access Button */}
-          <TouchableOpacity
-            style={[commonStyles.button, !confirmed && commonStyles.disabledButton]}
-            onPress={handleConfirmAndClose}
-            disabled={!confirmed} // Disabled until switch is toggled on
-          >
-            <Text style={commonStyles.buttonText}>Access Wallet</Text>
-          </TouchableOpacity>
+          <View style={styles.checkboxContainer}>
+            <Checkbox
+              checked={confirmed}
+              onChecked={setConfirmed}
+              label="I've written down my recovery phrase"
+            />
+          </View>
+
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity
+              style={[styles.button, styles.buttonCancel]}
+              onPress={() => onClose(false)}
+            >
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                styles.buttonConfirm,
+                !confirmed && styles.buttonDisabled,
+              ]}
+              disabled={!confirmed}
+              onPress={() => onClose(true)}
+            >
+              <Text style={[styles.buttonText, !confirmed && styles.buttonTextDisabled]}>
+                Access Wallet
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
@@ -116,76 +129,113 @@ const RecoveryPhraseModal = ({
 };
 
 const styles = StyleSheet.create({
-  modalOverlay: {
+  centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.7)", // Darker overlay for contrast
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    padding: 20,
   },
-  modalContent: {
-    width: "90%",
-    backgroundColor: colors.background, // Dark background from commonStyles
-    borderRadius: 10,
+  modalView: {
+    width: "100%",
+    backgroundColor: colors.background,
+    borderRadius: 20,
     padding: 20,
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    maxHeight: "80%",
   },
-  description: {
-    fontSize: 14,
+  titleText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: colors.text,
+    marginBottom: 10,
     textAlign: "center",
+  },
+  subtitleText: {
+    fontSize: 14,
+    color: extendedColors.textSecondary,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  unlockMessage: {
+    fontSize: 14,
+    color: colors.primary,
     marginBottom: 15,
-    color: colors.placeholder, // Muted text for description
-  },
-  gridContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    marginVertical: 10,
-  },
-  gridItem: {
-    width: "30%",
-    marginVertical: 8,
-    alignItems: "center",
-  },
-  phraseIndex: {
-    fontWeight: "bold",
-    fontSize: 14,
-    color: colors.text, // Light text for readability
-  },
-  phraseText: {
-    fontSize: 16,
-    color: colors.primary, // Bright blue for phrases
     textAlign: "center",
+    fontWeight: "500",
   },
-  copyButton: {
-    padding: 10,
-    backgroundColor: colors.primary, // Bright blue from commonStyles
-    borderRadius: 5,
-    marginVertical: 10,
-    width: 140,
-    alignItems: "center",
+  mnemonicContainer: {
+    width: "100%",
+    padding: 15,
+    backgroundColor: extendedColors.cardBackground,
+    borderRadius: 10,
+    marginBottom: 20,
   },
-  disabledCopyButton: {
-    backgroundColor: colors.secondary, // Dark gray for disabled state
+  mnemonicList: {
+    alignItems: "flex-start",
   },
-  copyButtonText: {
-    color: colors.background, // Dark text on buttons for contrast
-    fontWeight: "bold",
-    fontSize: 14,
-  },
-  switchContainer: {
+  wordContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 10,
+    width: "50%",
+    padding: 8,
   },
-  switchText: {
-    marginRight: 10,
+  wordNumber: {
     fontSize: 14,
-    color: colors.text, // Light text
+    color: extendedColors.textSecondary,
+    marginRight: 5,
+    width: 20,
+    textAlign: "right",
   },
-  errorText: {
-    fontSize: 14,
-    color: colors.error, // Bright red for errors
-    marginVertical: 10,
+  wordText: {
+    fontSize: 16,
+    color: colors.text,
+    fontWeight: "500",
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+    width: "100%",
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  button: {
+    borderRadius: 10,
+    padding: 15,
+    elevation: 2,
+    width: "48%",
+    alignItems: "center",
+  },
+  buttonConfirm: {
+    backgroundColor: colors.primary,
+  },
+  buttonCancel: {
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  buttonDisabled: {
+    backgroundColor: extendedColors.disabled,
+  },
+  buttonText: {
+    color: colors.text,
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  buttonTextDisabled: {
+    color: extendedColors.textDisabled,
   },
 });
 

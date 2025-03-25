@@ -1,4 +1,9 @@
 /**
+ * @deprecated This file is deprecated. Please use the TypeScript version in '../api/routes.ts'
+ * which provides a more typesafe API route definition with full TypeScript support.
+ */
+
+/**
  * @typedef {Object} ApiRoutes
  */
 
@@ -30,6 +35,7 @@
 
 /**
  * @type {Object.<string, CreateGiftRoute | ClaimGiftRoute | GiftStatusRoute | GetWalletRoute>}
+ * @deprecated Use the API_ROUTES object from '../api/routes.ts' instead.
  */
 export const ApiRoutes = {
   // Gift Routes

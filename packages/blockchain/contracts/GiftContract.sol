@@ -12,7 +12,6 @@ interface IAutomationCompatible {
 contract GiftContract is ReentrancyGuard, IAutomationCompatible {
     struct Gift {
         uint256 giftAmount;  // The gift amount (what receiver gets)
-        uint256 feeAmount;   // The fee amount (5% of gift amount)
         uint256 unlockTimestamp; // When the gift can be claimed
         uint256 totalRequired;   // Total amount required (giftAmount + feeAmount)
         bool isClaimed;          // If the gift has been claimed
@@ -22,16 +21,13 @@ contract GiftContract is ReentrancyGuard, IAutomationCompatible {
     address public immutable ownerAddress;
     address public charityWallet;
     address public companyWallet;
-    uint256 public feePercentage = 5; // 5% fee
     mapping(address => Gift) public gifts; // Maps recipient wallet to Gift
     mapping(address => bool) public approvedTokens;
-    mapping(address => uint256) public totalFees;
 
     event FundsLocked(
         address indexed paymentWallet,
         address indexed tokenAddress,
         uint256 giftAmount,
-        uint256 feeAmount,
         address recipientWallet,
         uint256 unlockTimestamp
     );
@@ -48,7 +44,6 @@ contract GiftContract is ReentrancyGuard, IAutomationCompatible {
         uint256 amount,
         address recipientWallet
     );
-    event FeesWithdrawn(address indexed tokenAddress, uint256 amount);
     event TokenApproved(address indexed tokenAddress, bool approved);
 
     constructor() {
@@ -63,11 +58,6 @@ contract GiftContract is ReentrancyGuard, IAutomationCompatible {
     modifier onlyOwner() {
         require(msg.sender == ownerAddress, "Only owner");
         _;
-    }
-
-    function setFeePercentage(uint256 newFeePercentage) external onlyOwner {
-        require(newFeePercentage <= 10, "Fee too high");
-        feePercentage = newFeePercentage;
     }
 
     function setCharityWallet(address newCharityWallet) external onlyOwner {
@@ -105,29 +95,22 @@ contract GiftContract is ReentrancyGuard, IAutomationCompatible {
             require(msg.value == 0, "ETH sent with token function");
         }
         
-        // Calculate fee (5% of gift amount)
-        uint256 calcFeeAmount = (giftAmount * feePercentage) / 100;
-        uint256 calcTotalRequired = giftAmount + calcFeeAmount;
-        
         // Check if the wallet already has an existing gift
         Gift storage existingGift = gifts[recipientWallet];
         
-        // If the gift is already claimed, we just add funds and take our fee
+        // If the gift is already claimed, we just add funds
         if (existingGift.isClaimed && existingGift.tokenAddress == tokenAddress) {
             existingGift.giftAmount += giftAmount;
-            existingGift.feeAmount += calcFeeAmount;
-            totalFees[tokenAddress] += calcFeeAmount;
             
             // For ERC20 tokens, transfer the tokens
             if (tokenAddress != address(0)) {
-                IERC20(tokenAddress).transferFrom(msg.sender, address(this), calcTotalRequired);
+                IERC20(tokenAddress).transferFrom(msg.sender, address(this), giftAmount);
             }
             
             emit FundsLocked(
                 msg.sender,
                 tokenAddress,
                 giftAmount,
-                calcFeeAmount,
                 recipientWallet,
                 existingGift.unlockTimestamp
             );
@@ -139,25 +122,21 @@ contract GiftContract is ReentrancyGuard, IAutomationCompatible {
             // Create the new gift
             gifts[recipientWallet] = Gift({
                 giftAmount: giftAmount,
-                feeAmount: calcFeeAmount,
                 unlockTimestamp: unlockTimestamp,
-                totalRequired: calcTotalRequired,
+                totalRequired: giftAmount,
                 isClaimed: false,
                 tokenAddress: tokenAddress
             });
             
-            totalFees[tokenAddress] += calcFeeAmount;
-            
             // For ERC20 tokens, transfer the tokens
             if (tokenAddress != address(0)) {
-                IERC20(tokenAddress).transferFrom(msg.sender, address(this), calcTotalRequired);
+                IERC20(tokenAddress).transferFrom(msg.sender, address(this), giftAmount);
             }
             
             emit FundsLocked(
                 msg.sender,
                 tokenAddress,
                 giftAmount,
-                calcFeeAmount,
                 recipientWallet,
                 unlockTimestamp
             );
@@ -205,19 +184,16 @@ contract GiftContract is ReentrancyGuard, IAutomationCompatible {
         // If payment is equal or greater than required, accept it
         // Update the existing gift
         existingGift.giftAmount = giftAmount;
-        existingGift.feeAmount = calcFeeAmount;
-        totalFees[tokenAddress] += calcFeeAmount;
         
         // For ERC20 tokens, transfer the tokens
         if (tokenAddress != address(0)) {
-            IERC20(tokenAddress).transferFrom(msg.sender, address(this), calcTotalRequired);
+            IERC20(tokenAddress).transferFrom(msg.sender, address(this), giftAmount);
         }
         
         emit FundsLocked(
             msg.sender,
             tokenAddress,
             giftAmount,
-            calcFeeAmount,
             recipientWallet,
             existingGift.unlockTimestamp
         );
@@ -364,30 +340,8 @@ contract GiftContract is ReentrancyGuard, IAutomationCompatible {
         emit FundsTransferred(msg.sender, tokenToTransfer, amountToTransfer, recipientWallet);
     }
 
-    function withdrawFees(address tokenToWithdraw) external onlyOwner {
-        uint256 amountToWithdraw = totalFees[tokenToWithdraw];
-        require(amountToWithdraw > 0, "No fees to withdraw");
-        totalFees[tokenToWithdraw] = 0;
-
-        if (tokenToWithdraw == address(0)) {
-            (bool success, ) = companyWallet.call{value: amountToWithdraw}("");
-            require(success, "MATIC withdrawal failed");
-        } else {
-            require(
-                IERC20(tokenToWithdraw).transfer(companyWallet, amountToWithdraw),
-                "Token withdrawal failed"
-            );
-        }
-        emit FeesWithdrawn(tokenToWithdraw, amountToWithdraw);
-    }
-
-    function getTotalFees(address tokenToCheck) external view returns (uint256) {
-        return totalFees[tokenToCheck];
-    }
-    
     function getGift(address recipientWallet) external view returns (
         uint256 giftAmount,
-        uint256 feeAmount,
         uint256 unlockTimestamp,
         uint256 totalRequired,
         bool isClaimed,
@@ -396,7 +350,6 @@ contract GiftContract is ReentrancyGuard, IAutomationCompatible {
         Gift memory gift = gifts[recipientWallet];
         return (
             gift.giftAmount,
-            gift.feeAmount,
             gift.unlockTimestamp,
             gift.totalRequired,
             gift.isClaimed,
@@ -492,5 +445,21 @@ contract GiftContract is ReentrancyGuard, IAutomationCompatible {
                 }
             }
         }
+    }
+
+    // Add a new function to get gift details for a recipient
+    function getGiftsByRecipient(address recipientWallet) external view returns (
+        uint256 giftAmount,
+        uint256 unlockTimestamp,
+        bool isClaimed,
+        address tokenAddress
+    ) {
+        Gift memory gift = gifts[recipientWallet];
+        return (
+            gift.giftAmount,
+            gift.unlockTimestamp,
+            gift.isClaimed,
+            gift.tokenAddress
+        );
     }
 }

@@ -32,24 +32,22 @@ async function main() {
     const contractABI = contractArtifact.abi;
     const contract = new ethers.Contract(contractAddress, contractABI, ethers.provider);
     
-    // Get fee bucket balance (totalFees)
-    console.log("\n=== Fee Bucket Balance ===");
-    // Check for native token (ETH/MATIC) fees
-    const nativeTokenFees = await contract.totalFees("0x0000000000000000000000000000000000000000");
-    console.log(`Native Token Fees: ${ethers.formatEther(nativeTokenFees)} ETH`);
-    
     // Check for gifts in wallet wallets from MongoDB
     console.log("\n=== Check for specific gift addresses ===");
     
     // Add addresses of gift wallets you want to check
     const giftWallets = [
-      "0x009997e88445e1926d9002b80367dab5e8af23c6",
-      "0x17c7e18385db574ce5cbf5009cb21a0380cc6cb7"
+      "0x1fdce11c83f54e88d93e9b7321d0cc38e0560cea"
     ];
     
     for (const recipientWallet of giftWallets) {
       try {
         console.log(`\nChecking gift for recipient: ${recipientWallet}`);
+        
+        // Check wallet balance
+        const walletBalance = await ethers.provider.getBalance(recipientWallet);
+        console.log(`Wallet balance: ${ethers.formatEther(walletBalance)} ETH`);
+        
         const gift = await contract.gifts(recipientWallet);
         
         if (gift.giftAmount == 0) {
@@ -58,7 +56,6 @@ async function main() {
         }
         
         console.log(`Gift amount: ${ethers.formatEther(gift.giftAmount)} ETH`);
-        console.log(`Fee amount: ${ethers.formatEther(gift.feeAmount)} ETH`);
         console.log(`Unlock timestamp: ${new Date(Number(gift.unlockTimestamp) * 1000).toLocaleString()}`);
         console.log(`Is claimed: ${gift.isClaimed}`);
         console.log(`Token address: ${gift.tokenAddress}`);

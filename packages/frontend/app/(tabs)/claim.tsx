@@ -21,10 +21,13 @@ import Reanimated, {
   withTiming,
   Easing,
 } from "react-native-reanimated";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Import the CurrencyKey type from ClaimedGift.tsx or define it here
+// TODO: Type Redundancy Issue - This type should be imported from @gifticapp/shared
 type CurrencyKey = "MATIC" | "ETH" | "WBTC" | "USDC" | "USDT" | "DAI";
 
+// TODO: Type Redundancy Issue - This interface should be imported from @gifticapp/shared
 interface ClaimedGiftType {
   giftCode: string;
   currency: CurrencyKey;
@@ -39,6 +42,8 @@ interface ClaimedGiftType {
   fee?: number; // Add fee for transparency (optional, not shown to user)
   totalAmount?: number; // Add total payment amount (optional, not shown to user)
   gasFee?: number; // Add gas fee for transparency (optional, not shown to user)
+  fundsUnlocked?: boolean; // Add fundsUnlocked status for transparency (optional, not shown to user)
+  unlockMessage?: string; // Add unlockMessage for transparency (optional, not shown to user)
 }
 
 const ClaimGiftScreen: React.FC = () => {
@@ -60,23 +65,35 @@ const ClaimGiftScreen: React.FC = () => {
   // Memoized fetch claimed gifts function
   const fetchClaimedGifts = useCallback(async () => {
     try {
+      // Check if we have a wallet address in storage
+      let walletAddress = await AsyncStorage.getItem('recipientWalletAddress');
+      
+      if (!walletAddress) {
+        // Use a default test wallet address for demo purposes
+        walletAddress = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
+        // Store it for future use
+        await AsyncStorage.setItem('recipientWalletAddress', walletAddress);
+        console.log("Created and stored default wallet address for claimed gifts:", walletAddress);
+      }
+      
+      console.log(`Fetching claimed gifts for address: ${walletAddress}`);
+      
       const response = await axios.get(
-        `${API_BASE_URL}/api/gift/claimed?userEmail=${encodeURIComponent(userEmail)}`
+        `${API_BASE_URL}/api/gift/claimed?address=${encodeURIComponent(walletAddress)}`
       );
+      
       if (response.data.success) {
         setClaimedGifts(response.data.gifts || []);
+        console.log(`Successfully fetched ${response.data.gifts?.length || 0} claimed gifts`);
       } else {
-        Alert.alert("Error", response.data.error || "Failed to fetch claimed gifts.");
+        console.warn("Error in claimed gifts response:", response.data.error);
+        // Don't show alert for this error as it's not critical
       }
     } catch (error: unknown) {
       console.error("Error fetching claimed gifts:", error);
-      let errorMessage = "Network error. Please try again.";
-      if (axios.isAxiosError(error)) {
-        errorMessage = error.response?.data?.error || errorMessage;
-      }
-      Alert.alert("Error", errorMessage);
+      // Don't show alert for network errors as they're not critical for UX
     }
-  }, [userEmail]); // Depends on userEmail, as it's part of the API call
+  }, []); // No dependencies since we're getting address from storage
 
   // Memoized claimed gifts list
   const memoizedClaimedGifts = useMemo(() => claimedGifts, [claimedGifts]);
@@ -112,28 +129,48 @@ const ClaimGiftScreen: React.FC = () => {
 
     setIsSubmitting(true);
     try {
+      // First verify the gift code to get gift details
       const verifyResponse = await axios.post(`${API_BASE_URL}/api/gift/verify-code`, { giftCode });
+      console.log("Verify response:", JSON.stringify(verifyResponse.data, null, 2)); // Debug log
+      
       if (verifyResponse.data.success) {
         const giftDetails = verifyResponse.data.giftDetails as ClaimedGiftType;
+        
+        // Check payment status explicitly
         if (giftDetails.paymentStatus !== "received") {
-          Alert.alert("Gift Not Ready", "This gift is not ready yet. Payment is still pending.");
+          setIsSubmitting(false);
+          Alert.alert(
+            "Payment Pending", 
+            "This gift's payment is still being processed. Please try again after the transaction is confirmed.",
+            [{ text: "OK" }]
+          );
           return;
         }
+        
+        // Use wallet address from the gift details
+        const recipientAddress = giftDetails.walletAddress;
+        await AsyncStorage.setItem('recipientWalletAddress', recipientAddress);
+        console.log("Using recipient address from gift:", recipientAddress);
+      
         // Fetch the mnemonic without claiming (new /preclaim endpoint)
         const preclaimResponse = await axios.post(`${API_BASE_URL}/api/gift/preclaim`, {
           giftCode: giftDetails.giftCode,
-          userEmail: userEmail,
+          recipientEmail: userEmail,
+          recipientAddress: recipientAddress
         });
+      
         console.log("Preclaim response for gift:", JSON.stringify(preclaimResponse.data, null, 2)); // Detailed debug log
+      
         if (preclaimResponse.data.success) {
-          const { mnemonic, giftAmount, totalAmount, fee, gasFee } = preclaimResponse.data;
+          const { mnemonic, giftAmount, totalAmount, fee, gasFee, fundsUnlocked, unlockMessage } = preclaimResponse.data;
           if (!mnemonic || typeof mnemonic !== "string" || mnemonic.trim() === "") {
             throw new Error("Invalid or missing mnemonic received from backend.");
           }
-          // Show confirmation before displaying recovery phrases
+          
+          // Show confirmation before displaying recovery phrases, include unlock message
           Alert.alert(
             "Preview Recovery Phrases?",
-            "You're about to view sensitive recovery phrases for this gift. Write them down securely, as they can't be retrieved later. Do you want to continue?",
+            `You're about to view sensitive recovery phrases for this gift. Write them down securely, as they can't be retrieved later. ${unlockMessage}`,
             [
               {
                 text: "Cancel",
@@ -146,15 +183,17 @@ const ClaimGiftScreen: React.FC = () => {
               {
                 text: "Continue",
                 onPress: () => {
-                  // Update gift details with the mnemonic, amounts, and keep claimed = false
+                  // Update gift details with the mnemonic, amounts, and unlock status
                   const updatedGiftDetails: ClaimedGiftType = {
                     ...giftDetails,
                     mnemonic, // Store the actual mnemonic
                     claimed: false, // Don't mark as claimed yet
                     amount: giftAmount, // Receiver's exact amount
-                    fee, // Fee after gas deduction (optional, not shown to user)
-                    totalAmount, // Payment amount (optional, not shown to user)
-                    gasFee, // Gas fee deducted from fee (optional, not shown to user)
+                    fee, // Fee after gas deduction
+                    totalAmount, // Payment amount
+                    gasFee, // Gas fee deducted from fee
+                    fundsUnlocked, // Whether funds are immediately transferable
+                    unlockMessage, // Message about fund availability
                   };
                   setCurrentGiftDetails(updatedGiftDetails);
                   setRecoveryModalVisible(true);
@@ -189,7 +228,7 @@ const ClaimGiftScreen: React.FC = () => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [giftCode, userEmail]); // Depends on giftCode and userEmail for the API calls
+  }, [giftCode, userEmail]);
 
   // Memoized handle confirm recovery function
   const handleConfirmRecovery = useCallback(async (mnemonicConfirmed: boolean) => {
@@ -199,29 +238,43 @@ const ClaimGiftScreen: React.FC = () => {
     }
 
     try {
-      console.log("Confirming claim for gift with code:", currentGiftDetails!.giftCode); // Use non-null assertion
+      // Use the recipient address from the gift details
+      const recipientAddress = currentGiftDetails.walletAddress;
+      
+      console.log("Confirming claim for gift with code:", currentGiftDetails!.giftCode);
+      console.log("Using recipient address:", recipientAddress);
+      
       const response = await axios.post(`${API_BASE_URL}/api/gift/claim`, {
         giftCode: currentGiftDetails!.giftCode,
-        userEmail: userEmail,
+        recipientEmail: userEmail,
+        recipientAddress: recipientAddress
       });
       console.log("Claim response for gift:", JSON.stringify(response.data, null, 2)); // Detailed debug log
+      
       if (response.data.success) {
-        const { mnemonic, giftAmount } = response.data;
+        const { mnemonic, giftAmount, fundsUnlocked, unlockMessage } = response.data;
         if (!mnemonic || typeof mnemonic !== "string" || mnemonic.trim() === "") {
           throw new Error("Invalid or missing mnemonic received from backend.");
         }
+        
         // Update gift details with claimed status and amounts
         const updatedGiftDetails: ClaimedGiftType = {
           ...currentGiftDetails!,
           claimed: true, // Mark as claimed only after confirmation
           amount: giftAmount, // Receiver's exact amount
+          fundsUnlocked, // Update funds unlock status
+          unlockMessage, // Update unlock message
         };
+        
         setCurrentGiftDetails(updatedGiftDetails); // Update state
         setRecoveryModalVisible(false);
         await fetchClaimedGifts(); // Refresh the claimed gifts list
+        
+        // Show success message with unlock information
         Alert.alert(
-          "Success",
-          `Gift claimed! You'll receive ${giftAmount} ${currentGiftDetails!.currency} on ${new Date(currentGiftDetails!.unlockDate).toLocaleDateString()}.`
+          "Wallet Access Successful",
+          `Your gift has been claimed successfully! ${unlockMessage}`,
+          [{ text: "OK" }]
         );
       } else {
         let errorMessage = response.data.error || "Gift claim failed.";
@@ -242,7 +295,7 @@ const ClaimGiftScreen: React.FC = () => {
       }
       Alert.alert("Error", errorMessage);
     }
-  }, [currentGiftDetails, userEmail]); // Depends on currentGiftDetails and userEmail for the claim
+  }, [currentGiftDetails, userEmail, fetchClaimedGifts]);
 
   // Periodic refresh every 5 minutes and initial fetch
   useEffect(() => {
@@ -342,8 +395,9 @@ const ClaimGiftScreen: React.FC = () => {
         {currentGiftDetails && (
           <RecoveryPhraseModal
             visible={recoveryModalVisible}
-            mnemonic={currentGiftDetails.mnemonic ?? ""} // Ensure mnemonic is passed, default to empty string if undefined
-            onClose={(mnemonicConfirmed: boolean) => handleConfirmRecovery(mnemonicConfirmed)} // Use memoized handler
+            mnemonic={currentGiftDetails.mnemonic ?? ""}
+            unlockMessage={currentGiftDetails.unlockMessage}
+            onClose={(mnemonicConfirmed: boolean) => handleConfirmRecovery(mnemonicConfirmed)}
           />
         )}
       </View>

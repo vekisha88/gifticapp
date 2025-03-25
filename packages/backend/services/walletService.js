@@ -1,76 +1,168 @@
-import { Wallet } from "../models/wallet.js"; // ✅ Import Wallet Model
+import { ethers } from "ethers";
+import { Wallet } from "../models/wallet.js";
 import { logger } from "../logger.js";
+import { 
+  getAvailableWallet as getWallet, 
+  releaseWallet, 
+  checkWalletBalance, 
+  generateWallets 
+} from "../utils/walletGenerator.js";
+import { provider } from "./blockchainService.js";
 
-// ✅ Get an unused wallet from the database and mark it as reserved
+/**
+ * Get an unused wallet for a new gift
+ * @returns {Promise<Object|null>} Available wallet or null if none found
+ */
 export async function getUnusedWallet() {
-    try {
-        // Find and update a wallet where both used and reserved are false, atomically setting reserved to true
-        const wallet = await Wallet.findOneAndUpdate(
-            { used: false, reserved: false }, // Ensure wallet is unused and unreserved
-            { reserved: true }, // Mark as reserved
-            { new: true } // Return the updated document
-        );
-
-        if (wallet) {
-            logger.info(`✅ Wallet reserved: ${wallet.address} (Index: ${wallet.index})`);
-            return wallet; // Return the wallet, now marked as reserved, with address and index
-        }
-
-        logger.warn("❌ No unused and unreserved wallets available.");
-        return null;
-    } catch (error) {
-        logger.error(`❌ Error fetching unused wallet: ${error.message}`);
-        throw error;
+  try {
+    // Get an available wallet
+    const wallet = await getWallet();
+    
+    if (!wallet) {
+      logger.warn("No available wallets found");
+      
+      // Check total wallet count and generate more if needed
+      const totalWallets = await Wallet.countDocuments();
+      if (totalWallets < 10) {
+        logger.info("Generating more wallets...");
+        await generateWallets(0, 20);
+        return getUnusedWallet(); // Try again after generating wallets
+      }
+      
+      return null;
     }
+    
+    // Check wallet balance
+    try {
+      await checkWalletBalance(wallet.address, provider);
+    } catch (error) {
+      logger.error(`Error checking wallet balance: ${error.message}`);
+      // Continue even if balance check fails
+    }
+    
+    return wallet;
+  } catch (error) {
+    logger.error(`Error getting unused wallet: ${error.message}`);
+    return null;
+  }
+}
+
+/**
+ * Release a wallet reservation
+ * @param {string} address Wallet address to release
+ * @returns {Promise<boolean>} Success status
+ */
+export async function releaseWalletReservation(address) {
+  try {
+    if (!address) {
+      logger.warn("No address provided for wallet release");
+      return false;
+    }
+    
+    const result = await releaseWallet(address);
+    return !!result;
+  } catch (error) {
+    logger.error(`Error releasing wallet reservation: ${error.message}`);
+    return false;
+  }
+}
+
+/**
+ * Get wallet balance
+ * @param {string} address Wallet address to check
+ * @returns {Promise<string>} Balance in ETH
+ */
+export async function getWalletBalance(address) {
+  try {
+    return await checkWalletBalance(address, provider);
+  } catch (error) {
+    logger.error(`Error getting wallet balance: ${error.message}`);
+    return "0";
+  }
+}
+
+/**
+ * Count available wallets
+ * @returns {Promise<number>} Number of available wallets
+ */
+export async function countAvailableWallets() {
+  try {
+    const count = await Wallet.countDocuments({ reserved: false });
+    logger.info(`Available wallets: ${count}`);
+    return count;
+  } catch (error) {
+    logger.error(`Error counting available wallets: ${error.message}`);
+    return 0;
+  }
+}
+
+/**
+ * Generate additional wallets if needed
+ * @param {number} minAvailable Minimum number of available wallets
+ * @returns {Promise<number>} Number of wallets generated
+ */
+export async function ensureMinimumWallets(minAvailable = 10) {
+  try {
+    const availableCount = await countAvailableWallets();
+    
+    if (availableCount < minAvailable) {
+      const countToGenerate = minAvailable - availableCount;
+      logger.info(`Generating ${countToGenerate} additional wallets...`);
+      const newWallets = await generateWallets(0, countToGenerate);
+      return newWallets.length;
+    }
+    
+    return 0;
+  } catch (error) {
+    logger.error(`Error ensuring minimum wallets: ${error.message}`);
+    return 0;
+  }
 }
 
 // ✅ Mark a wallet as used (and leave reserved unchanged, as per request)
 export async function markWalletAsUsed(walletIndex) {
-    try {
-        const wallet = await Wallet.findOneAndUpdate(
-            { index: walletIndex, used: false }, // Ensure wallet exists, is unused, and can be any reserved state
-            { used: true }, // Mark as used, leaving reserved unchanged
-            { new: true }
-        );
-        if (!wallet) {
-            logger.warn(`❌ Wallet with index ${walletIndex} not found or already used.`);
-        } else {
-            logger.info(`✅ Wallet index ${walletIndex} marked as used. Reserved status unchanged.`);
-        }
-    } catch (error) {
-        logger.error(`❌ Error marking wallet as used: ${error.message}`);
-        throw error;
+  try {
+    // This is deliberately not an atomic update so it doesn't affect reservation status
+    const wallet = await Wallet.findOne({ index: walletIndex });
+    if (!wallet) {
+      return { success: false, error: "Wallet not found" };
     }
+    
+    wallet.used = true; // Mark as used
+    await wallet.save();
+    logger.info(`✅ Wallet ${wallet.address} (Index: ${wallet.index}) marked as used. Reserved status: ${wallet.reserved}`);
+    return { success: true, wallet: wallet };
+  } catch (error) {
+    logger.error(`❌ Error marking wallet as used: ${error.message}`);
+    return { success: false, error: error.message };
+  }
 }
 
-// ✅ Get the last used wallet index from the database
-export async function getLastWalletIndex() {
-    try {
-        const lastWallet = await Wallet.findOne().sort({ index: -1 });
-        return lastWallet ? lastWallet.index + 1 : 0; // Start from 0 if no wallets exist
-    } catch (error) {
-        logger.error(`❌ Error getting last wallet index: ${error.message}`);
-        throw error;
-    }
-}
-
-// ✅ Save a newly generated wallet to the database
+// ✅ Save a wallet with encrypted private key to the database
 export async function saveWalletToDatabase(walletData) {
-    try {
-        const newWallet = new Wallet({
-            index: walletData.index,
-            address: walletData.address,
-            privateKey: walletData.privateKey,
-            used: false, // Newly generated wallets are unused by default
-            reserved: false, // Newly generated wallets are not reserved by default
-            network: walletData.network || 'polygon'
-        });
+  try {
+    const wallet = new Wallet(walletData);
+    await wallet.save();
+    logger.info(`✅ Wallet saved: ${walletData.address} (Index: ${walletData.index})`);
+    return wallet;
+  } catch (error) {
+    logger.error(`❌ Error saving wallet to database: ${error.message}`);
+    throw error;
+  }
+}
 
-        await newWallet.save();
-        logger.info(`✅ Wallet saved: ${walletData.address} (Index: ${walletData.index})`);
-        return newWallet;
-    } catch (error) {
-        logger.error(`❌ Error saving wallet to database: ${error.message}`);
-        throw error;
-    }
+// ✅ Get the highest wallet index in use (for generating sequential wallets)
+export async function getLastWalletIndex() {
+  try {
+    // Find the wallet with the highest index
+    const lastWallet = await Wallet.findOne().sort({ index: -1 });
+    
+    // Return the index, or 0 if no wallets exist
+    const lastIndex = lastWallet ? lastWallet.index : 0;
+    logger.info(`✅ Last wallet index: ${lastIndex}`);
+    return lastIndex;
+  } catch (error) {
+    logger.error(`❌ Error fetching last wallet index: ${error.message}`);
+    throw error; 
+  }
 }

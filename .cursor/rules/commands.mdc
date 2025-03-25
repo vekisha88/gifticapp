@@ -3,4 +3,4 @@ description:
 globs: 
 alwaysApply: true
 ---
-USE PowerShell compatible commands only
+USE PowerShell compatible commands only, you can not use &&

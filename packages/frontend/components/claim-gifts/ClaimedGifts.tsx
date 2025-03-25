@@ -7,15 +7,31 @@ import {
   Modal,
   Image,
   Alert,
+  Linking,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useClipboard } from "../../utils/useClipboard";
 import { useLivePrice } from "../../utils/useLivePrice";
 import commonStyles, { colors } from "../../styles/commonStyles";
+// Import commented out to fix linter error
+// import { Card, Button } from "react-native-paper";
+// Import commented out to fix linter error
+// import BigNumber from "bignumber.js";
+// Import commented out to fix linter error
+// import { formatDistanceToNow, parseISO, isAfter } from 'date-fns';
+// Import commented out to fix linter error
+// import { COLOR_PALETTE } from "../../constants/colors";
+// Import commented out to fix linter error
+// import { BLOCKCHAIN_EXPLORER_URL } from "../../constants/config";
+import Clipboard from "@react-native-clipboard/clipboard";
+// Import commented out to fix linter error
+// import Toast from "react-native-toast-message";
 
+// TODO: Type Redundancy Issue - This type should be imported from @gifticapp/shared
 // Define the currency keys as a type
 type CurrencyKey = "MATIC" | "ETH" | "WBTC" | "USDC" | "USDT" | "DAI";
 
+// TODO: Type Redundancy Issue - This interface should be imported from @gifticapp/shared
 // Interface for the gift details
 interface GiftDetails {
   currency: CurrencyKey;

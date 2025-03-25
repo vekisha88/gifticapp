@@ -1,107 +1,159 @@
 import mongoose from "mongoose";
 import crypto from "crypto";
+import { isValidEthereumAddress } from "../utils/validation.js";
 import { logger } from "../logger.js";
 
-// Environment variable for encryption key (should be set in production)
-const ENCRYPTION_KEY = process.env.WALLET_ENCRYPTION_KEY || "a-default-encryption-key-that-should-be-changed";
-const IV_LENGTH = 16; // For AES, this is always 16
+// Simple encryption/decryption for wallet private keys
+// Note: In production, use a secure secret management service
+const SECRET_KEY = process.env.WALLET_ENCRYPTION_KEY || "default-key-for-development-only-change-me";
 
-// Function to encrypt private key
-function encryptPrivateKey(privateKey) {
-  const iv = crypto.randomBytes(IV_LENGTH);
-  const cipher = crypto.createCipheriv(
-    'aes-256-cbc',
-    Buffer.from(ENCRYPTION_KEY.padEnd(32).slice(0, 32)),
-    iv
-  );
-  
-  let encrypted = cipher.update(privateKey);
-  encrypted = Buffer.concat([encrypted, cipher.final()]);
-  return iv.toString('hex') + ':' + encrypted.toString('hex');
-}
-
-// Function to decrypt private key
-function decryptPrivateKey(encryptedPrivateKey) {
-  try {
-    const textParts = encryptedPrivateKey.split(':');
-    const iv = Buffer.from(textParts[0], 'hex');
-    const encryptedText = Buffer.from(textParts[1], 'hex');
-    const decipher = crypto.createDecipheriv(
-      'aes-256-cbc',
-      Buffer.from(ENCRYPTION_KEY.padEnd(32).slice(0, 32)),
-      iv
-    );
-    
-    let decrypted = decipher.update(encryptedText);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-    return decrypted.toString();
-  } catch (error) {
-    logger.error(`Failed to decrypt private key: ${error.message}`);
-    throw new Error('Failed to decrypt private key');
-  }
-}
-
-// Define the Wallet schema
-const walletSchema = new mongoose.Schema(
-  {
-    index: { 
-      type: Number, 
-      required: true, 
-      min: [0, "Wallet index must be a positive number."] 
-    }, // Removed unique—reuse allowed after expiration
-    address: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      lowercase: true, // Ensure addresses are stored in lowercase
-      match: [/^0x[a-fA-F0-9]{40}$/, "Please provide a valid Ethereum address"]
-    },
-    encryptedPrivateKey: { // Store encrypted private key instead of plaintext
-      type: String,
-      required: true,
-    },
-    used: { 
-      type: Boolean, 
-      default: false 
-    },
-    reserved: { // New field to track temporary reservations
-      type: Boolean,
-      required: true, // Ensure this field is always set
-      default: false // Default to false (not reserved)
-    },
-    network: {
-      type: String,
-      default: 'polygon'
+/**
+ * Wallet schema definition
+ */
+const walletSchema = new mongoose.Schema({
+  // Wallet address (public key)
+  address: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+    validate: {
+      validator: (value) => isValidEthereumAddress(value),
+      message: "Invalid Ethereum address format"
     }
   },
-  { timestamps: true }
-);
+  // Encrypted private key (never store raw private keys!)
+  encryptedPrivateKey: {
+    type: String,
+    required: true
+  },
+  // Used to track temporary reservations
+  reserved: {
+    type: Boolean,
+    default: false
+  },
+  // Balance in wei
+  balance: {
+    type: String,
+    default: "0"
+  },
+  // Last balance update
+  lastBalanceUpdate: {
+    type: Date,
+    default: Date.now
+  },
+  // Metadata
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  }
+});
 
-// Index for fast lookup (remove duplicate address index)
-walletSchema.index({ index: 1 }); // Index for sorting, not unique
-
-// Add method to securely retrieve the private key
+/**
+ * Method to decrypt the private key
+ * @returns {string} Decrypted private key
+ */
 walletSchema.methods.getDecryptedPrivateKey = function() {
-  return decryptPrivateKey(this.encryptedPrivateKey);
+  try {
+    return decrypt(this.encryptedPrivateKey);
+  } catch (error) {
+    logger.error(`Failed to decrypt private key: ${error.message}`);
+    throw new Error(`Failed to decrypt private key: ${error.message}`);
+  }
 };
 
-// Pre-save hook to encrypt private key if it's changed
-walletSchema.pre("save", function(next) {
-  // Only encrypt if it's a new wallet or the private key has been modified
-  if (this.isNew || this.isModified("encryptedPrivateKey")) {
-    try {
-      // Check if the private key is already encrypted
-      if (!this.encryptedPrivateKey.includes(':')) {
-        this.encryptedPrivateKey = encryptPrivateKey(this.encryptedPrivateKey);
-      }
-    } catch (error) {
-      logger.error(`Error encrypting private key: ${error.message}`);
-      return next(error);
+/**
+ * Encrypt a string using AES-256-CBC with an initialization vector
+ * @param {string} text Plain text to encrypt
+ * @returns {string} Encrypted text with IV prefixed
+ */
+function encrypt(text) {
+  // Generate a random initialization vector
+  const iv = crypto.randomBytes(16);
+  // Create a key buffer from the secret key (must be exactly 32 bytes for AES-256)
+  const key = crypto.createHash('sha256').update(String(SECRET_KEY)).digest();
+  // Create cipher with key and IV
+  const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+  
+  // Encrypt the text
+  let encrypted = cipher.update(text, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  
+  // Prefix the IV to the encrypted data (IV needs to be stored to decrypt)
+  return iv.toString('hex') + ':' + encrypted;
+}
+
+/**
+ * Decrypt an encrypted string
+ * @param {string} encrypted Encrypted text with IV prefixed
+ * @returns {string} Decrypted text
+ */
+function decrypt(encrypted) {
+  try {
+    // Handle legacy format (no IV)
+    if (!encrypted.includes(':')) {
+      // Use legacy decryption
+      const decipher = crypto.createDecipher('aes-256-cbc', SECRET_KEY);
+      let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+      decrypted += decipher.final('utf8');
+      return decrypted;
     }
+    
+    // Split the IV and the encrypted text
+    const parts = encrypted.split(':');
+    if (parts.length !== 2) {
+      throw new Error('Invalid encrypted format');
+    }
+    
+    const iv = Buffer.from(parts[0], 'hex');
+    const encryptedText = parts[1];
+    
+    // Create a key buffer from the secret key (must be exactly 32 bytes for AES-256)
+    const key = crypto.createHash('sha256').update(String(SECRET_KEY)).digest();
+    
+    // Create decipher
+    const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
+    
+    // Decrypt the text
+    let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    
+    return decrypted;
+  } catch (error) {
+    logger.error(`Decryption failed: ${error.message}`);
+    throw new Error(`Failed to decrypt: ${error.message}`);
   }
+}
+
+/**
+ * Helper function to encrypt a private key
+ * @param {string} privateKey Private key to encrypt
+ * @returns {string} Encrypted private key
+ */
+function encryptPrivateKey(privateKey) {
+  return encrypt(privateKey);
+}
+
+/**
+ * Pre-save hook to encrypt the private key if it has been modified
+ */
+walletSchema.pre("save", function(next) {
+  // Update timestamp
+  this.updatedAt = new Date();
+  
+  // Always store address in lowercase
+  if (this.address) {
+    this.address = this.address.toLowerCase();
+  }
+  
   next();
 });
 
-// Create the Wallet model
-export const Wallet = mongoose.model("Wallet", walletSchema);
+const Wallet = mongoose.model("Wallet", walletSchema);
+
+export { Wallet, encryptPrivateKey };

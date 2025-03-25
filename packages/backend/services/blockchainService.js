@@ -1,62 +1,114 @@
 import { ethers } from 'ethers';
 import { logger } from '../logger.js';
 import { Gift } from '../models/gift.js';
-import pkg from '@gifticapp/shared';
-const { GiftContractABI } = pkg;
 import contractAddressJson from "../../blockchain/contractAddress.json" with { type: "json" };
 import contractABIJson from "../../blockchain/artifacts/contracts/GiftContract.sol/GiftContract.json" with { type: "json" };
 
-const contractAddress = process.env.GIFT_CONTRACT_ADDRESS || '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-const provider = new ethers.JsonRpcProvider(process.env.RPC_URL || 'http://127.0.0.1:8545');
+// Centralized blockchain configuration
+const CONFIG = {
+  contractAddress: contractAddressJson.contractAddress || '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+  rpcUrl: process.env.RPC_URL || 'http://127.0.0.1:8545',
+  privateKey: process.env.PRIVATE_KEY || "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+  contractABI: contractABIJson.abi,
+  charityWallet: contractAddressJson.charityWallet || "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+  companyWallet: contractAddressJson.companyWallet || "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+};
 
-const CONTRACT_ADDRESS = contractAddressJson.contractAddress;
-const ContractABI = contractABIJson.abi;
+// Create providers and contracts only once
+const provider = new ethers.JsonRpcProvider(CONFIG.rpcUrl);
+const signer = new ethers.Wallet(CONFIG.privateKey, provider);
+const contract = new ethers.Contract(CONFIG.contractAddress, CONFIG.contractABI, signer);
 
-// Signer for contract interactions
-const signerPrivateKey = process.env.PRIVATE_KEY || "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
-const signer = new ethers.Wallet(signerPrivateKey, provider);
-const contract = new ethers.Contract(CONTRACT_ADDRESS, ContractABI, signer);
+// Export the centralized config and instances for reuse
+export { CONFIG, provider, signer, contract };
 
-export const initializeBlockchain = (config) => {
+/**
+ * Custom blockchain error class for standardized error handling
+ */
+class BlockchainError extends Error {
+  constructor(message, code, details = {}) {
+    super(message);
+    this.name = 'BlockchainError';
+    this.code = code;
+    this.details = details;
+  }
+}
+
+/**
+ * Initialize blockchain service with custom configuration
+ * @param {Object} config Custom configuration to override defaults
+ * @returns {Object} Initialized provider, signer and contract instances
+ */
+export const initializeBlockchain = (config = {}) => {
   try {
-    const provider = new ethers.JsonRpcProvider(config.rpcUrl);
-    const wallet = new ethers.Wallet(config.privateKey, provider);
-    const contract = new ethers.Contract(config.contractAddress, ContractABI, wallet);
+    const customConfig = { ...CONFIG, ...config };
+    const customProvider = new ethers.JsonRpcProvider(customConfig.rpcUrl);
+    const customSigner = new ethers.Wallet(customConfig.privateKey, customProvider);
+    const customContract = new ethers.Contract(customConfig.contractAddress, CONFIG.contractABI, customSigner);
 
     logger.info('✅ Blockchain service initialized successfully');
+    return { provider: customProvider, signer: customSigner, contract: customContract };
   } catch (error) {
-    logger.error(`❌ Error initializing blockchain service: ${error instanceof Error ? error.message : String(error)}`);
-    throw error;
+    const blockchainError = new BlockchainError(
+      'Failed to initialize blockchain service',
+      'INITIALIZATION_ERROR',
+      { originalError: error.message }
+    );
+    logger.error(`❌ ${blockchainError.message}: ${blockchainError.details.originalError}`);
+    throw blockchainError;
   }
 };
 
-export const lockFunds = async (giftCode, amount, targetWallet, unlockDate) => {
+export const lockFunds = async (giftCode, amount, targetWallet, unlockDate, feeAmount) => {
   try {
-    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY || '', provider);
-    const contract = new ethers.Contract(contractAddress, ContractABI, wallet);
+    // Convert gift amount to ethers BigInt
+    const amountBigInt = typeof amount === 'string' || typeof amount === 'number'
+      ? ethers.parseEther(amount.toString())
+      : amount;
+    
+    // We only send the gift amount to the contract, not the fee
+    logger.info(`Locking funds for gift ${giftCode}: ${ethers.formatEther(amountBigInt)} MATIC to contract for ${targetWallet}`);
 
+    // When calling lockFunds, we need to:
+    // 1. Send only the gift amount to the contract (not the fee)
+    // 2. Use zero address for native currency (MATIC/ETH)
+    // 3. Set value to the gift amount only
     const tx = await contract.lockFunds(
       ethers.ZeroAddress, // Zero address for native currency (MATIC/ETH)
-      amount,             // Gift amount
+      amountBigInt,       // Gift amount only (no fee)
       targetWallet,       // Recipient wallet address
       BigInt(Math.floor(unlockDate.getTime() / 1000)), // Unlock timestamp in seconds
-      { value: amount }   // Send the same amount as value
+      {
+        value: amountBigInt,  // Send only the gift amount as value
+        gasLimit: 500000      // Increase gas limit to be safe
+      }
     );
 
     const receipt = await tx.wait();
-    logger.info(`✅ Funds locked for gift ${giftCode}`);
+    logger.info(`✅ Funds locked for gift ${giftCode}, transaction hash: ${receipt.hash}`);
+    
+    // Now send the fee to the company wallet (minus gas used)
+    // This should happen in a separate function call
+    
     return receipt.hash;
   } catch (error) {
-    logger.error(`❌ Error locking funds: ${error instanceof Error ? error.message : String(error)}`);
-    throw error;
+    const blockchainError = new BlockchainError(
+      'Failed to lock funds in contract',
+      'LOCK_FUNDS_ERROR',
+      {
+        giftCode,
+        targetWallet,
+        amount: amount?.toString() || '0',
+        originalError: error.message
+      }
+    );
+    logger.error(`❌ ${blockchainError.message}: ${blockchainError.details.originalError}`);
+    throw blockchainError;
   }
 };
 
 export const releaseFunds = async (giftCode, recipientWallet) => {
   try {
-    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY || '', provider);
-    const contract = new ethers.Contract(contractAddress, ContractABI, wallet);
-
     const tx = await contract.releaseFunds(
       ethers.encodeBytes32String(giftCode),
       recipientWallet
@@ -66,14 +118,22 @@ export const releaseFunds = async (giftCode, recipientWallet) => {
     logger.info(`✅ Funds released for gift ${giftCode}`);
     return receipt.hash;
   } catch (error) {
-    logger.error(`❌ Error releasing funds: ${error instanceof Error ? error.message : String(error)}`);
-    throw error;
+    const blockchainError = new BlockchainError(
+      'Failed to release funds from contract',
+      'RELEASE_FUNDS_ERROR',
+      { 
+        giftCode,
+        recipientWallet,
+        originalError: error.message 
+      }
+    );
+    logger.error(`❌ ${blockchainError.message}: ${blockchainError.details.originalError}`);
+    throw blockchainError;
   }
 };
 
 export const getGiftStatus = async (giftCode) => {
   try {
-    const contract = new ethers.Contract(contractAddress, ContractABI, provider);
     const gift = await contract.gifts(ethers.encodeBytes32String(giftCode));
 
     return {
@@ -84,8 +144,16 @@ export const getGiftStatus = async (giftCode) => {
       released: gift.released
     };
   } catch (error) {
-    logger.error(`❌ Error getting gift status: ${error instanceof Error ? error.message : String(error)}`);
-    throw error;
+    const blockchainError = new BlockchainError(
+      'Failed to get gift status from contract',
+      'GET_GIFT_STATUS_ERROR',
+      { 
+        giftCode,
+        originalError: error.message 
+      }
+    );
+    logger.error(`❌ ${blockchainError.message}: ${blockchainError.details.originalError}`);
+    throw blockchainError;
   }
 };
 
@@ -152,10 +220,57 @@ export async function automateGiftReleases() {
       releasedCount
     };
   } catch (error) {
-    logger.error(`Error automating gift releases: ${error.message}`);
+    const blockchainError = new BlockchainError(
+      'Failed to automate gift releases',
+      'AUTOMATE_RELEASES_ERROR',
+      { originalError: error.message }
+    );
+    logger.error(`❌ ${blockchainError.message}: ${blockchainError.details.originalError}`);
     return {
       success: false,
-      error: error.message
+      error: blockchainError.message,
+      details: blockchainError.details
     };
   }
-} 
+}
+
+/**
+ * Send the remaining fee to the company wallet
+ * @param {string} giftCode The gift code for logging purposes
+ * @param {string|number|BigInt} feeAmount The fee amount to send
+ * @returns {Promise<string>} Transaction hash
+ */
+export const sendFeeToCompanyWallet = async (giftCode, feeAmount) => {
+  try {
+    // Convert fee amount to ethers BigInt if it's a string or number
+    const feeAmountBigInt = typeof feeAmount === 'string' || typeof feeAmount === 'number'
+      ? ethers.parseEther(feeAmount.toString())
+      : feeAmount;
+    
+    logger.info(`Sending fee for gift ${giftCode}: ${ethers.formatEther(feeAmountBigInt)} MATIC to company wallet ${CONFIG.companyWallet}`);
+    
+    // Send transaction directly to company wallet
+    const tx = await signer.sendTransaction({
+      to: CONFIG.companyWallet,
+      value: feeAmountBigInt,
+      gasLimit: 30000 // Lower gas limit for simple transfer
+    });
+    
+    const receipt = await tx.wait();
+    logger.info(`✅ Fee sent to company wallet for gift ${giftCode}, transaction hash: ${receipt.hash}`);
+    return receipt.hash;
+  } catch (error) {
+    const blockchainError = new BlockchainError(
+      'Failed to send fee to company wallet',
+      'SEND_FEE_ERROR',
+      {
+        giftCode,
+        companyWallet: CONFIG.companyWallet,
+        feeAmount: feeAmount?.toString() || '0',
+        originalError: error.message
+      }
+    );
+    logger.error(`❌ ${blockchainError.message}: ${blockchainError.details.originalError}`);
+    throw blockchainError;
+  }
+}; 

@@ -263,3 +263,53 @@ Key commands:
 - Refer to the project documentation for API endpoints and usage
 
 This setup guide should help you get the GifticApp running in your local environment. If you encounter any issues not covered here, please refer to the project's issue tracker or contact the development team.
+
+## Recent Improvements
+
+### Standardized Error Handling
+
+We've implemented a standardized error handling system throughout the application:
+
+- **Consistent Error Types**: All errors extend from a base `AppError` class with standardized properties
+- **Error Codes**: Enumerated error codes that map consistently to HTTP status codes
+- **Specialized Error Classes**: Purpose-built error classes for different scenarios (validation, not found, etc.)
+- **Async Handler Utility**: A wrapper for async functions that provides standardized error handling
+- **Frontend Error Handling**: Utilities for handling and displaying user-friendly error messages
+
+This system ensures:
+- Consistent error formats in API responses
+- Proper HTTP status codes based on error type
+- Detailed error information for debugging
+- User-friendly error messages in the frontend
+
+For more information, see [error-handling.md](packages/shared/docs/error-handling.md).
+
+### Centralized Environment Configuration
+
+We've implemented a centralized environment configuration system:
+
+- **Single Source of Truth**: Environment variables defined in one place
+- **Type Safety**: TypeScript interfaces for environment variables
+- **Consistent Access**: Single `env` object used throughout the application
+- **Intelligent Loading**: Environment files loaded in a predictable order
+- **Sensible Defaults**: Default values for all environment variables
+
+This system ensures:
+- Consistent environment variable access across packages
+- No duplicate or conflicting definitions
+- Easy environment configuration updates
+
+For more information, see [environment-config.md](packages/shared/docs/environment-config.md).
+
+### Environment Setup
+
+To set up your environment:
+
+1. Copy the `.env.example` file to `.env` in the project root:
+   ```
+   cp .env.example .env
+   ```
+
+2. Edit the `.env` file with your configuration values
+
+3. For local overrides that you don't want in Git, create a `.env.local` file

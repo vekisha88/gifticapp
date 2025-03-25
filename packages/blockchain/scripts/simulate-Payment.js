@@ -63,7 +63,7 @@ async function simulatePayment({ walletAddress, amount, currency, network }) {
 // Example usage with command line arguments
 const args = process.argv.slice(2);
 let options = {
-  walletAddress: "0x009997e88445e1926d9002b80367dab5e8af23c6",  // Ensure this matches exactly the format in MongoDB
+  walletAddress: "0x1fdce11c83f54e88d93e9b7321d0cc38e0560cea",  // Ensure this matches exactly the format in MongoDB
   amount: "1050",
   currency: "MATIC",
   network: "polygon"

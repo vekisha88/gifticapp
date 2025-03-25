@@ -8,6 +8,9 @@
     "dev": "tsc --watch",
     "clean": "rimraf dist"
   },
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  },
   "devDependencies": {
     "typescript": "^5.0.4",
     "rimraf": "^5.0.0"

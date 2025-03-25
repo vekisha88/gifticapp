@@ -1,189 +1,231 @@
 import express from "express";
 import { check, validationResult } from "express-validator";
 import { logger } from "../logger.js";
-import { createGift } from "../controllers/giftCreationController.js";
-import { 
+import {
+  getAvailableWallet,
+  createGift,
   verifyGiftCode,
   preclaimGift,
   claimGiftByCode,
   getClaimedGifts,
   checkGiftTransferable,
   transferGiftFunds
-} from "../controllers/giftClaimController.js";
-import { getUnusedWallet } from "../services/walletService.js";
+} from "../controllers/giftController.js";
 import { batchProcessGifts } from "../services/giftService.js";
 import { automateGiftReleases } from "../services/blockchainService.js";
+import { isValidEthereumAddress, isValidEmail, isValidFutureDate } from "../utils/validation.js";
+import { createValidationError } from "../utils/errorHandler.js";
+import { asyncHandler, sendError } from "../utils/apiResponses.js";
 
+/**
+ * NOTE: These routes are also defined in a type-safe manner in the shared package.
+ * See packages/shared/src/api/routes.ts for the definitive API route definitions.
+ * This ensures consistency between backend routes and frontend API calls.
+ */
 const router = express.Router();
 
-// Validation Helper (unchanged)
+/**
+ * Validation middleware that processes validation results
+ * @param {Array} validations Array of validation chains
+ * @returns {Function} Express middleware function
+ */
 const validate = (validations) => async (req, res, next) => {
-  await Promise.all(validations.map((validation) => validation.run(req)));
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    logger.warn(`Validation errors: ${JSON.stringify(errors.array())}`);
-    return res.status(400).json({ success: false, errors: errors.array() });
-  }
-  next();
-};
-
-// Custom datetime validator (unchanged)
-const isValidFutureDateTime = (value) => {
-  if (!value || typeof value !== "string") throw new Error("Invalid date and time format");
-  const dateTime = new Date(value);
-  if (isNaN(dateTime.getTime())) throw new Error("Invalid date and time format");
-  const now = new Date();
-  const twoHoursFromNow = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-  if (dateTime < twoHoursFromNow) throw new Error("Unlock date and time must be at least 2 hours from now.");
-  return true;
-};
-
-// Legacy route - will be deprecated in future
-router.get("/get-wallet", async (req, res) => {
   try {
-    const wallet = await getUnusedWallet();
-    if (!wallet) return res.status(500).json({ success: false, error: "No available wallets" });
-    res.json({ success: true, walletAddress: wallet.address });
+    await Promise.all(validations.map((validation) => validation.run(req)));
+    const errors = validationResult(req);
+    
+    if (!errors.isEmpty()) {
+      logger.warn(`Validation error in ${req.originalUrl}: ${JSON.stringify(errors.array())}`);
+      
+      // Convert validation errors to a standardized format
+      const validationError = createValidationError(
+        "Validation failed", 
+        "VALIDATION_ERROR",
+        { errors: errors.array() }
+      );
+      
+      return sendError(res, "Validation failed", 400, { errors: errors.array() });
+    }
+    
+    next();
   } catch (error) {
-    logger.error(`❌ Error fetching wallet: ${error.message}`);
-    res.status(500).json({ success: false, error: "Failed to fetch wallet" });
+    logger.error(`Error in validation middleware: ${error.message}`);
+    return sendError(res, "Validation failed due to server error", 500);
   }
-});
+};
 
-// Create gift route
+/**
+ * @route GET /api/gift/get-wallet
+ * @description Get an available wallet address for gift creation
+ * @access Public
+ */
+router.get(
+  "/get-wallet",
+  asyncHandler(getAvailableWallet)
+);
+
+/**
+ * @route POST /api/gift/create
+ * @description Create a new gift
+ * @access Public
+ */
 router.post(
   "/create",
-  validate([
-    check("recipientFirstName").notEmpty().withMessage("Recipient first name is required"),
-    check("recipientLastName").notEmpty().withMessage("Recipient last name is required"),
-    check("amount").isNumeric().custom((value) => value > 0).withMessage("Amount must be greater than zero"),
+  [
+    check("buyerEmail").trim().isEmail().withMessage("Valid email is required"),
+    check("recipientFirstName").trim().notEmpty().withMessage("Recipient first name is required"),
+    check("amount").isFloat({ min: 0.0001 }).withMessage("Amount must be a positive number"),
     check("currency").notEmpty().withMessage("Currency is required"),
-    check("buyerEmail").isEmail().withMessage("Buyer email is required"),
-    check("walletAddress").notEmpty().matches(/^0x[a-fA-F0-9]{40}$/).withMessage("Valid Ethereum address required"),
-    check("unlockDate").notEmpty().custom(isValidFutureDateTime),
-  ]),
-  (req, res) => {
-    logger.info(`Gift creation request body: ${JSON.stringify(req.body)}`);
-    createGift(req, res);
-  }
-);
-
-// Verify gift by code
-router.post(
-  "/verify-code", 
+    check("unlockDate").custom(value => isValidFutureDate(new Date(value))).withMessage("Unlock date must be in the future"),
+    check("walletAddress").custom(value => isValidEthereumAddress(value)).withMessage("Valid wallet address is required")
+  ],
   validate([
-    check("giftCode").notEmpty().withMessage("Gift code is required")
-  ]), 
-  verifyGiftCode
+    check("buyerEmail"),
+    check("recipientFirstName"),
+    check("amount"),
+    check("currency"),
+    check("unlockDate"),
+    check("walletAddress")
+  ]),
+  asyncHandler(createGift)
 );
 
-// Preclaim gift (show mnemonic without claiming)
+/**
+ * @route GET /api/gift/verify/:giftCode
+ * @description Verify a gift code
+ * @access Public
+ */
+router.get(
+  "/verify/:giftCode",
+  asyncHandler(verifyGiftCode)
+);
+
+/**
+ * @route POST /api/gift/verify-code
+ * @description Verify a gift code (alternative POST endpoint)
+ * @access Public
+ */
+router.post(
+  "/verify-code",
+  [
+    check("giftCode").trim().notEmpty().withMessage("Gift code is required")
+  ],
+  validate([check("giftCode")]),
+  asyncHandler(async (req, res) => {
+    // Reuse the same controller function
+    req.params.giftCode = req.body.giftCode;
+    return verifyGiftCode(req, res);
+  })
+);
+
+/**
+ * @route POST /api/gift/preclaim
+ * @description Pre-claim a gift (verify it's available and unlock date is valid)
+ * @access Public
+ */
 router.post(
   "/preclaim",
-  validate([
-    check("giftCode").notEmpty().withMessage("Gift code is required"),
-    check("userEmail").isEmail().withMessage("Valid user email is required"),
-  ]),
-  preclaimGift
+  [
+    check("giftCode").trim().notEmpty().withMessage("Gift code is required")
+  ],
+  validate([check("giftCode")]),
+  asyncHandler(preclaimGift)
 );
 
-// Claim gift by code
+/**
+ * @route POST /api/gift/claim
+ * @description Claim a gift
+ * @access Public
+ */
 router.post(
   "/claim",
+  [
+    check("giftCode").trim().notEmpty().withMessage("Gift code is required"),
+    check("recipientAddress").custom(value => isValidEthereumAddress(value)).withMessage("Valid recipient address is required"),
+    check("recipientEmail").trim().optional({ nullable: true }).custom(value => !value || isValidEmail(value)).withMessage("Valid email is required if provided")
+  ],
   validate([
-    check("giftCode").notEmpty().withMessage("Gift code is required"),
-    check("userEmail").isEmail().withMessage("Valid user email is required"),
+    check("giftCode"),
+    check("recipientAddress"),
+    check("recipientEmail")
   ]),
-  claimGiftByCode
+  asyncHandler(claimGiftByCode)
 );
 
-// Get claimed gifts
+/**
+ * @route GET /api/gift/claimed
+ * @description Get claimed gifts by recipient address
+ * @access Public
+ */
 router.get(
   "/claimed",
-  validate([
-    check("userEmail").isEmail().withMessage("Valid user email is required"),
-    check("page").optional().isInt({ min: 1 }).withMessage("Page must be a positive integer"),
-    check("limit").optional().isInt({ min: 1 }).withMessage("Limit must be a positive integer"),
-  ]),
-  getClaimedGifts
+  [
+    check("address").custom(value => {
+      if (!value) {
+        throw new Error("Address parameter is required");
+      }
+      return isValidEthereumAddress(value);
+    }).withMessage("Valid address is required")
+  ],
+  validate([check("address")]),
+  asyncHandler(getClaimedGifts)
 );
 
-// Check if gift is ready for transfer (internal use)
+/**
+ * @route GET /api/gift/check-transferable/:giftCode
+ * @description Check if a gift is transferable
+ * @access Public
+ */
+router.get(
+  "/check-transferable/:giftCode",
+  asyncHandler(checkGiftTransferable)
+);
+
+/**
+ * @route POST /api/gift/transfer-funds
+ * @description Transfer funds from a gift to another wallet
+ * @access Public
+ */
 router.post(
-  "/check-transferable",
+  "/transfer-funds",
+  [
+    check("giftCode").trim().notEmpty().withMessage("Gift code is required"),
+    check("destinationAddress").custom(value => isValidEthereumAddress(value)).withMessage("Valid destination address is required")
+  ],
   validate([
-    check("giftCode").notEmpty().withMessage("Gift code is required"),
+    check("giftCode"),
+    check("destinationAddress")
   ]),
-  checkGiftTransferable
+  asyncHandler(transferGiftFunds)
 );
 
-// Transfer funds for a claimed gift (internal use for automated transfers)
+/**
+ * @route POST /api/gift/force-process
+ * @description Admin route to force process pending gifts (for testing only)
+ * @access Private
+ */
 router.post(
-  "/transfer",
-  validate([
-    check("giftCode").notEmpty().withMessage("Gift code is required"),
-  ]),
-  transferGiftFunds
+  "/force-process",
+  asyncHandler(async (req, res) => {
+    const result = await batchProcessGifts();
+    res.status(200).json({ 
+      success: true, 
+      message: `Processed ${result.processed} gifts` 
+    });
+  })
 );
 
-// Route to batch process multiple gifts in a single transaction to optimize gas costs
-router.post("/batch-process", async (req, res) => {
-  try {
-    const { giftIds } = req.body;
-    
-    if (!giftIds || !Array.isArray(giftIds) || giftIds.length === 0) {
-      return res.status(400).json({
-        success: false,
-        error: "No gift IDs provided for batch processing"
-      });
-    }
-    
-    logger.info(`Received request to batch process ${giftIds.length} gifts`);
-    
-    const result = await batchProcessGifts(giftIds);
-    
-    return res.json({
-      success: true,
-      message: `Successfully processed ${result.processedGifts.length} gifts in batch`,
-      transactionHash: result.transactionHash,
-      processedGifts: result.processedGifts
-    });
-  } catch (error) {
-    logger.error(`Batch processing API error: ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      error: error.message || "Internal server error"
-    });
-  }
-});
-
-// Endpoint to manually trigger fund releases for gifts that are ready
-router.post("/release-funds", async (req, res) => {
-  try {
-    logger.info("Manual fund release requested");
-    
+/**
+ * @route POST /api/gift/force-release
+ * @description Admin route to force release gifts that are ready (for testing only)
+ * @access Private
+ */
+router.post(
+  "/force-release",
+  asyncHandler(async (req, res) => {
     const result = await automateGiftReleases();
-    
-    if (result.success) {
-      return res.json({
-        success: true,
-        message: result.message,
-        releasedCount: result.releasedCount,
-        transactionHash: result.transactionHash
-      });
-    } else {
-      return res.status(500).json({
-        success: false,
-        error: result.error
-      });
-    }
-  } catch (error) {
-    logger.error(`Manual fund release error: ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
+    res.status(200).json(result);
+  })
+);
 
 export default router;

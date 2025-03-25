@@ -1,102 +1,144 @@
 import { ethers } from 'ethers';
-import { Wallet } from '../models/wallet.js';
+import { Wallet, encryptPrivateKey } from '../models/wallet.js';
 import { logger } from '../logger.js';
-import { saveWalletToDatabase, getLastWalletIndex } from "../services/walletService.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Securely Load and Validate Master Mnemonic (optional, can remove if not used)
-const MASTER_MNEMONIC = process.env.MASTER_MNEMONIC;
-
-// Function to Generate Gift Code
-export function generateGiftCode() {
-  const randomHex = ethers.hexlify(ethers.randomBytes(4));
-  const giftCode = `GIFT-${randomHex.slice(2).toUpperCase()}`;
-  logger.info(`✅ Generated gift code: ${giftCode}`);
-  return giftCode;
-}
-
 /**
  * Generates a batch of wallet addresses and stores them in the database
- * @param {number} startIndex - Starting index for the batch
+ * @param {number} startIndex - Starting index for the batch (unused, kept for backward compatibility)
  * @param {number} count - Number of wallets to generate
  * @returns {Promise<Array>} - Array of generated wallet objects
  */
 export async function generateWallets(startIndex = 0, count = 10) {
   try {
-    logger.info(`Generating ${count} wallets starting at index ${startIndex}...`);
+    logger.info(`Generating ${count} wallets...`);
     const wallets = [];
 
     for (let i = 0; i < count; i++) {
-      const wallet = ethers.Wallet.createRandom();
+      // Generate a new random wallet
+      const ethersWallet = ethers.Wallet.createRandom();
+      const address = ethersWallet.address;
+      const privateKey = ethersWallet.privateKey;
       
-      try {
-        // Create wallet document with encrypted private key
-        const newWallet = new Wallet({
-          address: wallet.address.toLowerCase(),
-          encryptedPrivateKey: wallet.privateKey, // Will be encrypted by pre-save hook
-          isAssigned: false,
-          index: startIndex + i,
-        });
-
-        // Save to database
-        await newWallet.save();
-        
-        // Don't include the private key in the returned object for security
-        wallets.push({
-          address: newWallet.address,
-          index: newWallet.index,
-          isAssigned: newWallet.isAssigned,
-        });
-        
-        logger.info(`Generated wallet ${i + 1}/${count}: ${wallet.address}`);
-      } catch (error) {
-        // Check if this is a duplicate key error
-        if (error.code === 11000) {
-          logger.warn(`Wallet ${wallet.address} already exists in the database. Skipping.`);
-        } else {
-          logger.error(`Error saving wallet ${wallet.address}: ${error.message}`);
-          throw error; // Re-throw if it's not a duplicate key error
-        }
+      // Encrypt the private key
+      const encryptedPrivateKey = encryptPrivateKey(privateKey);
+      
+      // Check if wallet already exists (unlikely but possible with random generation)
+      const existingWallet = await Wallet.findOne({ address: address.toLowerCase() });
+      
+      if (existingWallet) {
+        logger.warn(`Wallet with address ${address} already exists, skipping`);
+        continue;
       }
+      
+      // Create and save wallet to database
+      const wallet = new Wallet({
+        address,
+        encryptedPrivateKey,
+        reserved: false
+      });
+      
+      await wallet.save();
+      logger.info(`Generated wallet ${i+1}/${count}: ${address}`);
+      wallets.push(wallet);
     }
-
-    logger.info(`Successfully generated ${wallets.length} wallets`);
+    
     return wallets;
   } catch (error) {
-    logger.error(`Failed to generate wallets: ${error.message}`);
+    logger.error(`❌ Error generating wallets: ${error.message}`);
     throw error;
   }
 }
 
 /**
- * Gets an available wallet from the database
- * @returns {Promise<Object|null>} - Available wallet or null if none found
+ * Find an unused and unreserved wallet from the database
+ * @returns {Promise<Object|null>} Wallet object or null if none available
  */
 export async function getAvailableWallet() {
   try {
-    // Find the first unused wallet and mark it as used atomically
+    // Find a wallet that's not reserved
     const wallet = await Wallet.findOneAndUpdate(
-      { isAssigned: false },
-      { isAssigned: true },
-      { new: true, sort: { index: 1 } }
+      { reserved: false },
+      { reserved: true },
+      { new: true }
     );
-
+    
     if (!wallet) {
       logger.warn("No available wallets found");
       return null;
     }
-
-    logger.info(`Assigned wallet: ${wallet.address}`);
     
-    // Don't return the private key in the response
-    return {
-      address: wallet.address,
-      isAssigned: wallet.isAssigned,
-    };
+    logger.info(`Found available wallet: ${wallet.address}`);
+    return wallet;
   } catch (error) {
-    logger.error(`Failed to get available wallet: ${error.message}`);
+    logger.error(`❌ Error finding available wallet: ${error.message}`);
+    throw error;
+  }
+}
+
+/**
+ * Release a wallet reservation
+ * @param {string} address Wallet address to release
+ * @returns {Promise<Object|null>} Updated wallet object or null
+ */
+export async function releaseWallet(address) {
+  try {
+    if (!address) {
+      logger.warn("No address provided for wallet release");
+      return null;
+    }
+    
+    const wallet = await Wallet.findOneAndUpdate(
+      { address: address.toLowerCase() },
+      { reserved: false },
+      { new: true }
+    );
+    
+    if (!wallet) {
+      logger.warn(`Wallet with address ${address} not found`);
+      return null;
+    }
+    
+    logger.info(`Released wallet: ${address}`);
+    return wallet;
+  } catch (error) {
+    logger.error(`❌ Error releasing wallet: ${error.message}`);
+    throw error;
+  }
+}
+
+/**
+ * Check wallet balance
+ * @param {string} address Wallet address to check
+ * @param {Object} provider Ethers provider instance
+ * @returns {Promise<string>} Balance in ETH
+ */
+export async function checkWalletBalance(address, provider) {
+  try {
+    if (!address) {
+      logger.warn("No address provided for balance check");
+      return "0";
+    }
+    
+    const balance = await provider.getBalance(address);
+    const balanceInEth = ethers.formatEther(balance);
+    
+    logger.info(`Balance for ${address}: ${balanceInEth} ETH`);
+    
+    // Update wallet with balance information
+    await Wallet.findOneAndUpdate(
+      { address: address.toLowerCase() },
+      { 
+        balance: balance.toString(),
+        lastBalanceUpdate: new Date()
+      }
+    );
+    
+    return balanceInEth;
+  } catch (error) {
+    logger.error(`❌ Error checking wallet balance: ${error.message}`);
     throw error;
   }
 }
@@ -106,16 +148,20 @@ export async function regenerateWallet(index) {
   try {
     // Create a random wallet using ethers v6 API
     const wallet = ethers.Wallet.createRandom();
+    const address = wallet.address;
+    const privateKey = wallet.privateKey;
+    
+    // Encrypt the private key using the proper method
+    const encryptedPrivateKey = encryptPrivateKey(privateKey);
+    
     const walletData = {
-      index,
-      address: wallet.address,
-      privateKey: Buffer.from(wallet.privateKey.slice(2), 'hex').toString('base64'), // Encrypt private key
-      used: false,
-      reserved: false,
-      network: 'polygon'
+      address,
+      encryptedPrivateKey,
+      reserved: false
     };
-    await Wallet.findOneAndUpdate({ index }, walletData, { upsert: true });
-    logger.info(`Regenerated wallet ${index}: ${wallet.address}`);
+    
+    await Wallet.findOneAndUpdate({ address: address.toLowerCase() }, walletData, { upsert: true });
+    logger.info(`Regenerated wallet ${address}`);
     return walletData;
   } catch (error) {
     logger.error('Error regenerating wallet:', error);
