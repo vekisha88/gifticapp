@@ -90,4 +90,7 @@ export function getEnvironment(processEnv = process.env): EnvironmentConfig {
 }
 
 // Create and export a singleton environment configuration
-export const env: EnvironmentConfig = getEnvironment(); 
+export const env: EnvironmentConfig = getEnvironment();
+
+// Also export as default for easier import
+export default env; 

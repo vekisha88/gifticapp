@@ -1,15 +1,113 @@
 # Environment Configuration
 
-This document describes the centralized environment configuration system used throughout the GifticApp application.
-
 ## Overview
 
-The environment configuration system provides a consistent way to:
+GifticApp uses a centralized environment configuration system to manage environment variables across all packages in the monorepo.
 
-1. Define and access environment variables across all packages
-2. Ensure type safety for environment values
-3. Provide sensible default values
-4. Load environment variables from various .env files in a predictable order
+## Key Features
+
+- **Centralized Configuration**: All environment variables are defined in a single `.env` file at the root of the project.
+- **Package-Specific Loading**: Each package can load the environment variables it needs.
+- **Shared TypeScript Types**: Environment variables are typed for better developer experience.
+
+## Setup
+
+### Root .env File
+
+The project uses a root `.env` file in the monorepo root directory. This file contains all environment variables used by any package.
+
+Copy the `.env.example` file to create your own `.env` file:
+
+```bash
+cp .env.example .env
+```
+
+Then customize the values as needed.
+
+### Usage in Packages
+
+To load environment variables in a package, use the `loadEnv` function:
+
+```typescript
+import { loadEnv, env } from '@gifticapp/shared';
+
+// Load environment variables
+loadEnv('backend'); // or 'frontend', 'blockchain', etc.
+
+// Now you can access env variables
+console.log(env.mongoUri);
+```
+
+## Available Environment Variables
+
+Here are the key environment variables used in the project:
+
+### Server Settings
+- `PORT`: The port number for the server (default: 8000)
+- `HOST`: The host address (default: 0.0.0.0)
+- `NODE_ENV`: The environment mode (development, production, test)
+- `CORS_ORIGINS`: Comma-separated list of allowed CORS origins
+
+### Database Settings
+- `MONGODB_URI`: MongoDB connection string
+
+### API Configuration
+- `API_BASE_URL`: Base URL for API requests
+
+### Blockchain Settings
+- `BLOCKCHAIN_NETWORK`: The blockchain network to use (localhost, polygon, etc.)
+- `RPC_URL`: The RPC URL for the blockchain provider
+- `BLOCKCHAIN_RPC_URL`: Alternative name for RPC_URL
+- `GIFT_CONTRACT_ADDRESS`: The address of the deployed gift contract
+- `BLOCKCHAIN_CHAIN_ID`: The chain ID of the blockchain network
+- `CHARITY_WALLET_ADDRESS`: The address of the charity wallet
+- `COMPANY_WALLET`: The address of the company wallet
+
+## Key Environment Variables
+
+| Variable | Purpose | Default |
+|----------|---------|---------|
+| `NODE_ENV` | Application environment | `development` |
+| `PORT` | Server port | `3000` |
+| `MONGODB_URI` | Database connection string | `mongodb://localhost:27017/gifticapp` |
+| `JWT_SECRET` | Secret for JWT tokens | (sensitive) |
+| `BLOCKCHAIN_RPC_URL` | Blockchain node URL | `http://localhost:8545` |
+| `BLOCKCHAIN_CHAIN_ID` | Chain ID for blockchain | `31337` (Hardhat) |
+
+## Best Practices
+
+1. Call `loadEnv` at the beginning of your application entry point
+2. Keep sensitive information only in `.env` files (never commit these)
+3. Use `env` object to access environment variables rather than `process.env`
+4. Keep `.env.example` files updated as templates
+
+## Shared Environment Variables
+
+Here's a list of the shared environment variables used across packages:
+
+### General
+- `NODE_ENV` - Application environment (development, production, test)
+- `API_BASE_URL` - Base URL for API calls
+
+### Backend/Database
+- `PORT` - Server port
+- `MONGODB_URI` - MongoDB connection string
+- `JWT_SECRET` - Secret for JWT tokens
+- `JWT_EXPIRES_IN` - JWT token expiration
+
+### Blockchain
+- `BLOCKCHAIN_RPC_URL` - Blockchain node URL
+- `BLOCKCHAIN_CHAIN_ID` - Chain ID for blockchain
+- `BLOCKCHAIN_NETWORK` - Network name
+- `GIFT_CONTRACT_ADDRESS` - Deployed contract address
+
+### Fee Configuration
+- `PLATFORM_FEE_PERCENTAGE` - Platform fee percentage
+- `MINIMUM_GIFT_AMOUNT` - Minimum gift amount
+
+### Security
+- `MASTER_MNEMONIC` - Development mnemonic (DO NOT USE IN PRODUCTION)
+- `PRIVATE_KEY` - Development private key (DO NOT USE IN PRODUCTION)
 
 ## Using Environment Variables
 

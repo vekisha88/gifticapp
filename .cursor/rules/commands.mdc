@@ -1,6 +1,6 @@
 ---
-description: 
+description: RULE FOR COMMANDS
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
 USE PowerShell compatible commands only, you can not use &&

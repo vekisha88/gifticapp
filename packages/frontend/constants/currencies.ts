@@ -1,5 +1,5 @@
 // src/constants/currencies.ts (unchanged from your last input)
-import { CurrencyOption } from "../src/types";
+import { CurrencyOption } from "@gifticapp/shared";
 
 interface ExtendedCurrencyOption extends CurrencyOption {
   binanceSymbol: string;

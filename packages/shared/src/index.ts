@@ -1,12 +1,20 @@
-// Export shared utilities, types, and constants
+// Export types
 export * from './types';
-export * from './types/gift';
-export * from './api';
-export * from './errors';
-export * from './config';
+
+// Export configuration
+export * from './config/appConfig';
+export * from './config/loadEnv';
 export { env } from './config/env';
 
-// Example shared utility
-export const formatDate = (date: Date): string => {
-  return date.toISOString().split('T')[0];
-}; 
+// Export error-related items
+export * from './errors';
+
+// Export contract ABIs
+export { GiftContractABI, GiftContractABIType } from './contracts/GiftContract';
+
+// Export other shared modules
+export * from './api';
+export * from './config';
+export * from './utils/dateUtils';
+
+// Note: formatDate has been moved to utils/dateUtils.ts as formatDateISO 

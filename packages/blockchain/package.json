@@ -1,38 +1,18 @@
 {
-  "name": "@gifticapp/blockchain",
-  "version": "1.0.0",
-  "scripts": {
-    "dev": "hardhat node",
-    "build": "hardhat compile",
-    "test": "hardhat test",
-    "deploy": "hardhat run scripts/deploy.ts --network localhost",
-    "lint": "eslint .",
-    "clean": "rimraf artifacts cache node_modules"
-  },
-  "devDependencies": {
-    "@gifticapp/config": "*",
-    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "eslint": "^8.40.0",
-    "hardhat": "^2.22.19",
-    "rimraf": "^5.0.0"
-  },
-  "dependencies": {
-    "@chainlink/contracts": "^0.8.0",
-    "@gifticapp/shared": "*",
-    "@openzeppelin/contracts": "^5.2.0",
-    "@openzeppelin/hardhat-upgrades": "^3.9.0",
-    "dotenv": "^16.4.7",
-    "ethers": "^6.13.5"
-  },
-  "resolutions": {
-    "ethers": "6.13.5",
-    "@ethersproject/signing-key": "6.13.5",
-    "@ethersproject/transactions": "6.13.5",
-    "@ethersproject/providers": "6.13.5",
-    "@ethersproject/abi": "6.13.5",
-    "@ethersproject/hdnode": "6.13.5",
-    "@ethersproject/json-wallets": "6.13.5",
-    "ws": "8.18.1",
-    "cookie": "0.7.0"
-  }
+    "name": "@gifticapp/blockchain",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "hardhat --config hardhat.config.cjs node",
+        "build": "hardhat --config hardhat.config.cjs compile",
+        "test": "hardhat --config hardhat.config.cjs test",
+        "deploy": "hardhat ignition deploy ignition/modules/Lock.js --network localhost",
+        "lint": "eslint .",
+        "clean": "rimraf artifacts cache node_modules"
+    },
+    "devDependencies": {
+        "@gifticapp/config": "*"
+    },
+    "dependencies": {
+        "@gifticapp/shared": "*"
+    }
 }

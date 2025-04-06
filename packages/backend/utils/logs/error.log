@@ -1,4 +1,0 @@
-2025-02-17T18:53:14.645Z [ERROR]: ❌ Error getting last wallet index: Operation `wallets.findOne()` buffering timed out after 10000ms
-2025-02-17T18:53:14.647Z [ERROR]: ❌ Error generating wallets: Operation `wallets.findOne()` buffering timed out after 10000ms
-2025-02-17T18:54:48.219Z [ERROR]: ❌ Error getting last wallet index: Operation `wallets.findOne()` buffering timed out after 10000ms
-2025-02-17T18:54:48.222Z [ERROR]: ❌ Error generating wallets: Operation `wallets.findOne()` buffering timed out after 10000ms

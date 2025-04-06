@@ -1,261 +1,114 @@
-# GifticApp Local Environment Setup Guide
+# GifticApp
 
-## Project Overview
+A marketplace application for gift cards built with React Native, Expo, and blockchain integration.
 
-GifticApp is a monorepo project with multiple packages:
-- **Frontend**: A mobile/web application built with Expo/React Native
-- **Backend**: A Node.js/Express server
-- **Blockchain**: Smart contracts using Hardhat
-- **Shared**: Shared utilities and types
-- **Config**: Shared configuration
+## Project Structure
 
-## Prerequisites
+The project is organized as a monorepo with the following packages:
 
-Before setting up the project, ensure you have the following installed:
-- Node.js (v22 or higher recommended)
-- npm (v10 or higher recommended)
-- Git
-- MongoDB (v6.0 or higher recommended)
+- `packages/frontend`: The mobile application built with React Native and Expo
+- `packages/backend`: The backend API service
+- `packages/shared`: Shared types, utilities, and configuration
+- `packages/blockchain`: Smart contract and blockchain interaction
 
-### Installing Node.js and npm using NVM (recommended)
+## Requirements
 
-We recommend using Node Version Manager (NVM) to install and manage Node.js versions:
+- Node.js (v18 or later recommended)
+- npm
+- PowerShell (for Windows script execution)
+- Expo Go app (for testing on physical devices)
 
-1. Install NVM:
-   - On macOS/Linux:
-   ```bash
-   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-   ```
-   - On Windows, use [nvm-windows](https://github.com/coreybutler/nvm-windows)
+## Getting Started
 
-2. Install Node.js v22:
-   ```bash
-   nvm install 22
-   nvm use 22
+1. Clone the repository
+2. Install dependencies (run from the root directory):
+   ```powershell
+   npm install
    ```
 
-3. Verify installation:
-   ```bash
-   node --version  # Should show v22.x.x
-   npm --version   # Should show v10.x.x
+3. Run the application (from the root directory):
+   ```powershell
+   ./start-app.ps1
    ```
 
-### Installing MongoDB
+   This script will:
+   - Check for and stop existing processes on required ports.
+   - Start the local Hardhat blockchain node.
+   - Deploy the smart contracts to the local node.
+   - Start the backend server.
+   - Start the frontend Expo development server with optimizations.
+   - Monitor the running services in the console (Press Ctrl+C to stop monitoring).
 
-#### On macOS:
+   **Wait for the script to finish initializing all services.** You should see a QR code printed in the console. Scan this code with the Expo Go app on your mobile device to run the application.
 
-1. Using Homebrew (recommended):
-   ```bash
-   # Install Homebrew if you don't have it
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-   
-   # Install MongoDB
-   brew tap mongodb/brew
-   brew install mongodb-community
-   
-   # Start MongoDB service
-   brew services start mongodb-community
-   ```
+## Development
 
-2. Verify installation:
-   ```bash
-   mongosh --version
-   ```
+While `./start-app.ps1` is the primary way to run the full application, you can also run individual components for focused development.
 
-3. MongoDB will be available at `mongodb://localhost:27017`
+### Frontend
 
-#### On Windows:
+The frontend is a React Native application built with Expo. To start *only* the frontend development server:
 
-1. Download the MongoDB Community Server installer from the [official MongoDB website](https://www.mongodb.com/try/download/community)
-
-2. Run the installer and follow the installation wizard:
-   - Choose "Complete" installation
-   - Install MongoDB as a service (recommended)
-   - Install MongoDB Compass (optional but useful GUI)
-
-3. Verify installation:
-   - Open Command Prompt and run:
-   ```bash
-   mongosh --version
-   ```
-
-4. MongoDB will be available at `mongodb://localhost:27017`
-
-#### Using Docker (Alternative for any platform):
-
-If you prefer using Docker:
-
-```bash
-# Pull the MongoDB image
-docker pull mongo:latest
-
-# Run MongoDB container
-docker run -d -p 27017:27017 --name mongodb mongo:latest
-```
-
-## Installation Steps
-
-### 1. Clone the Repository
-
-```bash
-git clone <repository-url>
-cd gifticapp
-```
-
-### 2. Install Dependencies
-
-The project uses npm workspaces to manage dependencies across packages.
-
-```bash
-npm install
-```
-
-This will install all dependencies for the root project and all packages.
-
-### 3. Environment Setup
-
-#### Backend Environment
-
-Create or modify the `.env` file in `packages/backend/`:
-
-```
-# Database connection
-MONGODB_URI=mongodb://localhost:27017/gifticapp
-# Other environment variables as needed
-```
-
-#### Frontend Environment
-
-Check the `.env` file in `packages/frontend/`:
-
-```
-# API URL - update with your backend URL
-API_URL=http://localhost:3000
-```
-
-#### Blockchain Environment
-
-You may need to set up environment variables for blockchain interactions. Create a `.env` file in `packages/blockchain/` if needed.
-
-```
-# Add or update this in your packages/backend/.env file
-
-# Database connection
-MONGODB_URI=mongodb://localhost:27017/gifticapp
-ETHEREUM_RPC_URL=http://localhost:8545  # Default Hardhat node URL
-```
-
-### 4. Running the Application
-
-You can run all packages simultaneously using Turborepo:
-
-```bash
-npm run dev
-```
-
-Or run each package individually:
-
-#### Frontend
-
-```bash
+```powershell
 cd packages/frontend
-npm run dev
+npm run start # Or: npx expo start
 ```
 
-This will start the Expo development server. You can run the app on:
-- iOS: `npm run ios`
-- Android: `npm run android`
-- Web: `npm run web`
+### Backend
 
-#### Backend
+The backend is a Node.js application. To start *only* the backend server:
 
-```bash
+```powershell
 cd packages/backend
 npm run dev
 ```
 
-This will start the backend server with Nodemon for automatic reloading.
+### Blockchain
 
-#### Blockchain
+The blockchain component uses a local development node.
 
-```bash
+To start *only* the local blockchain node:
+
+```powershell
 cd packages/blockchain
-npm run dev
+npm run node
 ```
 
-This will start a local Hardhat node for blockchain development.
+To deploy contracts to the *already running* local node:
 
-### 5. Building the Application
-
-To build all packages:
-
-```bash
-npm run build
+```powershell
+cd packages/blockchain
+npm run deploy
 ```
-
-### 6. Testing
-
-To run tests across all packages:
-
-```bash
-npm run test
-```
-
-## Package-Specific Information
-
-### Frontend (Expo/React Native)
-
-- Built with Expo Router
-- Uses React Native for cross-platform mobile development
-- Supports iOS, Android, and Web
-
-Key commands:
-- `npm run start` or `npm run dev`: Start the Expo development server
-- `npm run ios`: Run on iOS simulator
-- `npm run android`: Run on Android emulator
-- `npm run web`: Run in web browser
-- `npm run reset-project`: Reset the Expo project
-
-### Backend (Node.js/Express)
-
-- RESTful API server built with Express
-- Uses MongoDB for data storage
-- Includes authentication and various API endpoints
-
-Key commands:
-- `npm run dev`: Start the server with Nodemon
-- `npm run start`: Start the server without auto-reloading
-
-### Blockchain (Hardhat)
-
-- Smart contract development using Hardhat
-- Uses OpenZeppelin contracts
-- Includes deployment scripts and tests
-
-Key commands:
-- `npm run dev`: Start a local Hardhat node
-- `npm run build`: Compile smart contracts
-- `npm run deploy`: Deploy smart contracts
-- `npm run test`: Run smart contract tests
 
 ## Troubleshooting
 
-### Common Issues
+### QR Code Not Displaying in `start-app.ps1`
 
-1. **Port conflicts**: If you encounter port conflicts, check if other applications are using the same ports.
+If the QR code doesn't display properly after running `./start-app.ps1` and waiting for initialization:
 
-2. **Node version issues**: Ensure you're using a compatible Node.js version. You may want to use a version manager like nvm.
-
-3. **Dependency issues**: If you encounter dependency issues, try:
-   ```bash
-   npm clean-install
+1. The script attempts to show the output. Scroll up in your console to check if it appeared earlier.
+2. If it's still missing, you can view the raw output of the frontend job by running:
+   ```powershell
+   Receive-Job -Name "FrontendExpo" -Keep
    ```
 
-4. **Expo issues**: For Expo-related issues, try:
-   ```bash
-   cd packages/frontend
-   npm run reset-project
-   ```
+### Port Already in Use Errors
+
+The `start-app.ps1` script attempts to stop processes on required ports (8545, 8000, 8081, 19000). If you still encounter errors:
+
+1. Manually stop any relevant `node` processes or close terminal windows running parts of the application.
+2. Re-run `./start-app.ps1`.
+
+### Other Issues
+
+- Ensure you have installed dependencies correctly by running `npm install` in the root directory.
+- Check that Node.js and npm versions meet the requirements.
+- For frontend-specific issues, try cleaning the Expo cache:
+  ```powershell
+  cd packages/frontend
+npm run clean
+  ```
 
 ## Additional Resources
 
@@ -313,3 +166,102 @@ To set up your environment:
 2. Edit the `.env` file with your configuration values
 
 3. For local overrides that you don't want in Git, create a `.env.local` file
+
+## Recent Updates and Improvements
+
+### March 2024 Update
+
+The following improvements have been made to the codebase:
+
+1. **Environment Management**:
+   - Centralized environment variable management in the shared package
+   - Improved environment loading to properly handle the monorepo structure
+
+2. **PowerShell Compatibility**:
+   - Added PowerShell-compatible scripts for starting all application components
+   - New unified `start-app.ps1` script to launch the entire application with one command
+
+3. **Code Structure**:
+   - Fixed redundant nested package structure in frontend
+   - Removed duplicate dependencies
+
+4. **Smart Contract Updates**:
+   - Updated contract version compatibility
+   - Improved contract constructor to accept parameters instead of using hardcoded values
+
+5. **Performance and Reliability**:
+   - Implemented log file rotation to prevent disk space issues
+   - Improved error handling and script execution
+   - Direct imports for scripts instead of using child processes
+
+### Usage of New Scripts
+
+To start the entire application at once, use the new unified script:
+
+```powershell
+.\start-app.ps1
+```
+
+This will launch all components in the correct order:
+1. The blockchain node (Hardhat)
+2. The backend server (Express)
+3. The frontend (Expo)
+
+Each component will run in its own PowerShell window, making it easy to monitor logs.
+
+To stop all components when finished, press Ctrl+C in the main script window and confirm with 'y' when prompted.
+
+## Centralized Configuration
+
+GifticApp now uses a centralized configuration system to manage all environment variables and settings in one place. All components (frontend, backend, and blockchain) pull their configuration from this central system.
+
+### Key Features
+
+- Single source of truth for all configuration values
+- Structured with logical sections (app, server, database, blockchain, etc.)
+- Default values for everything, overridable via environment variables
+- Easily accessible from any package
+
+### Using the Configuration
+
+To use the configuration in your code:
+
+```typescript
+// Import the entire config object
+import { appConfig } from '@gifticapp/shared';
+
+// Or import specific sections
+import { blockchain, server } from '@gifticapp/shared';
+
+// Example usage
+console.log(`Connecting to blockchain at ${blockchain.rpcUrl}`);
+```
+
+### Environment Setup
+
+All configuration can be controlled through the root `.env` file. See the [centralized configuration documentation](packages/shared/docs/centralized-config.md) for full details on available options.
+
+```
+# Example .env file
+PORT=4000
+MONGODB_URI=mongodb://localhost:27017/gifticapp
+BLOCKCHAIN_RPC_URL=http://127.0.0.1:8545
+```
+
+## Environment Configuration
+
+The project uses the following environment configuration strategy:
+
+1. Root `.env` file - Contains variables used by the start scripts and general configuration
+2. Package-specific `.env` files - Contain variables specific to each package
+3. `.env.example` files - Provide templates for setting up environment variables
+
+## Code Structure
+
+The codebase follows a monorepo pattern with these packages:
+
+- `packages/frontend` - React Native application using Expo
+- `packages/backend` - Express.js server API
+- `packages/blockchain` - Hardhat-based smart contracts and blockchain interactions
+- `packages/shared` - Common types, utilities, and configurations shared across packages
+- `packages/config` - Build configurations and tooling

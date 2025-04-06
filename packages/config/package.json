@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "main": "index.js",
   "files": [
-    "eslint-preset.js",
-    "typescript/base.json"
+    "eslint-preset.js"
   ],
   "dependencies": {
     "eslint-config-prettier": "^8.8.0",

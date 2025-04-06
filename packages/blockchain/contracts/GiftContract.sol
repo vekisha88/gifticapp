@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.28;
+pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
@@ -46,11 +46,13 @@ contract GiftContract is ReentrancyGuard, IAutomationCompatible {
     );
     event TokenApproved(address indexed tokenAddress, bool approved);
 
-    constructor() {
+    constructor(address _charityWallet, address _companyWallet) {
         ownerAddress = msg.sender;
-        // Use default addresses for local testing
-        charityWallet = 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC;
-        companyWallet = 0x90F79bf6EB2c4f870365E785982E1f101E93b906;
+        
+        // Use provided addresses or fallback to defaults if zero address provided
+        charityWallet = _charityWallet != address(0) ? _charityWallet : 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC;
+        companyWallet = _companyWallet != address(0) ? _companyWallet : 0x90F79bf6EB2c4f870365E785982E1f101E93b906;
+        
         // Approve native token
         approvedTokens[address(0)] = true; // MATIC/ETH
     }

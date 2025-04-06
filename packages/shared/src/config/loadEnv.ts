@@ -1,92 +1,88 @@
-import fs from 'fs';
-import path from 'path';
-import dotenv from 'dotenv';
+// Environment container that will be populated
+export const env: {
+  nodeEnv: string;
+  port: number;
+  mongoUri: string;
+  jwtSecret: string;
+  bcryptSalt: number;
+  blockchainRpcUrl: string;
+  blockchainPrivateKey: string;
+  ethereumNetwork: string;
+  platformFeePercentage: number;
+  [key: string]: any; // Allow dynamic properties
+} = {
+  nodeEnv: process.env.NODE_ENV || 'development',
+  port: parseInt(process.env.PORT || '3000', 10),
+  mongoUri: process.env.MONGO_URI || 'mongodb://localhost:27017/gifticapp',
+  jwtSecret: process.env.JWT_SECRET || 'default-jwt-secret',
+  bcryptSalt: parseInt(process.env.BCRYPT_SALT || '10', 10),
+  blockchainRpcUrl: process.env.BLOCKCHAIN_RPC_URL || 'http://localhost:8545',
+  blockchainPrivateKey: process.env.BLOCKCHAIN_PRIVATE_KEY || '',
+  ethereumNetwork: process.env.ETHEREUM_NETWORK || 'localhost',
+  platformFeePercentage: parseFloat(process.env.PLATFORM_FEE_PERCENTAGE || '0.025'),
+};
+
+// Is this React Native?
+const isReactNative = typeof navigator !== 'undefined' && navigator.product === 'ReactNative';
 
 /**
- * Loads environment variables from .env files
- * 
- * It follows this priority order (later ones override earlier ones):
- * 1. Default values (in env.ts)
- * 2. .env file in project root
- * 3. .env.local file in project root (if exists, not in Git)
- * 4. .env.{NODE_ENV} file in project root (if exists)
- * 5. Package-specific .env file (.e.g, packages/backend/.env)
- * 6. Environment variables already defined in process.env
- * 
- * @param packageName The name of the package (e.g., 'backend', 'frontend')
- * @param rootDir The root directory path
+ * Loads environment variables from .env files in multiple locations
+ * Only works in Node.js environment, not in React Native
  */
-export function loadEnv(packageName?: string, rootDir: string = process.cwd()): void {
-  // Determine if we're in the monorepo root or a package directory
-  let projectRoot = rootDir;
-  if (fs.existsSync(path.join(rootDir, 'package.json'))) {
-    const packageJson = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'), 'utf8'));
-    if (packageJson.workspaces) {
-      // We're in the monorepo root
-      projectRoot = rootDir;
-    } else {
-      // We're in a package directory
-      // Try to find the monorepo root by going up one directory
-      const possibleRoot = path.join(rootDir, '..');
-      if (fs.existsSync(path.join(possibleRoot, 'package.json'))) {
-        const rootPackageJson = JSON.parse(fs.readFileSync(path.join(possibleRoot, 'package.json'), 'utf8'));
-        if (rootPackageJson.workspaces) {
-          projectRoot = possibleRoot;
+export async function loadEnv(packageName?: string): Promise<void> {
+  // For React Native, just log and return
+  if (isReactNative) {
+    console.log('React Native environment detected, using default environment settings');
+    return;
+  }
+
+  // In Node.js environments, try to load .env files
+  try {
+    // Use dynamic import instead of require, which works in both ESM and CommonJS
+    try {
+      const loadEnvNodeModule = await import('./loadEnvNode.js');
+      if (loadEnvNodeModule && typeof loadEnvNodeModule.loadEnvNode === 'function') {
+        loadEnvNodeModule.loadEnvNode(packageName);
+      }
+    } catch (moduleError) {
+      // Fallback for older Node.js versions or builds where .js extension doesn't work
+      try {
+        const loadEnvNodeModule = await import('./loadEnvNode');
+        if (loadEnvNodeModule && typeof loadEnvNodeModule.loadEnvNode === 'function') {
+          loadEnvNodeModule.loadEnvNode(packageName);
         }
+      } catch (plainError) {
+        throw new Error(`Failed to import loadEnvNode: ${plainError}`);
       }
     }
+  } catch (error) {
+    console.warn('Failed to load Node.js environment module:', error);
+    console.log('Using default environment settings');
   }
-
-  // Load the root .env file
-  const rootEnvPath = path.join(projectRoot, '.env');
-  if (fs.existsSync(rootEnvPath)) {
-    dotenv.config({ path: rootEnvPath });
-  }
-
-  // Load the root .env.local file (if exists)
-  const rootLocalEnvPath = path.join(projectRoot, '.env.local');
-  if (fs.existsSync(rootLocalEnvPath)) {
-    dotenv.config({ path: rootLocalEnvPath });
-  }
-
-  // Load the environment-specific .env file
-  const nodeEnv = process.env.NODE_ENV || 'development';
-  const envSpecificPath = path.join(projectRoot, `.env.${nodeEnv}`);
-  if (fs.existsSync(envSpecificPath)) {
-    dotenv.config({ path: envSpecificPath });
-  }
-
-  // If a package name is provided, load that package's .env file
-  if (packageName) {
-    const packageEnvPath = path.join(projectRoot, 'packages', packageName, '.env');
-    if (fs.existsSync(packageEnvPath)) {
-      dotenv.config({ path: packageEnvPath });
-    }
-  }
-
-  // Log which environment is being used
-  console.log(`Environment loaded: ${nodeEnv}`);
 }
 
 /**
- * Loads all package .env files
- * Useful for the root package
+ * Updates the env object with values from process.env
+ * Works in both Node.js and React Native
  */
-export function loadAllEnvs(rootDir: string = process.cwd()): void {
-  // Load the root .env files first
-  loadEnv(undefined, rootDir);
+export function updateEnvFromProcess(): void {
+  // Update standard fields
+  env.nodeEnv = process.env.NODE_ENV || env.nodeEnv;
+  env.port = parseInt(process.env.PORT || String(env.port), 10);
+  env.mongoUri = process.env.MONGO_URI || env.mongoUri;
+  env.jwtSecret = process.env.JWT_SECRET || env.jwtSecret;
+  env.bcryptSalt = parseInt(process.env.BCRYPT_SALT || String(env.bcryptSalt), 10);
+  env.blockchainRpcUrl = process.env.BLOCKCHAIN_RPC_URL || env.blockchainRpcUrl;
+  env.blockchainPrivateKey = process.env.BLOCKCHAIN_PRIVATE_KEY || env.blockchainPrivateKey;
+  env.ethereumNetwork = process.env.ETHEREUM_NETWORK || env.ethereumNetwork;
+  env.platformFeePercentage = parseFloat(process.env.PLATFORM_FEE_PERCENTAGE || String(env.platformFeePercentage));
   
-  // Then try to load package-specific .env files
-  const packagesDir = path.join(rootDir, 'packages');
-  if (fs.existsSync(packagesDir)) {
-    const packages = fs.readdirSync(packagesDir)
-      .filter(item => fs.statSync(path.join(packagesDir, item)).isDirectory());
-    
-    for (const pkg of packages) {
-      const packageEnvPath = path.join(packagesDir, pkg, '.env');
-      if (fs.existsSync(packageEnvPath)) {
-        dotenv.config({ path: packageEnvPath });
-      }
+  // Copy all process.env values to our env object
+  for (const key in process.env) {
+    if (!(key in env)) {
+      env[key] = process.env[key];
     }
   }
-} 
+}
+
+export default { loadEnv, env }; 

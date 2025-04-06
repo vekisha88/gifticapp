@@ -1,7 +1,16 @@
 
 > @gifticapp/blockchain@1.0.0 build
-> hardhat compile
+> hardhat --config hardhat.config.cjs compile
 
-Generating typings for: 3 artifacts in dir: typechain-types for target: ethers-v6
-Successfully generated 22 typings!
-Compiled 3 Solidity files successfully (evm target: paris).
+[31m[1mError[22m[39m [31m[1mHH19:[22m[39m Your project is an ESM project (you have "type": "module" set in your package.json) but your Hardhat config file uses the .js extension.
+
+Rename the file to use the .cjs to fix this problem.
+
+For more info go to https://hardhat.org/HH19 or run Hardhat with --show-stack-traces
+npm error Lifecycle script `build` failed with error:
+npm error code 1
+npm error path C:\Users\veljk\gifticapp\packages\blockchain
+npm error workspace @gifticapp/blockchain@1.0.0
+npm error location C:\Users\veljk\gifticapp\packages\blockchain
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c hardhat --config hardhat.config.cjs compile

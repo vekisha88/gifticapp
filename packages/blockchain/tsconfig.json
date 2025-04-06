@@ -1,17 +1,12 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "es2018",
     "module": "commonjs",
     "moduleResolution": "node",
-    "declaration": true,
-    "outDir": "./dist",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "outDir": "./dist"
   },
   "include": ["./scripts", "./test"],
-  "files": ["./hardhat.config.js"],
+  "files": ["./hardhat.config.cjs"],
   "exclude": ["node_modules", "dist"]
 } 

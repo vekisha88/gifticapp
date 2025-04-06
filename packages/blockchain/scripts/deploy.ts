@@ -1,53 +1,67 @@
 import { ethers } from "hardhat";
 import fs from "fs";
-import { Contract } from "ethers";
+import path from "path";
 
 async function main() {
-    // Get the deployer account (Hardhat provides 20 test accounts locally)
-    const [deployer] = await ethers.getSigners();
+  console.log("\n[*] Starting contract deployment process...\n");
 
-    // Log deployer details
-    console.log("🚀 Deploying contract with account:", deployer.address);
-    const balance = await ethers.provider.getBalance(deployer.address);
-    console.log("💰 Account balance:", ethers.formatEther(balance), "ETH");
+  // Get the Contract Factory
+  console.log("[*] Loading GiftContract factory...");
+  const GiftContract = await ethers.getContractFactory("GiftContract");
+  console.log("[+] Contract factory loaded successfully\n");
 
-    // Get test accounts for charity and company wallets
-    const [, , charityWallet, companyWallet] = await ethers.getSigners();
+  // Get the first signer (deployer)
+  const [deployer] = await ethers.getSigners();
+  console.log(`[*] Deploying contract with account: ${deployer.address}`);
+  
+  // Log deployer balance
+  const balance = await ethers.provider.getBalance(deployer.address);
+  console.log(`[*] Account balance: ${ethers.formatEther(balance)} ETH\n`);
 
-    // Deploy the GiftContract
-    console.log("⏳ Deploying GiftContract...");
-    const GiftContract = await ethers.getContractFactory("GiftContract");
-    const giftContract: Contract = await GiftContract.deploy();
+  // For development, we'll use the same address for both charity and company wallets
+  console.log("[*] Setting up contract parameters:");
+  console.log(`   - Charity wallet: ${deployer.address}`);
+  console.log(`   - Company wallet: ${deployer.address}\n`);
 
-    // Wait for deployment to be mined (locally, this is instant)
-    await giftContract.waitForDeployment();
+  // Deploy the contract
+  console.log("[*] Deploying GiftContract...");
+  console.log("[*] Waiting for deployment transaction to be mined...");
+  const contract = await GiftContract.deploy(deployer.address, deployer.address);
+  await contract.waitForDeployment();
 
-    // Get and log the contract address
-    const contractAddress = await giftContract.getAddress();
-    console.log("✅ GiftContract deployed at:", contractAddress);
-    console.log("🏦 Charity Wallet:", charityWallet.address);
-    console.log("💼 Company Wallet:", companyWallet.address);
+  const contractAddress = await contract.getAddress();
+  console.log("[+] GiftContract deployed successfully!");
+  console.log(`[*] Contract address: ${contractAddress}`);
 
-    // Save the contract address for backend/frontend use
-    console.log("🔗 Saving contract address to contractAddress.json...");
-    fs.writeFileSync(
-        "./contractAddress.json",
-        JSON.stringify({ 
-            contractAddress,
-            charityWallet: charityWallet.address,
-            companyWallet: companyWallet.address
-        }, null, 2)
-    );
+  // Verify the contract is deployed
+  const code = await ethers.provider.getCode(contractAddress);
+  if (code === "0x") {
+    throw new Error("Contract deployment failed - no code at address");
+  }
+  console.log("[+] Contract deployment verified\n");
 
-    console.log("🎉 Local deployment complete! Ready for testing.");
+  // Save the contract address to a file that can be read by the backend
+  const addressPath = path.join(__dirname, "../contractAddress.json");
+  fs.writeFileSync(
+    addressPath,
+    JSON.stringify({ address: contractAddress }, null, 2)
+  );
+  console.log(`[*] Contract address saved to: ${addressPath}\n`);
+
+  // Log deployment summary
+  console.log("[*] Deployment Summary:");
+  console.log(`   - Network: ${process.env.HARDHAT_NETWORK || 'localhost'}`);
+  console.log(`   - Contract address: ${contractAddress}`);
+  console.log(`   - Deployer address: ${deployer.address}`);
+  console.log(`   - Block number: ${await ethers.provider.getBlockNumber()}\n`);
+
+  console.log("[+] Deployment completed successfully!\n");
 }
 
 main()
-    .then(() => {
-        console.log("🏁 Script finished successfully.");
-        process.exit(0);
-    })
-    .catch((error: Error) => {
-        console.error("❌ Deployment failed:", error);
-        process.exit(1);
-    });
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error("[!] Deployment failed:");
+    console.error(error);
+    process.exit(1);
+  }); 

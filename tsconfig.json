@@ -1,0 +1,22 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/backend"
+    },
+    {
+      "path": "./packages/blockchain"
+    },
+    {
+      "path": "./packages/frontend"
+    },
+    {
+      "path": "./packages/shared"
+    }
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compilerOptions": {},
+  "extends": "expo/tsconfig.base"
+}

@@ -1,84 +1,63 @@
 import { Tabs } from "expo-router";
-import { useEffect, useState } from "react";
-import { Keyboard, StyleProp, ViewStyle, StatusBar } from "react-native"; // Add StatusBar
-import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import commonStyles, { colors } from "../../styles/commonStyles"; // Import colors
+import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "../../components/ui/ThemeContext";
 
-type TabName = "buy" | "claim";
-
-const TABS_CONFIG: {
-  name: TabName;
-  title: string;
-  icon: keyof typeof Ionicons.glyphMap;
-}[] = [
-  { name: "buy", title: "Buy Gifts", icon: "gift-outline" },
-  { name: "claim", title: "Claim Gifts", icon: "wallet-outline" },
-];
-
-const getTabBarStyle = (
-  isKeyboardVisible: boolean,
-  insets: { bottom: number }
-): StyleProp<ViewStyle> => ({
-  display: isKeyboardVisible ? "none" : "flex",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  right: 0,
-  elevation: 0,
-  paddingBottom: insets.bottom,
-  backgroundColor: colors.background, // Set dark background
-});
-
+/**
+ * This layout sets up the tab navigation for the app
+ */
 export default function TabLayout() {
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
-
-  useEffect(() => {
-    const keyboardShowListener = Keyboard.addListener("keyboardDidShow", () => {
-      setKeyboardVisible(true);
-    });
-    const keyboardHideListener = Keyboard.addListener("keyboardDidHide", () => {
-      setKeyboardVisible(false);
-    });
-
-    return () => {
-      keyboardShowListener.remove();
-      keyboardHideListener.remove();
-    };
-  }, []);
+  const colorScheme = useColorScheme();
 
   return (
-    <>
-      <StatusBar
-        backgroundColor={colors.background} // Dark background
-        barStyle="light-content" // Light text/icons
-      />
-      <Tabs
-        screenOptions={{
-          headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: colors.background, // Dark header
-          },
-          headerTintColor: colors.text, // Light text in header
-          tabBarStyle: getTabBarStyle(isKeyboardVisible, insets),
-          tabBarActiveTintColor: colors.primary, // Bright blue for active tab
-          tabBarInactiveTintColor: colors.placeholder, // Muted color for inactive tabs
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
+        tabBarStyle: {
+          backgroundColor: colors.card,
+          height: 60 + insets.bottom,
+          paddingBottom: insets.bottom,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "500",
+          paddingBottom: 5,
+        },
+        headerShown: false,
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Home",
+          tabBarIcon: ({ color, size }) => <Ionicons name="home" size={size} color={color} />,
         }}
-      >
-        {TABS_CONFIG.map((tab) => (
-          <Tabs.Screen
-            key={tab.name}
-            name={tab.name}
-            options={{
-              title: tab.title,
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name={tab.icon} size={size} color={color} />
-              ),
-            }}
-          />
-        ))}
-      </Tabs>
-    </>
+      />
+      <Tabs.Screen
+        name="assets"
+        options={{
+          title: "Assets",
+          tabBarIcon: ({ color, size }) => <Ionicons name="wallet" size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="gifts"
+        options={{
+          title: "Gifts",
+          tabBarIcon: ({ color, size }) => <Ionicons name="gift" size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color, size }) => <Ionicons name="person" size={size} color={color} />,
+        }}
+      />
+    </Tabs>
   );
 }

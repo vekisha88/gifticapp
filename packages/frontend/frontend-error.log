@@ -1,0 +1,4 @@
+The following packages should be updated for best compatibility with the installed expo version:
+  expo-router@4.0.19 - expected version: ~4.0.20
+  expo-system-ui@4.0.8 - expected version: ~4.0.9
+Your project may not work correctly until you install the expected versions of the packages.

@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { API_ROUTES, Route } from '@gifticapp/shared';
-import { API_BASE_URL } from '../config/env';
+import { API_ROUTES, Route, env } from '@gifticapp/shared';
 
 /**
  * Makes a type-safe API request using the route definition
@@ -28,7 +27,7 @@ export async function apiRequest<Req, Res, Params = any, Query = any>(
   }
 
   // Create the full URL with query parameters
-  const fullUrl = `${API_BASE_URL}${url}`;
+  const fullUrl = `${env.API_BASE_URL}${url}`;
   
   try {
     const response = await axios({

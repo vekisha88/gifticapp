@@ -1,4 +1,45 @@
 
 > @gifticapp/shared@1.0.0 build
-> tsc
+> tsc && node scripts/create-cjs-version.js
 
+src/api/index.ts(1,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './routes.js'?
+src/api/routes.ts(12,8): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../types/gift.js'?
+src/config/appConfig.ts(1,52): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './loadEnv.js'?
+src/config/index.ts(1,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './env.js'?
+src/config/index.ts(2,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './loadEnv.js'?
+src/config/index.ts(3,21): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './env.js'?
+src/errors/errorHandlers.ts(1,37): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './AppError.js'?
+src/errors/ErrorTypes.ts(1,37): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './AppError.js'?
+src/errors/ErrorTypes.ts(9,10): error TS2339: Property 'name' does not exist on type 'ValidationError'.
+src/errors/ErrorTypes.ts(19,10): error TS2339: Property 'name' does not exist on type 'NotFoundError'.
+src/errors/ErrorTypes.ts(29,10): error TS2339: Property 'name' does not exist on type 'AuthenticationError'.
+src/errors/ErrorTypes.ts(39,10): error TS2339: Property 'name' does not exist on type 'AuthorizationError'.
+src/errors/ErrorTypes.ts(49,10): error TS2339: Property 'name' does not exist on type 'DatabaseError'.
+src/errors/ErrorTypes.ts(59,10): error TS2339: Property 'name' does not exist on type 'BlockchainError'.
+src/errors/ErrorTypes.ts(69,10): error TS2339: Property 'name' does not exist on type 'ApiError'.
+src/errors/ErrorTypes.ts(79,10): error TS2339: Property 'name' does not exist on type 'ConflictError'.
+src/errors/index.ts(1,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './AppError.js'?
+src/errors/index.ts(2,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './ErrorTypes.js'?
+src/errors/index.ts(3,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './errorHandlers.js'?
+src/errors/index.ts(5,27): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './errorCodes.js'?
+src/index.native.ts(4,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './types.js'?
+src/index.native.ts(7,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './config/appConfig.js'?
+src/index.native.ts(10,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './errors/errorCodes.js'?
+src/index.ts(2,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './types.js'?
+src/index.ts(5,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './config/appConfig.js'?
+src/index.ts(6,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './config/loadEnv.js'?
+src/index.ts(7,21): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './config/env.js'?
+src/index.ts(10,15): error TS2834: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Consider adding an extension to the import path.
+src/index.ts(13,54): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './contracts/GiftContract.js'?
+src/index.ts(16,15): error TS2834: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Consider adding an extension to the import path.
+src/index.ts(17,15): error TS2834: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Consider adding an extension to the import path.
+src/index.ts(18,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './utils/dateUtils.js'?
+src/types/index.ts(2,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './gift.js'?
+src/types/index.ts(5,15): error TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './blockchain.js'?
+npm error Lifecycle script `build` failed with error:
+npm error code 2
+npm error path C:\Users\veljk\gifticapp\packages\shared
+npm error workspace @gifticapp/shared@1.0.0
+npm error location C:\Users\veljk\gifticapp\packages\shared
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c tsc && node scripts/create-cjs-version.js

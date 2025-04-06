@@ -1,98 +1,206 @@
-# Giftic App Automated Startup Script
-Write-Host "Starting Giftic App automated setup..." -ForegroundColor Cyan
+# GifticApp Startup Script
+# Starts blockchain, backend, and frontend in separate terminals
 
-# Store the original directory
-$originalDir = Get-Location
+# Store the root directory at the start
+$rootDir = Get-Location
 
-# 1. Stop all running processes
-Write-Host "Stopping any running processes..." -ForegroundColor Yellow
-Get-Process -Name "node" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
-Get-Process -Name "npm" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
-Write-Host "All processes stopped" -ForegroundColor Green
-
-# 2. Clear MongoDB collections
-Write-Host "Clearing database collections..." -ForegroundColor Yellow
-mongosh "mongodb://localhost:27017/giftic" --eval "db.wallets.deleteMany({}); db.gifts.deleteMany({}); print('Database collections cleared');"
-Write-Host "Database collections cleared" -ForegroundColor Green
-
-# 3. Start blockchain node - exactly as you do manually
-Write-Host "Starting blockchain node..." -ForegroundColor Cyan
-$blockchainDir = "$originalDir\packages\blockchain"
-Start-Process -FilePath "npx" -ArgumentList "hardhat", "node" -WorkingDirectory $blockchainDir -NoNewWindow -RedirectStandardOutput "$blockchainDir\blockchain.log" -RedirectStandardError "$blockchainDir\blockchain-error.log"
-Write-Host "Blockchain node started" -ForegroundColor Cyan
-
-# 4. Deploy contract - exactly as you do manually
-Write-Host "Waiting 2 seconds for blockchain to initialize..." -ForegroundColor Cyan
-Start-Sleep -Seconds 2
-Write-Host "Deploying smart contract..." -ForegroundColor Cyan
-Set-Location $blockchainDir
-$deployOutput = npx hardhat run scripts/deploy.ts --network localhost --no-compile
-Write-Host $deployOutput -ForegroundColor Cyan
-Write-Host "Smart contract deployed" -ForegroundColor Cyan
-
-# 5. Start backend - exactly as you do manually
-Write-Host "Starting backend server..." -ForegroundColor Green
-$backendDir = "$originalDir\packages\backend"
-Set-Location $backendDir
-Start-Process -FilePath "npm" -ArgumentList "run", "dev" -WorkingDirectory $backendDir -NoNewWindow -RedirectStandardOutput "$backendDir\backend.log" -RedirectStandardError "$backendDir\backend-error.log"
-Write-Host "Backend server started" -ForegroundColor Green
-
-# 6. Start frontend - exactly as you do manually
-Write-Host "Waiting 2 seconds for backend to initialize..." -ForegroundColor Yellow
-Start-Sleep -Seconds 2
-Write-Host "Starting frontend..." -ForegroundColor Yellow
-$frontendDir = "$originalDir\packages\frontend"
-Set-Location $frontendDir
-Start-Process -FilePath "npm" -ArgumentList "run", "start" -WorkingDirectory $frontendDir -NoNewWindow -RedirectStandardOutput "$frontendDir\frontend.log" -RedirectStandardError "$frontendDir\frontend-error.log"
-Write-Host "Frontend started" -ForegroundColor Yellow
-
-# Return to original directory
-Set-Location $originalDir
-
-# 7. Show simple message about viewing logs
-Write-Host "`nAll services started. Log files are being written to:" -ForegroundColor Magenta
-Write-Host "  $blockchainDir\blockchain.log" -ForegroundColor Cyan
-Write-Host "  $backendDir\backend.log" -ForegroundColor Green
-Write-Host "  $frontendDir\frontend.log" -ForegroundColor Yellow
-
-# 8. Prompt to create gift
-Write-Host "`nPlease create a gift in the mobile app now." -ForegroundColor Magenta
-Write-Host "After creating the gift, press ENTER to continue to payment simulation." -ForegroundColor Magenta
-Read-Host | Out-Null
-
-# 9. Run payment simulation with user input
-Write-Host "`nRunning payment simulation..." -ForegroundColor Yellow
-
-# Capture input with simple prompting to avoid double-enter issue
-Write-Host -NoNewline "Enter recipient wallet address: "
-$walletAddress = [Console]::ReadLine()
-
-Write-Host -NoNewline "Enter amount to send: "
-$amount = [Console]::ReadLine()
-
-Write-Host -NoNewline "Enter currency (default: MATIC): "
-$currency = [Console]::ReadLine()
-if ([string]::IsNullOrWhiteSpace($currency)) {
-    $currency = "MATIC"
+# Function to check if a port is in use
+function Test-PortInUse {
+    param(
+        [int]$Port
+    )
+    $tcpClient = New-Object System.Net.Sockets.TcpClient
+    try {
+        $connect = $tcpClient.BeginConnect("127.0.0.1", $Port, $null, $null)
+        $wait = $connect.AsyncWaitHandle.WaitOne(100)
+        if ($wait) {
+            return $true
+        }
+        return $false
+    }
+    finally {
+        $tcpClient.Close()
+    }
 }
 
-Write-Host -NoNewline "Enter network (default: localhost): "
-$network = [Console]::ReadLine()
-if ([string]::IsNullOrWhiteSpace($network)) {
-    $network = "localhost"
+# Enhanced function to kill processes on specific ports
+function Stop-ProcessOnPort {
+    param(
+        [int]$Port,
+        [switch]$Force = $false
+    )
+    
+    Write-Host "Attempting to free port $Port..." -ForegroundColor Yellow
+    
+    # Method 1: Find using netstat
+    $netstat = netstat -ano | findstr ":$Port "
+    if ($netstat) {
+        $lines = $netstat -split "`n"
+        foreach ($line in $lines) {
+            if ($line -match ":$Port\s+") {
+                $processId = ($line -split "\s+")[-1]
+                if ($processId -match "^\d+$") {
+                    try {
+                        $process = Get-Process -Id $processId -ErrorAction SilentlyContinue
+                        if ($process) {
+                            Write-Host "Found process $($process.Name) (PID: $processId) using port $Port" -ForegroundColor Yellow
+                            Stop-Process -Id $processId -Force -ErrorAction SilentlyContinue
+                            Write-Host "Stopped process with PID $processId" -ForegroundColor Green
+                        }
+                    }
+                    catch {
+                        $errorMsg = $_.Exception.Message
+                        Write-Host "Error stopping PID $processId`: $errorMsg" -ForegroundColor Red
+                    }
+                }
+            }
+        }
+    }
+    
+    # Method 2: Try the TCP kill method for Windows
+    try {
+        # This command forcibly closes TCP connections on the specified port
+        $null = netsh interface ipv4 delete tcpconnection localport=$Port
+        Write-Host "Released TCP connections on port $Port" -ForegroundColor Yellow
+    }
+    catch {
+        $errorMsg = $_.Exception.Message
+        Write-Host "Could not release TCP connections`: $errorMsg" -ForegroundColor Red
+    }
+    
+    # Wait briefly and verify port is really free
+    Start-Sleep -Seconds 2
+    if (Test-PortInUse -Port $Port) {
+        Write-Host "Warning: Port $Port is still in use after cleanup attempts" -ForegroundColor Red
+        
+        if ($Force) {
+            # As a last resort on Windows, use more aggressive methods
+            Write-Host "Attempting aggressive port cleanup for $Port..." -ForegroundColor Yellow
+            
+            # Find all node processes that might be problematic
+            $nodeProcesses = Get-Process -Name "node" -ErrorAction SilentlyContinue
+            foreach ($proc in $nodeProcesses) {
+                try {
+                    if ($proc.MainWindowTitle -like "*hardhat*" -or 
+                        $proc.MainWindowTitle -like "*blockchain*" -or 
+                        $proc.MainWindowTitle -like "*ethereum*") {
+                        Write-Host "Killing potential blockchain Node.js process: $($proc.Id)" -ForegroundColor Yellow
+                        Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+                    }
+                }
+                catch {
+                    # Ignore process access errors
+                }
+            }
+        }
+    }
+    else {
+        Write-Host "Successfully freed port $Port" -ForegroundColor Green
+    }
 }
 
-Write-Host "Simulating payment of $amount $currency to $walletAddress on $network..." -ForegroundColor Yellow
+# Clean up existing processes - force kill them to ensure clean state
+Write-Host "Checking for existing processes..."
+$ports = @(8545, 8000, 19000, 8081)
 
-# Run payment simulation directly using node command
+foreach ($port in $ports) {
+    $process = Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue
+    if ($process) {
+        Write-Host "Port $port is in use by process ID: $($process.OwningProcess)"
+    } else {
+        Write-Host "Port $port is free"
+    }
+}
+
+Write-Host "Waiting for ports to fully release..."
+Start-Sleep -Seconds 1
+
+# Verify directory paths
+Write-Host "Verifying directory paths..."
+$blockchainDir = Join-Path $rootDir "packages\blockchain"
+$backendDir = Join-Path $rootDir "packages\backend"
+$frontendDir = Join-Path $rootDir "packages\frontend"
+
+Write-Host "Blockchain directory: $blockchainDir"
+Write-Host "Backend directory: $backendDir"
+Write-Host "Frontend directory: $frontendDir"
+
+# Start blockchain node
+Write-Host "Starting blockchain node in a new window..."
+$attempt = 1
+$maxAttempts = 3
+$nodeStarted = $false
+
+while (-not $nodeStarted -and $attempt -le $maxAttempts) {
+    Write-Host "Blockchain node starting in a new window (PID: $pid) - Attempt $attempt of $maxAttempts"
+    Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$blockchainDir'; npx hardhat node"
+    Write-Host "Waiting for blockchain node to initialize (1 seconds)..."
+    Start-Sleep -Seconds 1
+    
+    try {
+        $response = Invoke-WebRequest -Uri "http://127.0.0.1:8545" -Method POST -ContentType "application/json" -Body '{"jsonrpc":"2.0","method":"net_version","id":1}' -UseBasicParsing
+        if ($response.StatusCode -eq 200) {
+            $nodeStarted = $true
+            Write-Host "Blockchain node verified running!"
+        }
+    } catch {
+        Write-Host "Attempt $attempt failed. Retrying..."
+        $attempt++
+        Start-Sleep -Seconds 2
+    }
+}
+
+if (-not $nodeStarted) {
+    Write-Host "Failed to start blockchain node after $maxAttempts attempts"
+    exit 1
+}
+
+# Deploy smart contract
+Write-Host "Deploying smart contract..."
+Write-Host "Current directory: $blockchainDir"
+Write-Host "Waiting 1 seconds for blockchain node to stabilize..."
+Start-Sleep -Seconds 1
 Set-Location $blockchainDir
+Write-Host "Deploying Contract..."
+npx hardhat run scripts/deploy.ts --network localhost
+Write-Host "[+] Contract deployment finished."
+
+# Start backend server
+Write-Host "Starting backend server in a new window..."
+$backendProcess = Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$backendDir'; npm run dev" -PassThru
+Write-Host "Backend starting in a new window (PID: $($backendProcess.Id))"
+Write-Host "Waiting for backend server to initialize (5 seconds)..."
+Start-Sleep -Seconds 5
+
+# Start frontend
+Write-Host "Starting frontend in a new window..."
+Write-Host "Installing tunnel dependencies..."
+$frontendProcess = Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$frontendDir'; npm install --save @expo/ngrok; npx expo start --tunnel" -PassThru
+Write-Host "Frontend started in a new window (PID: $($frontendProcess.Id))"
+
+Write-Host "`n+----------------------------------------+"
+Write-Host "|           GifticApp is running!         |"
+Write-Host "|                                        |"
+Write-Host "| Services:                              |"
+Write-Host "| * Blockchain node: Running             |"
+Write-Host "| * Backend server:  Running             |"
+Write-Host "| * Frontend:        Running             |"
+Write-Host "|                                        |"
+Write-Host "| Check the frontend window for QR code. |"
+Write-Host "| The app will be accessible via tunnel. |"
+Write-Host "|                                        |"
+Write-Host "| Press Ctrl+C here to stop script.      |"
+Write-Host "+----------------------------------------+`n"
+
+# Keep the script running
 try {
-    node "scripts/simulate-payment.js" "--wallet=$walletAddress" "--amount=$amount" "--currency=$currency" "--network=$network"
-} catch {
-    Write-Host "Error running payment simulation: $_" -ForegroundColor Red
-}
-Set-Location $originalDir
-
-Write-Host "`nGiftic App is now fully running!" -ForegroundColor Cyan
-Write-Host "To stop all processes, run the following command:" -ForegroundColor Yellow
-Write-Host ".\stop-app.ps1" -ForegroundColor DarkYellow 
+    while ($true) {
+        Start-Sleep -Seconds 1
+    }
+} finally {
+    # Cleanup on script exit
+    Write-Host "`nStopping services..."
+    if ($backendProcess) { Stop-Process -Id $backendProcess.Id -Force }
+    if ($frontendProcess) { Stop-Process -Id $frontendProcess.Id -Force }
+    Get-Process | Where-Object { $_.Name -eq 'node' } | Stop-Process -Force
+} 
