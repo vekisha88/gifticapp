@@ -6,8 +6,10 @@ import {
   NotFoundError, 
   handleError, 
   createAsyncHandler, 
-  formatErrorResponse 
+  formatErrorResponse, 
+  ErrorCode 
 } from '@gifticapp/shared';
+import { sendSuccessResponse, sendErrorResponse } from '../utils/apiResponses.js';
 
 /**
  * Example controller using the new standardized error handling
@@ -77,17 +79,13 @@ export const createResource = async (req: Request, res: Response): Promise<Respo
       data: newResource
     });
   } catch (error: any) {
-    // Standardized error handling
+    // Use shared handleError, log, then use sendErrorResponse
     const appError = handleError(error, 'createResource');
-    
-    // Log the error
-    logError(`Failed to create resource: ${appError.message}`, {
-      code: appError.code,
-      details: appError.details
+    logger.error(`Error in createResource: ${appError.message}`, {
+      errorCode: appError.code,
+      ...appError.details
     });
-    
-    // Return error response
-    return res.status(appError.statusCode || 500).json(formatErrorResponse(appError));
+    sendErrorResponse(res, appError, 'createResource');
   }
 };
 

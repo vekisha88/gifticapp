@@ -1,0 +1,91 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Error Handling Rules
+
+## Standardized Error Objects
+```
+Rule: Use the standardized error handling system:
+
+1. Always use AppError from @gifticapp/shared for throwing errors:
+   - import { AppError, ErrorCode } from '@gifticapp/shared';
+   - throw new AppError('Message here', ErrorCode.SPECIFIC_ERROR_CODE, { optionalDetails });
+
+2. Never create custom error classes or throw raw Error objects:
+   - ❌ throw new Error('Something went wrong');
+   - ✅ throw new AppError('Something went wrong', ErrorCode.UNEXPECTED_ERROR);
+
+3. AppError has built-in HTTP status mapping, so you don't need to specify status codes.
+```
+
+## Error Codes
+```
+Rule: Use the ErrorCode enum from @gifticapp/shared exclusively:
+
+1. Existing error types:
+   - UNEXPECTED_ERROR: For unhandled/unexpected errors
+   - AUTHENTICATION_ERROR: For login/token issues
+   - AUTHORIZATION_ERROR: For permission issues
+   - VALIDATION_ERROR: For invalid input data
+   - NOT_FOUND_ERROR: For resources that don't exist
+   - CONFLICT_ERROR: For uniqueness violations
+   - BLOCKCHAIN_ERROR: For blockchain-related errors
+   - TRANSACTION_FAILED: For failed blockchain transactions
+   - DATABASE_ERROR: For database issues
+   - NETWORK_ERROR: For connection issues
+
+2. If a new error type is needed, add it to ErrorCode in shared/src/errors/errorCodes.ts
+
+3. Use the most specific error code that matches the situation.
+```
+
+## Backend Error Handling
+```
+Rule: Follow the backend error handling pattern:
+
+1. Controllers:
+   - Use try/catch around service calls
+   - Use sendErrorResponse utility:
+     import { sendErrorResponse } from '../utils/apiResponses';
+     try {
+       // ...
+     } catch (error) {
+       return sendErrorResponse(res, error, 'functionName');
+     }
+
+2. Services:
+   - Throw specific AppErrors:
+     if (!user) {
+       throw new AppError('User not found', ErrorCode.NOT_FOUND_ERROR);
+     }
+
+3. Middleware:
+   - Wrap in try/catch
+   - Use next(error) to pass errors to Express error handler
+```
+
+## Frontend Error Handling
+```
+Rule: Follow the frontend error handling pattern:
+
+1. Always use the handleApiError utility:
+   import { handleApiError } from '../utils/errorHandling';
+   try {
+     // API call
+   } catch (error) {
+     const message = handleApiError(error, 'Fallback message');
+     // Display message to user
+   }
+
+2. Custom hooks for API calls:
+   - Manage error state internally
+   - Return both the error and a function to clear it
+   - Example:
+     const { error, setError, data, isLoading, callApi } = useApiCall();
+
+3. Error displays:
+   - Use UI components for consistent error display
+   - Consider error severity for appropriate UI treatment
+``` 

@@ -1,0 +1,53 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Giftic App Cursor Rules
+
+This directory contains detailed coding rules and conventions for the Giftic app. These rules are designed to be used with Cursor's AI assistant.
+
+## How to Use These Rules with Cursor
+
+1. Open Cursor settings
+2. Go to the AI tab
+3. Scroll down to "Custom Instructions" section
+4. Copy the content of the relevant rule files into the Custom Instructions field
+
+You can either:
+- Copy all rule files for a comprehensive set of instructions
+- Copy only specific rule files for focused assistance (e.g., just frontend rules when working on frontend code)
+
+## Available Rule Files
+
+- [Architecture Rules](mdc:architecture.md): Monorepo structure, code placement, import conventions
+- [TypeScript Rules](mdc:typescript.md): Type safety, type declarations, JSDoc comments
+- [Error Handling Rules](mdc:error-handling.md): AppError usage, error codes, error handling patterns
+- [Backend Rules](mdc:backend.md): API structure, routes, database operations, middleware
+- [Frontend Rules](mdc:frontend.md): Component structure, API calls, state management, UI
+- [Blockchain Rules](mdc:blockchain.md): Smart contract development, blockchain integration, security
+
+## Example Custom Instruction
+
+```
+I'm working on the Giftic App, a monorepo project with the following packages:
+- backend: Express.js API server
+- frontend: React Native/Expo mobile app
+- shared: Common TypeScript types, utilities, and error handling
+- blockchain: Solidity smart contracts with Hardhat
+- config: Shared configuration like ESLint presets
+
+Please help me write code that follows our established patterns:
+1. Use AppError from @gifticapp/shared for error handling
+2. Place shared code in the shared package
+3. Follow MVC pattern in the backend
+4. Create small, focused React components
+5. Use custom hooks for API calls and state management
+6. Follow secure blockchain practices 
+
+When suggesting code, maintain consistent error handling, proper typing, and appropriate placement within the monorepo structure.
+```
+
+## Adding Your Own Rules
+
+Feel free to modify these rules or create new rule files as needed. As your project evolves, keep these rules updated to reflect your current best practices. 

@@ -16,11 +16,21 @@ export function handleApiError(error: any, defaultMessage: string = 'An unexpect
   // Handle Axios error format
   if (error && error.response && error.response.data) {
     const { data } = error.response;
+    // ADD Check for validation errors first
+    if (data.validation && Array.isArray(data.validation)) {
+      return data.validation.map((err: any) => err.message).join(', ');
+    }
+    // Check for AppError structure within Axios data
     if (data.code && data.error) {
       return getUserFriendlyMessage(data.code, data.error);
     }
+    // Check for simple message
     if (data.message) {
       return data.message;
+    }
+    // Check for simple error field (as fallback within Axios data)
+    if (data.error) {
+      return data.error;
     }
   }
   

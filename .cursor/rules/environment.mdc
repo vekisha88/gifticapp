@@ -1,0 +1,232 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Giftic App Environment Configuration
+
+This file contains guidelines for setting up and configuring environments in the Giftic app.
+
+## Environment Variables
+
+### Environment File Structure
+
+The project uses `.env` files for environment configuration. Follow these patterns:
+
+```
+# Root .env files (for global settings)
+.env                # Default environment variables
+.env.local          # Local overrides (gitignored)
+.env.development    # Development-specific variables
+.env.production     # Production-specific variables
+.env.test           # Test-specific variables
+
+# Package-specific .env files
+packages/backend/.env
+packages/frontend/.env
+packages/blockchain/.env
+```
+
+### Required Environment Variables
+
+#### Backend Environment Variables
+
+```
+# Server Configuration
+PORT=4000
+NODE_ENV=development
+API_PREFIX=/api
+CORS_ORIGIN=http://localhost:3000
+
+# Database Configuration
+MONGODB_URI=mongodb://localhost:27017/gifticapp
+MONGODB_TEST_URI=mongodb://localhost:27017/gifticapp-test
+
+# Authentication
+JWT_SECRET=your-jwt-secret
+JWT_EXPIRATION=1d
+
+# Blockchain
+RPC_URL=http://localhost:8545
+CHAIN_ID=1337
+CONTRACT_ADDRESS=0x0000000000000000000000000000000000000000
+PRIVATE_KEY=0x0000000000000000000000000000000000000000000000000000000000000000
+```
+
+#### Frontend Environment Variables
+
+```
+# API Configuration
+EXPO_PUBLIC_API_URL=http://localhost:4000/api
+
+# Authentication
+EXPO_PUBLIC_AUTH_STORAGE_KEY=@gifticapp/auth
+
+# Blockchain
+EXPO_PUBLIC_CHAIN_ID=1337
+EXPO_PUBLIC_RPC_URL=http://localhost:8545
+EXPO_PUBLIC_CONTRACT_ADDRESS=0x0000000000000000000000000000000000000000
+
+# Feature Flags
+EXPO_PUBLIC_ENABLE_WALLET_CONNECT=true
+```
+
+#### Blockchain Environment Variables
+
+```
+# Network Configuration
+HARDHAT_NETWORK=localhost
+
+# Deployment Keys
+PRIVATE_KEY=0x0000000000000000000000000000000000000000000000000000000000000000
+ETHERSCAN_API_KEY=your-etherscan-api-key
+
+# Contract Configuration
+NFT_NAME=GifticNFT
+NFT_SYMBOL=GIFT
+```
+
+## Environment Loading
+
+### Backend Environment Loading
+
+Use the `dotenv` package to load environment variables:
+
+```typescript
+// packages/backend/src/config/env.ts
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Load environment variables from .env files
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+dotenv.config({ path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`) });
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
+```
+
+### Frontend Environment Loading
+
+For Expo projects, use the `EXPO_PUBLIC_` prefix for environment variables:
+
+```typescript
+// packages/frontend/src/config/env.ts
+export const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:4000/api';
+export const AUTH_STORAGE_KEY = process.env.EXPO_PUBLIC_AUTH_STORAGE_KEY || '@gifticapp/auth';
+```
+
+## Environment Validation
+
+Use Zod to validate environment variables at startup:
+
+```typescript
+// packages/backend/src/config/env.ts
+import { z } from 'zod';
+
+const envSchema = z.object({
+  PORT: z.string().transform(val => parseInt(val, 10)),
+  NODE_ENV: z.enum(['development', 'production', 'test']),
+  MONGODB_URI: z.string().url(),
+  JWT_SECRET: z.string().min(32),
+  JWT_EXPIRATION: z.string(),
+  // Add other environment variables
+});
+
+// Parse and validate environment variables
+export const env = envSchema.parse(process.env);
+```
+
+## Environment-Specific Code
+
+### Backend Environment-Specific Code
+
+Use the `NODE_ENV` variable to conditionally execute code:
+
+```typescript
+// packages/backend/src/app.ts
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
+if (process.env.NODE_ENV === 'production') {
+  // Enable production optimizations
+  app.use(compression());
+}
+
+if (process.env.NODE_ENV === 'test') {
+  // Configure for testing
+}
+```
+
+### Frontend Environment-Specific Code
+
+Use `process.env.NODE_ENV` to conditionally render components or execute code:
+
+```typescript
+// packages/frontend/src/services/api.ts
+const baseURL = process.env.NODE_ENV === 'production'
+  ? process.env.EXPO_PUBLIC_API_URL
+  : 'http://localhost:4000/api';
+
+// For debug components
+if (process.env.NODE_ENV !== 'production') {
+  // Render debug UI
+}
+```
+
+## Development Environments
+
+### Local Development Setup
+
+1. Copy example environment files:
+   ```bash
+   cp .env.example .env
+   cp packages/backend/.env.example packages/backend/.env
+   cp packages/frontend/.env.example packages/frontend/.env
+   ```
+
+2. Modify the values to match your local setup.
+
+### CI/CD Environment Configuration
+
+For CI/CD pipelines (GitHub Actions, etc.), use repository secrets:
+
+```yaml
+# .github/workflows/deploy.yml
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up environment
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: |
+          echo "JWT_SECRET=${JWT_SECRET}" >> .env
+          echo "MONGODB_URI=${MONGODB_URI}" >> .env
+```
+
+## Security Best Practices
+
+1. **Never commit sensitive values** to version control
+2. **Use different secrets** for each environment
+3. **Rotate secrets** periodically (especially JWT_SECRET and PRIVATE_KEY)
+4. **Validate environment** at application startup
+5. **Use different database** for each environment
+
+## Feature Flags
+
+Use environment variables for feature flags:
+
+```typescript
+// packages/shared/src/features/index.ts
+export const FEATURES = {
+  ENABLE_WALLET_CONNECT: process.env.EXPO_PUBLIC_ENABLE_WALLET_CONNECT === 'true',
+  ENABLE_GIFT_MINTING: process.env.EXPO_PUBLIC_ENABLE_GIFT_MINTING === 'true',
+};
+
+// Usage
+if (FEATURES.ENABLE_WALLET_CONNECT) {
+  // Render wallet connect button
+}
+``` 

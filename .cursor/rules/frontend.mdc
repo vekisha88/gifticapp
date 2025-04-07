@@ -1,0 +1,198 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Frontend Development Rules
+
+## Component Structure
+```
+Rule: Create well-structured React components:
+
+1. Directory structure:
+   - UI components go in components/ui/
+   - Screen components go in components/screens/
+   - Layout components go in components/layout/
+   - Each component should be in its own file
+
+2. Component composition:
+   - Keep components small and focused
+   - Extract reusable pieces into separate components
+   - Use composition over inheritance
+   - Example:
+     // GiftCard.tsx - Reusable UI component
+     // GiftList.tsx - Uses multiple GiftCard components
+     // GiftScreen.tsx - Screen that uses GiftList and other components
+
+3. Prop handling:
+   - Define prop types with TypeScript interfaces
+   - Use defaultProps or default parameter values
+   - Destructure props in function parameters
+   - Example:
+     interface ButtonProps {
+       label: string;
+       onPress: () => void;
+       variant?: 'primary' | 'secondary';
+     }
+     
+     const Button: React.FC<ButtonProps> = ({ 
+       label, 
+       onPress, 
+       variant = 'primary' 
+     }) => {
+       // Component logic...
+     };
+```
+
+## API Calls
+```
+Rule: Handle API calls consistently:
+
+1. Service-based approach:
+   - Define API call functions in services/
+   - Use apiClient.ts for the base Axios instance
+   - Services should map to backend resources
+   - Example:
+     // services/giftService.ts
+     export const getGifts = async () => {
+       return apiClient.get('/gifts');
+     };
+
+2. Custom hooks for data fetching:
+   - Create hooks that wrap service calls
+   - Manage loading, error, and data states
+   - Example:
+     // hooks/useGifts.ts
+     export const useGifts = () => {
+       const [gifts, setGifts] = useState([]);
+       const [loading, setLoading] = useState(false);
+       const [error, setError] = useState(null);
+       
+       const fetchGifts = async () => {
+         setLoading(true);
+         setError(null);
+         try {
+           const result = await giftService.getGifts();
+           setGifts(result.data);
+         } catch (err) {
+           setError(handleApiError(err, 'Failed to load gifts'));
+         } finally {
+           setLoading(false);
+         }
+       };
+       
+       return { gifts, loading, error, fetchGifts };
+     };
+
+3. Error handling:
+   - Always use handleApiError utility
+   - Show appropriate UI feedback for errors
+   - Provide retry mechanisms where appropriate
+```
+
+## State Management
+```
+Rule: Manage state effectively:
+
+1. Component-specific state:
+   - Use useState for simple component state
+   - Use useReducer for complex component state
+   - Example:
+     const [isOpen, setIsOpen] = useState(false);
+
+2. Application state:
+   - Use context for global state (auth, theme)
+   - Create specialized contexts:
+     // contexts/AuthContext.tsx
+     // contexts/ThemeContext.tsx
+   - Don't put everything in one context
+   - Consider more specialized solutions (Zustand, Jotai) for complex state
+
+3. Form state:
+   - Use Formik, React Hook Form, or custom hooks
+   - Validate inputs before submission
+   - Show validation feedback to users
+   - Example:
+     const { values, errors, handleChange, handleSubmit } = useForm({
+       initialValues: {
+         name: '',
+         email: ''
+       },
+       validate: (values) => {
+         // Validation logic...
+       }
+     });
+```
+
+## Navigation & Routing
+```
+Rule: Handle navigation with Expo Router:
+
+1. File-based routing in app/ directory:
+   - Use proper naming: index.tsx, [param].tsx
+   - Organize nested routes in directories
+   - Example:
+     app/
+       index.tsx       # Home screen
+       gifts/
+         index.tsx     # Gifts list screen
+         [id].tsx      # Gift detail screen
+         create.tsx    # Create gift screen
+
+2. Navigation helpers:
+   - Use router.push, router.replace from Expo Router
+   - Pass minimal params in navigation (IDs, not full objects)
+   - Example:
+     router.push(`/gifts/${giftId}`);
+
+3. Navigation guards:
+   - Check authentication state before navigation
+   - Redirect to login if needed
+   - Example:
+     const AuthGuard = ({ children }) => {
+       const { isAuthenticated } = useAuth();
+       const router = useRouter();
+       
+       useEffect(() => {
+         if (!isAuthenticated) {
+           router.replace('/login');
+         }
+       }, [isAuthenticated]);
+       
+       return isAuthenticated ? children : null;
+     };
+```
+
+## UI & Styling
+```
+Rule: Create consistent UI:
+
+1. Theme-based styling:
+   - Use theme variables for colors, spacing, etc.
+   - Support light/dark mode
+   - Example:
+     const styles = StyleSheet.create({
+       container: {
+         backgroundColor: theme.colors.background,
+         padding: theme.spacing.md
+       }
+     });
+
+2. Component styling:
+   - Use StyleSheet.create for static styles
+   - Use style props for dynamic styles
+   - Avoid inline styles
+   - Example:
+     <View style={[
+       styles.container,
+       isActive && styles.activeContainer
+     ]}>
+
+3. Responsive design:
+   - Use relative units (%, flex) over fixed units (px)
+   - Use Dimensions API for responsive sizing
+   - Test on multiple screen sizes
+   - Example:
+     const { width } = Dimensions.get('window');
+     const cardWidth = width * 0.9; // 90% of screen width
+``` 

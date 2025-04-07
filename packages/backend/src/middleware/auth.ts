@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { verifyToken } from '../services/userService.js';
 import { createAuthenticationError, createAuthorizationError } from '../utils/errorHandler.js';
 import { logger } from '../logger.js';
+import { AppError, ErrorCode } from '@gifticapp/shared';
+import { TokenPayload, AuthenticatedRequest } from '../types/index.js';
 
 // Extend the Express Request interface to include user property
 declare global {
@@ -30,7 +32,18 @@ export function auth(req: Request, res: Response, next: NextFunction): void {
     const token = authHeader.split(' ')[1];
     
     if (!token) {
-      throw createAuthenticationError('No token provided');
+      logger.warn('Authentication attempt failed: No token provided');
+      throw new AppError('No token provided', ErrorCode.AUTHENTICATION_ERROR);
+    }
+    
+    // Handle Bearer token format
+    if (token.startsWith('Bearer ')) {
+      token = token.slice(7, token.length);
+    }
+
+    if (!token) {
+      logger.warn('Authentication attempt failed: No token after Bearer check');
+      throw new AppError('No token provided', ErrorCode.AUTHENTICATION_ERROR);
     }
     
     // Verify token
@@ -41,12 +54,8 @@ export function auth(req: Request, res: Response, next: NextFunction): void {
     
     next();
   } catch (error: any) {
-    logger.warn(`Authentication failed: ${error.message}`);
-    res.status(401).json({
-      success: false,
-      error: 'Authentication failed',
-      message: error.message
-    });
+    logger.error(`Authentication error: ${error.message}`);
+    throw new AppError('Invalid or expired token', ErrorCode.AUTHENTICATION_ERROR);
   }
 }
 
@@ -59,7 +68,8 @@ export function authorize(roles: string[] = []): (req: Request, res: Response, n
   return (req: Request, res: Response, next: NextFunction): void => {
     try {
       if (!req.user) {
-        throw createAuthenticationError('You must be logged in to access this resource');
+        logger.warn('Authorization check failed: User not authenticated');
+        throw new AppError('You must be logged in to access this resource', ErrorCode.AUTHENTICATION_ERROR);
       }
       
       // If roles is empty, allow all authenticated users
@@ -67,9 +77,10 @@ export function authorize(roles: string[] = []): (req: Request, res: Response, n
         return next();
       }
       
-      // Check if user has an allowed role
-      if (!roles.includes(req.user.role)) {
-        throw createAuthorizationError('You do not have permission to access this resource');
+      // Check if user has one of the required roles
+      if (!roles.some((role) => req.user?.roles?.includes(role))) {
+        logger.warn(`Authorization failed: User ${req.user.id} does not have required roles: ${roles}`);
+        throw new AppError('You do not have permission to access this resource', ErrorCode.AUTHORIZATION_ERROR);
       }
       
       next();

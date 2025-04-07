@@ -1,0 +1,81 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Architecture Rules
+
+## Monorepo Structure
+```
+The project is a Turborepo monorepo with the following packages:
+- backend: Express.js API server
+- frontend: React Native/Expo mobile app
+- shared: Common TypeScript types, utilities, and error handling
+- blockchain: Solidity smart contracts with Hardhat
+- config: Shared configuration like ESLint presets
+
+When suggesting code, maintain this separation of concerns.
+```
+
+## Code Placement
+```
+Rule: Place code in the appropriate package based on its function:
+
+1. shared/ - Place here if:
+   - It's used by multiple packages
+   - It defines types or interfaces for API contracts
+   - It provides error handling or utilities needed in multiple places
+
+2. backend/ - Place here if:
+   - It handles API requests and responses
+   - It implements business logic on the server
+   - It interacts with the database or blockchain
+
+3. frontend/ - Place here if:
+   - It defines React components, screens, or hooks
+   - It manages client-side state or navigation
+   - It handles UI rendering or user interaction
+
+4. blockchain/ - Place here if:
+   - It's a Solidity smart contract
+   - It's a deployment or testing script for contracts
+   - It directly interacts with Ethereum/blockchain
+
+Always suggest the correct file path based on this structure.
+```
+
+## Import Conventions
+```
+Rule: Use correct import paths for cross-package dependencies:
+
+- From backend to shared: import { Type } from '@gifticapp/shared';
+- From frontend to shared: import { Type } from '@gifticapp/shared';
+- From blockchain to shared: import { Type } from '@gifticapp/shared';
+- From any package to config: import { preset } from '@gifticapp/config';
+
+Absolute imports within packages:
+- Backend: import { something } from 'src/path/to/file';
+- Frontend: import { something } from '@/path/to/file';
+
+Never use relative imports that go up more than 2 levels (../../).
+```
+
+## Dependency Management
+```
+Rule: Maintain consistent dependency management:
+
+1. Root package.json:
+   - Place all dev dependencies used across packages (TypeScript, ESLint, testing libraries)
+   - Place all @types/* dependencies here
+   - Define workspace-wide scripts and configuration
+
+2. Package-specific package.json:
+   - Place only dependencies specific to that package
+   - Use * version for intra-workspace dependencies (@gifticapp/shared, etc.)
+   - Define package-specific scripts
+
+3. When adding a new dependency:
+   - Check if it should be shared (add to root) or package-specific
+   - Match versions with existing dependencies where applicable
+   - Consider impact on bundle size for frontend dependencies
+``` 

@@ -1,0 +1,199 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Blockchain Development Rules
+
+## Smart Contract Development
+```
+Rule: Develop secure and maintainable smart contracts:
+
+1. Security best practices:
+   - Follow the Checks-Effects-Interactions pattern
+   - Use reentrancy guards for external calls: nonReentrant modifier
+   - Validate all inputs: require statements, input validation
+   - Avoid transfer() for ETH: use call() instead
+   - Example:
+     function withdraw() external nonReentrant {
+       uint256 amount = balances[msg.sender];
+       require(amount > 0, "No balance to withdraw");
+       
+       balances[msg.sender] = 0; // Effects before interactions
+       
+       (bool success, ) = msg.sender.call{value: amount}(""); // Use call instead of transfer
+       require(success, "Transfer failed");
+     }
+
+2. Contract structure:
+   - Use OpenZeppelin contracts for standard functionality
+   - Implement interfaces for contract interactions
+   - Use events for important state changes
+   - Example:
+     import "@openzeppelin/contracts/access/Ownable.sol";
+     import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+     
+     contract GiftContract is Ownable, ReentrancyGuard {
+       // Contract code...
+       
+       event GiftLocked(address indexed recipient, uint256 amount, uint256 unlockTime);
+     }
+
+3. Visibility and modifiers:
+   - Use explicit visibility for all functions and variables
+   - Use modifiers for repeated access control patterns
+   - Example:
+     mapping(bytes32 => Gift) private gifts;
+     
+     modifier onlyGiftOwner(bytes32 giftId) {
+       require(gifts[giftId].owner == msg.sender, "Not authorized");
+       _;
+     }
+     
+     function claimGift(bytes32 giftId) external onlyGiftOwner(giftId) {
+       // Function code...
+     }
+```
+
+## Backend Integration
+```
+Rule: Integrate blockchain functionality with backend:
+
+1. Service design:
+   - Use blockchainService.ts for all blockchain interactions
+   - Abstract blockchain complexity from other services
+   - Handle connection errors, transaction failures, gas estimations
+   - Example:
+     // services/blockchainService.ts
+     export const lockGift = async (gift: Gift, wallet: Wallet) => {
+       try {
+         // Blockchain interaction code...
+       } catch (error) {
+         throw new AppError('Failed to lock gift', ErrorCode.BLOCKCHAIN_ERROR, {
+           originalError: error.message
+         });
+       }
+     };
+
+2. Transaction handling:
+   - Monitor transactions with eventService.ts
+   - Implement retries for failed transactions
+   - Update database records to reflect blockchain state
+   - Example:
+     // services/eventService.ts
+     export const setupContractEvents = () => {
+       contract.on('GiftLocked', async (recipient, amount, unlockTime, event) => {
+         try {
+           await giftService.updateGiftBlockchainStatus(recipient, 'locked');
+         } catch (error) {
+           logger.error(`Failed to process GiftLocked event: ${error.message}`);
+         }
+       });
+     };
+
+3. Error handling:
+   - Use specific blockchain error codes
+   - Log detailed blockchain errors
+   - Provide user-friendly messages
+   - Example:
+     try {
+       // Blockchain code...
+     } catch (error) {
+       logger.error(`Blockchain error: ${error.message}`, { 
+         transactionHash, 
+         methodName, 
+         params 
+       });
+       throw new AppError(
+         'Transaction failed', 
+         ErrorCode.TRANSACTION_FAILED, 
+         { details: error.message }
+       );
+     }
+```
+
+## Testing & Deployment
+```
+Rule: Test and deploy contracts properly:
+
+1. Contract testing:
+   - Write unit tests for all contract functions
+   - Test edge cases and failure modes
+   - Use Hardhat testing framework
+   - Example:
+     describe("GiftContract", function() {
+       it("Should lock a gift correctly", async function() {
+         // Test code...
+       });
+       
+       it("Should fail when non-owner tries to withdraw", async function() {
+         // Test failure case...
+       });
+     });
+
+2. Deployment:
+   - Use deployment scripts in scripts/ directory
+   - Verify contracts on Etherscan
+   - Save deployment addresses in contractAddress.json
+   - Example:
+     // scripts/deploy.ts
+     async function main() {
+       const Gift = await ethers.getContractFactory("GiftContract");
+       const gift = await Gift.deploy();
+       await gift.deployed();
+       
+       console.log("GiftContract deployed to:", gift.address);
+     }
+
+3. Network configuration:
+   - Configure networks in hardhat.config.cjs
+   - Use environment variables for private keys
+   - Support multiple environments (local, testnet, mainnet)
+   - Example:
+     module.exports = {
+       networks: {
+         localhost: {/* config */},
+         polygon_mumbai: {/* config */},
+         polygon: {/* config */}
+       }
+     };
+```
+
+## Security & Key Management
+```
+Rule: Handle private keys and security carefully:
+
+1. Private key storage:
+   - Never hardcode private keys in source code
+   - Use environment variables for development
+   - Use proper secret management for production
+   - Example:
+     const privateKey = process.env.DEPLOYER_PRIVATE_KEY;
+     if (!privateKey) {
+       throw new Error("Missing deployer private key");
+     }
+
+2. Wallet generation:
+   - Use secure random number generation
+   - Encrypt private keys when storing
+   - Provide proper key backup mechanisms
+   - Example:
+     // utils/walletGenerator.ts (simplified)
+     export const generateWallet = () => {
+       const wallet = ethers.Wallet.createRandom();
+       const encryptedKey = encryptPrivateKey(wallet.privateKey);
+       return { address: wallet.address, encryptedKey };
+     };
+
+3. Transaction signing:
+   - Sign transactions securely in backend
+   - Never expose private keys to frontend
+   - Use appropriate gas price strategies
+   - Example:
+     const wallet = new ethers.Wallet(decryptedPrivateKey, provider);
+     const tx = await wallet.sendTransaction({
+       to: recipient,
+       value: amount,
+       gasLimit: estimatedGas.mul(110).div(100) // 10% buffer
+     });
+``` 

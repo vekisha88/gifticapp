@@ -44,7 +44,7 @@ async function main() {
   const addressPath = path.join(__dirname, "../contractAddress.json");
   fs.writeFileSync(
     addressPath,
-    JSON.stringify({ address: contractAddress }, null, 2)
+    JSON.stringify({ contractAddress: contractAddress }, null, 2)
   );
   console.log(`[*] Contract address saved to: ${addressPath}\n`);
 

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { logger } from '../logger.js';
-import { AppError, formatErrorResponse } from './errorHandler.js';
+import { AppError, ErrorCode, formatErrorResponse } from '@gifticapp/shared';
 
 interface ApiResponse {
   success: boolean;
@@ -63,44 +63,37 @@ export function sendError(res: Response, message: string, statusCode: number = 4
 /**
  * Send a standardized error response for caught exceptions
  * @param {object} res Express response object
- * @param {Error} error Error object
+ * @param {Error} error Error object (should be AppError)
  * @param {string} context Context where the error occurred
  * @param {number} defaultStatusCode Default HTTP status code if not an AppError
  */
 export function sendErrorResponse(res: Response, error: Error | AppError, context: string, defaultStatusCode: number = 500): Response {
-  // Log the error with context
-  logger.error(`Error in ${context}: ${error.message}`, {
-    stack: error.stack,
-    context
-  });
-  
-  // Determine status code
-  let statusCode = defaultStatusCode;
-  if (error instanceof AppError) {
-    // Map error codes to HTTP status codes
-    switch (error.code) {
-      case 'VALIDATION_ERROR':
-        statusCode = 400;
-        break;
-      case 'AUTHENTICATION_ERROR':
-        statusCode = 401;
-        break;
-      case 'AUTHORIZATION_ERROR':
-        statusCode = 403;
-        break;
-      case 'NOT_FOUND_ERROR':
-        statusCode = 404;
-        break;
-      case 'CONFLICT_ERROR':
-        statusCode = 409;
-        break;
-      default:
-        statusCode = 500;
-    }
+  // Ensure error is an AppError. If not, wrap it.
+  // This step might be redundant if controllers always use shared handleError first,
+  // but provides safety.
+  let appError: AppError;
+  if (!(error instanceof AppError)) {
+    // If it's not an AppError, log the original and wrap it
+    logger.error(`Unexpected error type caught in ${context}: ${error.message}`, {
+      stack: error.stack,
+      context,
+      originalError: error
+    });
+    // Use the shared handleError to wrap it
+    appError = handleError(error, context);
+  } else {
+    appError = error;
   }
+
+  // Logging should happen in the controller/service where the error originates or is handled.
+  // Keep logging here minimal, focused on the response being sent.
+  logger.warn(`Sending error response for ${context}: Status ${appError.statusCode}, Code ${appError.code}`);
   
-  // Send the formatted error response
-  return res.status(statusCode).json(formatErrorResponse(error));
+  // Determine status code - Use the statusCode from the AppError directly
+  const statusCode = appError.statusCode || defaultStatusCode;
+  
+  // Send the formatted error response using the shared formatter
+  return res.status(statusCode).json(formatErrorResponse(appError));
 }
 
 /**

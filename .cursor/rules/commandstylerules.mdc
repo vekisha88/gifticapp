@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Command Style Rules
+- Each command should be a single operation per line
+- DO NOT use && to chain commands
+- Use separate commands with clear comments instead

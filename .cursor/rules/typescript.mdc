@@ -1,0 +1,105 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# TypeScript Rules
+
+## Type Safety
+```
+Rule: Maintain strict TypeScript typing throughout the codebase:
+
+1. Avoid 'any' type:
+   - ❌ function process(data: any)
+   - ✅ function process(data: GiftData)
+
+2. When type is truly unknown, use 'unknown' instead of 'any':
+   - ❌ function handleError(error: any)
+   - ✅ function handleError(error: unknown)
+
+3. Use interfaces for object shapes:
+   - ✅ interface User { id: string; name: string; }
+   - Define interfaces in shared/src/types/ if used across packages
+   - Define interfaces locally if only used within one file
+
+4. Use proper typing for React components:
+   - ✅ const Component: React.FC<Props> = (props) => { }
+   - ✅ export interface Props { /* ... */ }
+
+5. Use proper typing for React hooks:
+   - ✅ const [value, setValue] = useState<string>('')
+```
+
+## Type Declarations
+```
+Rule: Organize type declarations properly:
+
+1. Place shared types in packages/shared/src/types/ organized by domain:
+   - user.ts: User-related interfaces
+   - gift.ts: Gift-related interfaces
+   - blockchain.ts: Blockchain-related interfaces
+
+2. Export all types from their respective files and re-export through index.ts.
+
+3. Frontend-specific types go in packages/frontend/types/
+   - component-props.ts: React component prop interfaces
+   - navigation.ts: Navigation-related types
+
+4. Backend-specific types go in packages/backend/src/types/
+   - request.ts: Express request extensions
+   - models.ts: Mongoose model types
+
+5. For environmental type declarations (like Express extensions):
+   - Create or update appropriate *.d.ts file
+```
+
+## JSDoc Comments
+```
+Rule: Document code with JSDoc comments:
+
+1. Required for all functions in shared code:
+   /**
+    * Description of what the function does
+    * 
+    * @param paramName Description of parameter
+    * @returns Description of return value
+    */
+   function example(paramName: string): string { }
+
+2. Required for all exported interfaces:
+   /**
+    * Interface representing a user in the system
+    */
+   export interface User {
+     /** Unique identifier for the user */
+     id: string;
+     /** User's full name */
+     name: string;
+   }
+
+3. For React components, document props interface:
+   /**
+    * Props for the UserProfile component
+    */
+   export interface UserProfileProps {
+     /** The user to display */
+     user: User;
+     /** Called when user data is updated */
+     onUpdate?: (user: User) => void;
+   }
+
+4. Document non-obvious function behavior and edge cases
+```
+
+## Typescript Configuration
+```
+Rule: Follow the established TypeScript configuration:
+
+1. Backend/shared/blockchain extend the root tsconfig.base.json
+2. Frontend extends expo/tsconfig.base
+3. Do not override compiler options already in base configs
+4. When adding new properties:
+   - Add to tsconfig.base.json if it applies to all packages
+   - Add to package-specific tsconfig.json if it's specific
+5. Keep strict mode enabled in all configurations
+``` 

@@ -4,8 +4,14 @@ export * from './gift';
 // Export blockchain types
 export * from './blockchain';
 
-// Export API types (will need to be converted to TS later)
-// export * from './api';
+// Remove defunct API export
+// export * from './api'; 
 
-// Export environment types (will need to be converted to TS later)
-// export * from './env'; 
+// Export environment types
+export * from './env';
+
+export * from './user';
+export * from './currency';
+
+// Default export if needed, or specific exports
+// export { default as SomeType } from './someType'; 

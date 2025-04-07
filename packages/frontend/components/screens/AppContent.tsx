@@ -12,7 +12,8 @@ import RecoveryPhraseModal from './RecoveryPhraseModal';
 import GiftDetails from './GiftDetails';
 import AssetDetails from './AssetDetails';
 import { spacing } from '../ui/styles';
-import { giftService, userService, formatErrorMessage } from '../../services';
+import { giftService, userService } from '../../services';
+import { handleApiError } from '../../utils/errorHandling';
 
 // Define app screens
 export type AppScreen = 'dashboard' | 'createGift' | 'assets' | 'gifts' | 'profile' | 'assetDetails' | 'giftDetails' | 'editProfile' | 'security' | 'notifications' | 'help' | 'about' | 'paymentScreen' | 'claimGift' | 'recoveryPhrase';
@@ -189,7 +190,7 @@ const AppContent: React.FC<AppContentProps> = ({ onLogout }) => {
         Alert.alert('Error', response.error || 'Failed to create gift. Please try again.');
       }
     } catch (error) {
-      Alert.alert('Error', formatErrorMessage(error, 'Failed to create gift. Please try again.'));
+      Alert.alert('Error', handleApiError(error, 'Failed to create gift. Please try again.'));
     }
   };
 

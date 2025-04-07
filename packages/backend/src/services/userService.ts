@@ -3,12 +3,7 @@ import User from '../models/user.js';
 import { logger } from '../logger.js';
 import { env } from '@gifticapp/shared';
 import { isValidEmail } from '../utils/validation.js';
-import { 
-  createAuthenticationError, 
-  createValidationError,
-  createNotFoundError,
-  createConflictError
-} from '../utils/errorHandler.js';
+import { AppError, ErrorCode } from '@gifticapp/shared';
 import { UserRegisterData, UserUpdateData, TokenPayload, AuthResult } from '../types/index.js';
 
 /**
@@ -22,18 +17,18 @@ export async function registerUser(userData: UserRegisterData): Promise<Record<s
     
     // Validate email
     if (!isValidEmail(email)) {
-      throw createValidationError('Invalid email format');
+      throw new AppError('Invalid email format', ErrorCode.VALIDATION_ERROR);
     }
     
     // Validate password
     if (!password || password.length < 8) {
-      throw createValidationError('Password must be at least 8 characters long');
+      throw new AppError('Password must be at least 8 characters long', ErrorCode.VALIDATION_ERROR);
     }
     
     // Check if user with this email already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      throw createConflictError('User with this email already exists');
+      throw new AppError('User with this email already exists', ErrorCode.CONFLICT_ERROR);
     }
     
     // Create new user
@@ -68,13 +63,13 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
     // Find user by email
     const user = await User.findOne({ email });
     if (!user) {
-      throw createAuthenticationError('Invalid email or password');
+      throw new AppError('Invalid email or password', ErrorCode.AUTHENTICATION_ERROR);
     }
     
     // Check password
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
-      throw createAuthenticationError('Invalid email or password');
+      throw new AppError('Invalid email or password', ErrorCode.AUTHENTICATION_ERROR);
     }
     
     // Update last login
@@ -112,7 +107,7 @@ export async function getUserById(userId: string): Promise<Record<string, any>> 
   try {
     const user = await User.findById(userId);
     if (!user) {
-      throw createNotFoundError('User not found');
+      throw new AppError('User not found', ErrorCode.NOT_FOUND_ERROR);
     }
     return user.toJSON();
   } catch (error: any) {
@@ -130,7 +125,7 @@ export async function getUserByEmail(email: string): Promise<Record<string, any>
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      throw createNotFoundError('User not found');
+      throw new AppError('User not found', ErrorCode.NOT_FOUND_ERROR);
     }
     return user.toJSON();
   } catch (error: any) {
@@ -149,7 +144,7 @@ export async function updateUserPreferences(userId: string, preferences: Record<
   try {
     const user = await User.findById(userId);
     if (!user) {
-      throw createNotFoundError('User not found');
+      throw new AppError('User not found', ErrorCode.NOT_FOUND_ERROR);
     }
     
     // Update preferences
@@ -173,7 +168,7 @@ export async function updateUserProfile(userId: string, profileData: UserUpdateD
   try {
     const user = await User.findById(userId);
     if (!user) {
-      throw createNotFoundError('User not found');
+      throw new AppError('User not found', ErrorCode.NOT_FOUND_ERROR);
     }
     
     // Update allowable fields
@@ -201,18 +196,18 @@ export async function changePassword(userId: string, currentPassword: string, ne
   try {
     const user = await User.findById(userId);
     if (!user) {
-      throw createNotFoundError('User not found');
+      throw new AppError('User not found', ErrorCode.NOT_FOUND_ERROR);
     }
     
     // Verify current password
     const isPasswordValid = await user.comparePassword(currentPassword);
     if (!isPasswordValid) {
-      throw createAuthenticationError('Current password is incorrect');
+      throw new AppError('Current password is incorrect', ErrorCode.AUTHENTICATION_ERROR);
     }
     
     // Validate new password
     if (!newPassword || newPassword.length < 8) {
-      throw createValidationError('New password must be at least 8 characters long');
+      throw new AppError('New password must be at least 8 characters long', ErrorCode.VALIDATION_ERROR);
     }
     
     // Update password
@@ -255,7 +250,7 @@ export function verifyToken(token: string): TokenPayload {
     return jwt.verify(token, env.jwtSecret) as TokenPayload;
   } catch (error: any) {
     logger.error(`Error verifying token: ${error.message}`);
-    throw createAuthenticationError('Invalid or expired token');
+    throw new AppError('Invalid or expired token', ErrorCode.AUTHENTICATION_ERROR);
   }
 }
 

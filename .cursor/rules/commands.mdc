@@ -1,6 +1,108 @@
 ---
-description: RULE FOR COMMANDS
+description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
-USE PowerShell compatible commands only, you can not use &&
+# Giftic App Commands
+
+This file contains common commands for developing, testing, and deploying the Giftic app.
+
+## Development Commands
+
+### Root Commands
+```bash
+# Install all dependencies
+npm install
+
+# Run development server for the whole monorepo
+npm run dev
+
+# Build all packages
+npm run build
+
+# Lint all packages
+npm run lint
+
+# Run tests across all packages
+npm run test
+```
+
+### Backend Commands
+```bash
+# Start the backend development server
+npm run dev -w @gifticapp/backend
+
+# Build the backend
+npm run build -w @gifticapp/backend
+
+# Run backend tests
+npm run test -w @gifticapp/backend
+```
+
+### Frontend Commands
+```bash
+# Start the Expo development server
+npm run dev -w @gifticapp/frontend
+# or
+cd packages/frontend && npm run start
+
+# Build for iOS
+cd packages/frontend && npm run ios
+
+# Build for Android
+cd packages/frontend && npm run android
+
+# Run frontend tests
+npm run test -w @gifticapp/frontend
+```
+
+### Blockchain Commands
+```bash
+# Compile smart contracts
+npm run compile -w @gifticapp/blockchain
+
+# Run local blockchain node
+npm run node -w @gifticapp/blockchain
+
+# Deploy contracts to local network
+npm run deploy:local -w @gifticapp/blockchain
+
+# Run blockchain tests
+npm run test -w @gifticapp/blockchain
+```
+
+## Database Commands
+
+```bash
+# Start local MongoDB (if using Docker)
+docker-compose up -d mongodb
+
+# Connect to MongoDB shell
+mongosh "mongodb://localhost:27017/gifticapp"
+```
+
+## Deployment Commands
+
+```bash
+# Build all packages for production
+npm run build
+
+# Deploy backend to production
+cd packages/backend && npm run deploy:prod
+
+# Deploy frontend to Expo/app stores
+cd packages/frontend && npm run build:prod
+```
+
+## Troubleshooting Commands
+
+```bash
+# Clear node_modules and reinstall
+npm run clean && npm install
+
+# Clear Expo cache
+cd packages/frontend && npx expo-cli clear-cache
+
+# Reset local blockchain state
+cd packages/blockchain && npx hardhat clean
+``` 

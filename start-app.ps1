@@ -100,20 +100,15 @@ function Stop-ProcessOnPort {
 }
 
 # Clean up existing processes - force kill them to ensure clean state
-Write-Host "Checking for existing processes..."
-$ports = @(8545, 8000, 19000, 8081)
+Write-Host "Checking for existing processes and freeing ports..."
+$portsToFree = @(8545, 8000, 19000, 8081)
 
-foreach ($port in $ports) {
-    $process = Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue
-    if ($process) {
-        Write-Host "Port $port is in use by process ID: $($process.OwningProcess)"
-    } else {
-        Write-Host "Port $port is free"
-    }
+foreach ($port in $portsToFree) {
+    Stop-ProcessOnPort -Port $port -Force # Add -Force to ensure processes are killed
 }
 
 Write-Host "Waiting for ports to fully release..."
-Start-Sleep -Seconds 1
+Start-Sleep -Seconds 3 # Increase wait time slightly
 
 # Verify directory paths
 Write-Host "Verifying directory paths..."

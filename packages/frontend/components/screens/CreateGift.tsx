@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -16,8 +16,12 @@ import { borderRadius, spacing, typography } from '../ui/styles';
 import Input from '../ui/Input';
 import Button from '../ui/Button';
 import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
-import { giftService, formatErrorMessage } from '../../services';
+import { giftService } from '../../services';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { handleApiError } from '../../utils/errorHandling';
+import { useGiftCreation } from '../../hooks/useGiftCreation';
+import { CreateGiftData } from '@gifticapp/shared';
+import { Screen } from '../ui/Screen';
 
 // Types for unlock options
 interface UnlockOption {
@@ -42,6 +46,8 @@ export interface GiftDetails {
 
 const CreateGift: React.FC<CreateGiftProps> = ({ onBack, onContinue }) => {
   const { colors, isDark } = useTheme();
+  const { createGift, isLoading, error: creationError } = useGiftCreation();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // State
   const [recipientFirstName, setRecipientFirstName] = useState('');
@@ -51,8 +57,6 @@ const CreateGift: React.FC<CreateGiftProps> = ({ onBack, onContinue }) => {
   const [amount, setAmount] = useState('');
   const [selectedUnlockOption, setSelectedUnlockOption] = useState<string | null>(null);
   const [showCryptoDropdown, setShowCryptoDropdown] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [birthDate, setBirthDate] = useState<Date | null>(null);
   const [customUnlockDate, setCustomUnlockDate] = useState<Date | null>(null);
@@ -123,6 +127,179 @@ const CreateGift: React.FC<CreateGiftProps> = ({ onBack, onContinue }) => {
                       ((selectedUnlockOption !== 'custom' && selectedUnlockOption !== null) || 
                        (selectedUnlockOption === 'custom' && customUnlockDate !== null));
 
+  // Update local error message when hook error changes
+  useEffect(() => {
+    setErrorMessage(creationError);
+  }, [creationError]);
+
+  const handleGiftCreation = useCallback(async (giftDetails: CreateGiftData) => {
+    setErrorMessage(null); // Clear previous errors
+    try {
+      const result = await createGift(giftDetails); // Call the hook's function
+      if (result && result.giftCode) {
+        onContinue(giftDetails as GiftDetails);
+      } else {
+        // Handle unexpected success response (if necessary)
+        logger.warn('Gift creation successful but no giftCode received', result);
+        setErrorMessage('Gift created, but failed to get confirmation code.');
+      }
+    } catch (err) {
+      // Error is already set by the hook, no need to set it again here
+      // We catch here just to prevent unhandled promise rejection if needed,
+      // or if we need to perform component-specific actions on error
+      logger.info('Gift creation failed in component');
+    }
+    // isLoading is handled by the hook
+  }, [createGift, onContinue]);
+
+  return (
+    <Screen>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+      >
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+          <View style={[styles.header, { borderBottomColor: colors.border }]}>
+            <TouchableOpacity onPress={onBack}>
+              <Ionicons name="arrow-back" size={24} color={colors.text} />
+            </TouchableOpacity>
+            <Text style={[styles.headerTitle, { color: colors.text }]}>
+              Create a Gift
+            </Text>
+            <View style={{ width: 24 }} />
+          </View>
+
+          {errorMessage && (
+            <View style={[styles.errorContainer, { backgroundColor: colors.error + '20' }]}>
+              <Text style={[styles.errorText, { color: colors.error }]}>{errorMessage}</Text>
+            </View>
+          )}
+
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+          >
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>
+              Recipient
+            </Text>
+
+            <View style={styles.recipientButtons}>
+              <TouchableOpacity
+                style={[
+                  styles.recipientButton,
+                  {
+                    borderColor: colors.primary,
+                    borderWidth: 2,
+                  },
+                ]}
+              >
+                <FontAwesome5
+                  name="user-plus"
+                  size={24}
+                  color={colors.primary}
+                  style={styles.recipientButtonIcon}
+                />
+                <Text style={[styles.recipientButtonText, { color: colors.text }]}>
+                  New Recipient
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.recipientButton,
+                  {
+                    borderColor: colors.border,
+                    borderWidth: 1,
+                  },
+                ]}
+              >
+                <FontAwesome5
+                  name="address-book"
+                  size={24}
+                  color={colors.textSecondary}
+                  style={styles.recipientButtonIcon}
+                />
+                <Text style={[styles.recipientButtonText, { color: colors.text }]}>
+                  Past Recipients
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>
+              Recipient Details
+            </Text>
+
+            <Input
+              label="First Name"
+              placeholder="e.g., Emma"
+              value={recipientFirstName}
+              onChangeText={setRecipientFirstName}
+              required
+            />
+
+            <Input
+              label="Last Name"
+              placeholder="e.g., Smith"
+              value={recipientLastName}
+              onChangeText={setRecipientLastName}
+            />
+
+            <View style={styles.inputContainer}>
+              <Text style={[styles.inputLabel, { color: colors.text }]}>
+                Date of Birth <Text style={{ color: colors.error }}>*</Text>
+              </Text>
+              <TouchableOpacity
+                style={[
+                  styles.datePickerButton,
+                  {
+                    borderColor: colors.border,
+                    backgroundColor: isDark
+                      ? 'rgba(255, 255, 255, 0.05)'
+                      : colors.background,
+                  },
+                ]}
+                onPress={() => setShowDatePicker(true)}
+              >
+                <Text style={[styles.dateText, { color: birthDate ? colors.text : colors.textSecondary }]}>
+                  {birthDate 
+                    ? birthDate.toLocaleDateString()
+                    : 'Select date of birth'}
+                </Text>
+                <MaterialIcons
+                  name="calendar-today"
+                  size={20}
+                  color={colors.textSecondary}
+                />
+              </TouchableOpacity>
+            </View>
+
+            {showDatePicker && (
+              <DateTimePicker
+                value={birthDate || new Date()}
+                mode="date"
+                display="default"
+                onChange={(event, selectedDate) => {
+                  setShowDatePicker(false);
+                  if (selectedDate) {
+                    setBirthDate(selectedDate);
+                    // Update dateOfBirth string format for backward compatibility
+                    const day = selectedDate.getDate().toString().padStart(2, '0');
+                    const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
+                    const year = selectedDate.getFullYear();
+                    setDateOfBirth(`${day}.${month}.${year}`);
+                  }
+                }}
+              />
+            )}
+
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>
+              Choose Cryptocurrency
+            </Text>
+
+            <TouchableOpacity
+              style={[
   // Handle continue button
   const handleContinue = async () => {
     if (!isFormValid) {
@@ -155,8 +332,9 @@ const CreateGift: React.FC<CreateGiftProps> = ({ onBack, onContinue }) => {
 
       // Pass to parent component which will handle the API call
       onContinue(giftDetails);
-    } catch (error) {
-      setError(formatErrorMessage(error, 'Failed to create gift. Please try again.'));
+    } catch (error: any) {
+      logger.error('Gift creation failed', error);
+      setError(handleApiError(error, 'Failed to create gift. Please try again.'));
     } finally {
       setIsLoading(false);
     }

@@ -1,0 +1,291 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Giftic App Testing Rules
+
+This file contains testing guidelines and conventions for the Giftic app.
+
+## General Testing Principles
+
+- **Test coverage**: Aim for at least 80% test coverage for critical code paths
+- **Test isolation**: Tests should be independent of each other
+- **Test readability**: Tests should serve as documentation of how code should work
+- **Test environments**: Tests should be able to run in CI/CD pipelines
+
+## Backend Testing
+
+### Unit Testing
+
+```typescript
+// Example of a good backend unit test
+import { describe, it, expect, jest } from '@jest/globals';
+import { GiftService } from '../services/giftService';
+import { AppError, ErrorCode } from '@gifticapp/shared';
+
+describe('GiftService', () => {
+  describe('createGift', () => {
+    it('should create a gift successfully', async () => {
+      // Arrange
+      const mockGiftRepository = {
+        create: jest.fn().mockResolvedValue({ id: '123', name: 'Test Gift' }),
+      };
+      const giftService = new GiftService(mockGiftRepository);
+      
+      // Act
+      const result = await giftService.createGift({ name: 'Test Gift' });
+      
+      // Assert
+      expect(result).toEqual({ id: '123', name: 'Test Gift' });
+      expect(mockGiftRepository.create).toHaveBeenCalledWith({ name: 'Test Gift' });
+    });
+    
+    it('should throw an error when gift creation fails', async () => {
+      // Arrange
+      const mockGiftRepository = {
+        create: jest.fn().mockRejectedValue(new Error('Database error')),
+      };
+      const giftService = new GiftService(mockGiftRepository);
+      
+      // Act & Assert
+      await expect(giftService.createGift({ name: 'Test Gift' }))
+        .rejects
+        .toThrow(new AppError('Failed to create gift', ErrorCode.UNEXPECTED_ERROR));
+    });
+  });
+});
+```
+
+### Integration Testing
+
+- Test the interaction between components (services, controllers, databases)
+- Use in-memory MongoDB for database integration tests
+- Test API endpoints using supertest
+
+```typescript
+// Example of a good API integration test
+import request from 'supertest';
+import { app } from '../app';
+import { connectDatabase, disconnectDatabase } from '../database';
+
+describe('Gift API', () => {
+  beforeAll(async () => {
+    await connectDatabase();
+  });
+  
+  afterAll(async () => {
+    await disconnectDatabase();
+  });
+  
+  describe('POST /api/gifts', () => {
+    it('should create a new gift', async () => {
+      const response = await request(app)
+        .post('/api/gifts')
+        .send({ name: 'Test Gift', description: 'A test gift' })
+        .set('Authorization', `Bearer ${testToken}`);
+      
+      expect(response.status).toBe(201);
+      expect(response.body).toHaveProperty('id');
+      expect(response.body.name).toBe('Test Gift');
+    });
+    
+    it('should return 400 when name is missing', async () => {
+      const response = await request(app)
+        .post('/api/gifts')
+        .send({ description: 'A test gift' })
+        .set('Authorization', `Bearer ${testToken}`);
+      
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty('error');
+    });
+  });
+});
+```
+
+## Frontend Testing
+
+### Component Testing
+
+- Use React Testing Library for component tests
+- Test component rendering, user interactions, and state changes
+- Mock API calls and external dependencies
+
+```typescript
+// Example of a good React component test
+import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
+import { GiftItem } from '../components/GiftItem';
+
+describe('GiftItem', () => {
+  const mockGift = { id: '123', name: 'Test Gift', description: 'A test gift' };
+  const mockOnPress = jest.fn();
+  
+  it('renders gift details correctly', () => {
+    render(<GiftItem gift={mockGift} onPress={mockOnPress} />);
+    
+    expect(screen.getByText('Test Gift')).toBeDefined();
+    expect(screen.getByText('A test gift')).toBeDefined();
+  });
+  
+  it('calls onPress when pressed', () => {
+    render(<GiftItem gift={mockGift} onPress={mockOnPress} />);
+    
+    fireEvent.press(screen.getByText('Test Gift'));
+    
+    expect(mockOnPress).toHaveBeenCalledWith('123');
+  });
+});
+```
+
+### Hook Testing
+
+- Test custom hooks with renderHook from @testing-library/react-hooks
+- Verify state updates and side effects
+
+```typescript
+// Example of a good custom hook test
+import { renderHook, act } from '@testing-library/react-hooks';
+import { useGiftCreation } from '../hooks/useGiftCreation';
+import * as giftService from '../services/giftService';
+
+jest.mock('../services/giftService');
+
+describe('useGiftCreation', () => {
+  it('should create a gift and update state', async () => {
+    // Arrange
+    const mockCreateGift = jest.spyOn(giftService, 'createGift')
+      .mockResolvedValue({ id: '123', name: 'Test Gift' });
+    
+    // Act
+    const { result, waitForNextUpdate } = renderHook(() => useGiftCreation());
+    
+    act(() => {
+      result.current.createGift({ name: 'Test Gift' });
+    });
+    
+    // Wait for async state update
+    await waitForNextUpdate();
+    
+    // Assert
+    expect(mockCreateGift).toHaveBeenCalledWith({ name: 'Test Gift' });
+    expect(result.current.gift).toEqual({ id: '123', name: 'Test Gift' });
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.error).toBe(null);
+  });
+});
+```
+
+## Blockchain Testing
+
+### Smart Contract Testing
+
+- Test smart contracts using Hardhat's testing framework
+- Test both positive and negative scenarios
+- Verify event emissions
+
+```typescript
+// Example of a good smart contract test
+import { ethers } from 'hardhat';
+import { expect } from 'chai';
+import { Contract } from 'ethers';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+
+describe('GiftNFT', () => {
+  let giftNFT: Contract;
+  let owner: SignerWithAddress;
+  let user: SignerWithAddress;
+  
+  beforeEach(async () => {
+    [owner, user] = await ethers.getSigners();
+    
+    const GiftNFT = await ethers.getContractFactory('GiftNFT');
+    giftNFT = await GiftNFT.deploy('GiftNFT', 'GIFT');
+    await giftNFT.deployed();
+  });
+  
+  describe('mintGift', () => {
+    it('should mint a new gift NFT', async () => {
+      // Act
+      const tx = await giftNFT.connect(owner).mintGift(
+        user.address,
+        'Test Gift',
+        'ipfs://test-uri'
+      );
+      
+      // Assert
+      await expect(tx)
+        .to.emit(giftNFT, 'GiftCreated')
+        .withArgs(1, user.address, 'Test Gift');
+        
+      expect(await giftNFT.ownerOf(1)).to.equal(user.address);
+      expect(await giftNFT.tokenURI(1)).to.equal('ipfs://test-uri');
+    });
+    
+    it('should revert if caller is not the owner', async () => {
+      // Act & Assert
+      await expect(
+        giftNFT.connect(user).mintGift(
+          user.address,
+          'Test Gift',
+          'ipfs://test-uri'
+        )
+      ).to.be.revertedWith('Ownable: caller is not the owner');
+    });
+  });
+});
+```
+
+## End-to-End Testing
+
+- Use Detox for mobile app E2E testing
+- Test critical user flows from start to finish
+- Ensure proper integration between frontend, backend, and blockchain
+
+```typescript
+// Example of a good E2E test
+describe('Gift Creation Flow', () => {
+  beforeAll(async () => {
+    await device.launchApp();
+  });
+  
+  beforeEach(async () => {
+    await device.reloadReactNative();
+  });
+  
+  it('should allow a user to create and view a gift', async () => {
+    // Navigate to create gift screen
+    await element(by.id('create-gift-button')).tap();
+    
+    // Fill in gift details
+    await element(by.id('gift-name-input')).typeText('Birthday Gift');
+    await element(by.id('gift-description-input')).typeText('Happy Birthday!');
+    await element(by.id('gift-recipient-input')).typeText('john@example.com');
+    
+    // Submit the form
+    await element(by.id('submit-gift-button')).tap();
+    
+    // Verify success message
+    await expect(element(by.text('Gift created successfully'))).toBeVisible();
+    
+    // Navigate to gifts list
+    await element(by.id('gifts-tab')).tap();
+    
+    // Verify gift appears in the list
+    await expect(element(by.text('Birthday Gift'))).toBeVisible();
+  });
+});
+```
+
+## Test File Organization
+
+- Place tests next to the files they test or in a parallel `__tests__` directory
+- Follow consistent naming conventions: `*.test.ts`, `*.spec.ts`
+- Group tests by feature or component
+
+## Testing Best Practices
+
+1. **Write tests before fixing bugs**: Create a test that reproduces the bug, then fix the code
+2. **Test edge cases**: Boundary values, empty inputs, error conditions
+3. **Use test data factories**: Create helpers to generate test data
+4. **Keep tests focused**: Each test should verify one specific behavior
+5. **Clean up after tests**: Reset state, clear mocks, and clean databases between tests 

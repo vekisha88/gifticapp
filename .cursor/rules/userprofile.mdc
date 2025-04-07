@@ -1,6 +1,49 @@
 ---
-description: RULE FOR UNDERSTANDING ME
+description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
-I am product owner with modest experience in coding
+# Giftic App Developer Profile
+
+This file contains information about my preferences and working style as a developer of the Giftic app.
+
+## Coding Preferences
+
+- I prefer **concise solutions** that prioritize readability and maintainability over clever one-liners
+- I value **consistent patterns** across the codebase for better team collaboration
+- I appreciate **proactive error handling** that anticipates failure points
+- I prefer **small, focused components** and functions rather than large monolithic ones
+
+## Architectural Preferences
+
+- I'm following a **modular architecture** with clear separation of concerns
+- I prefer to keep **business logic in services** rather than controllers or components
+- I like to use **repository pattern** for database access when appropriate
+- I value **strict typing** with TypeScript throughout the codebase
+
+## Working Style
+
+- I usually work **iteratively**, building core functionality first before refining
+- I prefer **self-documenting code** with descriptive variable and function names
+- I value **practical solutions** over perfect ones, especially in early development
+- I appreciate **specific examples** when learning new patterns or approaches
+
+## Technical Areas
+
+Areas I'm most experienced with:
+- TypeScript & JavaScript
+- React & React Native
+- Express.js
+- MongoDB
+
+Areas I'm currently learning or less experienced with:
+- Solidity development
+- Blockchain integration
+- Smart contract testing
+- Advanced MongoDB optimization
+
+## Documentation Preferences
+
+- I prefer **markdown-based documentation** for technical specs
+- I like **commented examples** that show both intended usage and edge cases
+- I value **API documentation** that clearly explains parameters and return types 

@@ -17,7 +17,8 @@ import Button from '../ui/Button';
 import Input from '../ui/Input';
 import { Card } from '../ui/Card';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
-import { giftService, userService, formatErrorMessage } from '../../services';
+import { giftService, userService } from '../../services';
+import { handleApiError } from '../../utils/errorHandling';
 
 interface ClaimGiftProps {
   onBack: () => void;
@@ -105,7 +106,7 @@ const ClaimGift: React.FC<ClaimGiftProps> = ({ onBack, onClaimSuccess }) => {
         setVerifiedGift(null);
       }
     } catch (error) {
-      setError(formatErrorMessage(error, 'Failed to verify gift code'));
+      setError(handleApiError(error, 'Failed to verify gift code'));
       setVerifiedGift(null);
     } finally {
       setIsVerifying(false);
@@ -171,7 +172,7 @@ const ClaimGift: React.FC<ClaimGiftProps> = ({ onBack, onClaimSuccess }) => {
         setIsClaiming(false);
       }
     } catch (error) {
-      setError(formatErrorMessage(error, 'Failed to claim gift'));
+      setError(handleApiError(error, 'Failed to claim gift'));
       setIsClaiming(false);
     }
   };

@@ -29,23 +29,6 @@
         "winston-daily-rotate-file": "^4.7.1"
     },
     "devDependencies": {
-        "@gifticapp/config": "*",
-        "@types/bcrypt": "^5.0.2",
-        "@types/cors": "^2.8.17",
-        "@types/express": "^4.17.21",
-        "@types/jsonwebtoken": "^9.0.6",
-        "@types/mongoose": "^5.11.96",
-        "@types/morgan": "^1.9.9"
-    },
-    "resolutions": {
-        "ethers": "6.13.5",
-        "@ethersproject/signing-key": "6.13.5",
-        "@ethersproject/transactions": "6.13.5",
-        "@ethersproject/providers": "6.13.5",
-        "@ethersproject/abi": "6.13.5",
-        "@ethersproject/hdnode": "6.13.5",
-        "@ethersproject/json-wallets": "6.13.5",
-        "ws": "8.18.1",
-        "cookie": "0.7.0"
+        "@gifticapp/config": "*"
     }
 }

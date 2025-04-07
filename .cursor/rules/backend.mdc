@@ -1,0 +1,161 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Backend Development Rules
+
+## API Structure
+```
+Rule: Follow the established MVC pattern:
+
+1. Routes (packages/backend/src/routes/):
+   - Define endpoints and HTTP methods
+   - Apply middleware (auth, validation)
+   - Call appropriate controller function
+   - Example:
+     router.post('/gift', authMiddleware, validateGift, giftController.createGift);
+
+2. Controllers (packages/backend/src/controllers/):
+   - Handle HTTP request/response
+   - Validate input
+   - Call services for business logic
+   - Format responses
+   - Example:
+     export const createGift = async (req, res) => {
+       try {
+         const result = await giftService.createGift(req.body, req.user);
+         return sendSuccessResponse(res, result, 201);
+       } catch (error) {
+         return sendErrorResponse(res, error, 'createGift');
+       }
+     };
+
+3. Services (packages/backend/src/services/):
+   - Contain business logic
+   - Interact with models and external services
+   - Throw AppErrors for specific error cases
+   - Example:
+     export const createGift = async (giftData, user) => {
+       if (!isValidGift(giftData)) {
+         throw new AppError('Invalid gift data', ErrorCode.VALIDATION_ERROR);
+       }
+       // Business logic...
+       return await Gift.create({ ...giftData, userId: user.id });
+     };
+
+4. Models (packages/backend/src/models/):
+   - Define Mongoose schemas
+   - Define document interfaces
+   - Implement model methods
+   - Example:
+     export interface GiftDocument extends mongoose.Document {
+       // Properties...
+       compareCode(code: string): Promise<boolean>;
+     }
+```
+
+## Route Definition
+```
+Rule: Organize API routes consistently:
+
+1. File structure:
+   - One file per resource (gift.ts, user.ts)
+   - Export Express router from each file
+
+2. Path naming:
+   - Resources in plural (/gifts, /users)
+   - Use kebab-case for multi-word resources (/gift-transactions)
+   - Nested resources use path params (/gifts/:giftId/recipients)
+
+3. HTTP methods:
+   - GET: Retrieve resources
+   - POST: Create resources
+   - PUT: Replace resources
+   - PATCH: Update resources
+   - DELETE: Remove resources
+
+4. Reference API_ROUTES from shared package:
+   - import { API_ROUTES } from '@gifticapp/shared';
+   - Use paths defined there for consistency
+```
+
+## Database Operations
+```
+Rule: Use Mongoose effectively:
+
+1. Schema design:
+   - Define schemas in models/ directory
+   - Use appropriate Mongoose types
+   - Define indexes for frequently queried fields
+   - Example:
+     const giftSchema = new mongoose.Schema({
+       code: { type: String, unique: true, index: true },
+       amount: { type: Number, required: true },
+     }, { timestamps: true });
+
+2. Querying:
+   - Use .lean() for read-only operations
+   - Use proper projection to limit returned fields
+   - Use population sparingly and with field selection
+   - Example:
+     const gifts = await Gift.find({ userId })
+       .select('code amount recipient status')
+       .lean();
+
+3. Operations:
+   - Use findOneAndUpdate for atomic updates
+   - Set { new: true } to return updated document
+   - Use transactions for multi-document operations
+   - Example:
+     const updatedGift = await Gift.findOneAndUpdate(
+       { _id: giftId, userId },
+       { $set: { status: 'claimed' } },
+       { new: true }
+     );
+```
+
+## Middleware
+```
+Rule: Use middleware effectively:
+
+1. Authentication:
+   - Use authMiddleware for protected routes
+   - Check req.user in protected controllers
+
+2. Validation:
+   - Create validation middleware for request data
+   - Use express-validator or similar library
+   - Example:
+     export const validateGift = [
+       body('amount').isNumeric().withMessage('Amount must be a number'),
+       body('recipient').isEmail().withMessage('Valid email required'),
+       validateResults
+     ];
+     
+3. Error handling:
+   - Let the global error handler manage errors
+   - Pass errors with next(error) in middleware
+   - Focus on specific error cases in your code
+```
+
+## Async Handling
+```
+Rule: Handle asynchronous code correctly:
+
+1. Always use async/await with proper try/catch:
+   - ✅ try { await someAsyncFunc() } catch (error) { /* handle */ }
+
+2. In Express routes and middleware, ensure Promise rejection is handled:
+   - ✅ router.get('/', asyncHandler(async (req, res) => { /* code */ }));
+
+3. For service functions called from multiple places:
+   - Return rejected Promises (don't swallow errors)
+   - Let the caller decide how to handle the error
+
+4. Use Promise.all for parallel operations:
+   - ✅ const [users, gifts] = await Promise.all([
+         userService.getUsers(),
+         giftService.getGifts()
+       ]);
+``` 
